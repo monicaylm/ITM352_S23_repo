@@ -25,7 +25,7 @@
 
 <header>
     <script>
-        document.write('<p style="font-size:100px; text-align:center; margin: 0;">' + '<b>' + first_name + '</b>' + " " + '<i>' + last_name + '</i>' + "'s" +'</p>');</script>
+        document.write('<p style="font-size:130px; text-align:center; margin: 0;">' + '<b>' + first_name + '</b>' + " " + '<i>' + last_name + '</i>' + "'s" +'</p>');</script>
         <h1>Used Smartphone Store</h1>
 
     <p style="text-align: center; font-weight: bold;">
@@ -35,6 +35,7 @@
     </p>
 
 </header>
+
 
 <div><main>
 
@@ -115,14 +116,14 @@
 <footer>
 <script>
     var line = 1;
-    now = new Date(Date object)
+    var now = new Date();
     document.write(`
     <table border="1" style="margin-left: auto; margin-right: auto; text-align: center;">
         <tbody>
-            <tr><th colspan="2"><h1>Your One Stop For Used Phones - ${first_name[0] + "." + last_name[0] +"." + "'s"}</h1></th></tr>
+            <tr><th colspan="2"><h1>Your One Stop Shop For Used Phones - ${first_name[0] + "." + last_name[0] +"." + "'s"}</h1></th></tr>
             <tr><td>${line + "."}</td><td><br>Copyright @ ${first_name + " " + last_name}</td></tr>
-            <tr><td>${++line + "."}</td><td>2021</td></tr>
-            <tr><td>${++line + "."}</td><td>11:15 AM</td></tr>
+            <tr><td>${++line + "."}</td><td>${now.getUTCFullYear()}</td></tr>
+            <tr><td>${++line + "."}</td><td>${(now.getHours() + 11) % 12 + 1}:${now.getMinutes()} ${(now.getHours() < 12)?'AM':'PM'}</td></tr>
         </tbody>
     </table>
     `);
@@ -133,4 +134,5 @@
         var hits = 0;
         var spins = 0;
 </script>
+
 </html>
