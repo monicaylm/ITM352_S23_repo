@@ -1,39 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <script>
-        var store_name="Monica Mau";
-        var hits = 0;
-        var spins = 0;
-    </script>
-
     <link rel="stylesheet" href="products-style.css">
     <style id="localStyle"></style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smartphone Products</title>
+
+    <script>
+        var first_name="Monica";
+        var last_name="Mau";
+        var store_name="Monica Mau";
+        var hits = 0;
+        var spins = 0;
+    </script>
+
 </head>
 
-<body onload="hits_span.innerHTML = hits; spins_span.innerHTML = spins;">
+<body onload=
+    "hits_span.innerHTML = hits; 
+    spins_span.innerHTML = spins; 
+    hit_spin_spans.innerHTML = hit/spin">
 
 <header>
-    <h1>
-        <script>document.write(store_name);</script>'s Used Smart Phones
-    </h1>
+    <script>
+        document.write('<p style="font-size:100px; text-align:center; margin: 0;">' + '<b>' + first_name + '</b>' + " " + '<i>' + last_name + '</i>' + "'s" +'</p>');</script>
+        <h1>Used Smartphone Store</h1>
 
     <p style="text-align: center; font-weight: bold;">
         Hits:<span id="hits_span">0</span>
         Spins:<span id="spins_span">0</span>
+        Hit/Spin:<span id="hit_spin_span">0</span>
     </p>
+
 </header>
 
 <div><main>
 
     <section class="item" 
-        onmouseover="this.className='item rotate'; spins_span.innerHTML = ++spins;"
-        
-        onclick="this.className='item'; hits_span.innerHTML = ++hits;">
+        onmouseover="this.className='item rotate'; 
+        spins_span.innerHTML = ++spins;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);" 
+
+        onclick="this.className='item';  
+        hits_span.innerHTML = ++hits;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);"> 
     
         <h2>HTC</h2>
         <p>&dollar;40.00</p>
@@ -41,8 +53,13 @@
     </section>
 
     <section class="item" 
-        onmouseover="this.className='item rotate'; spins_span.innerHTML = ++spins;"
-        onclick="this.className='item'; hits_span.innerHTML = ++hits;">
+        onmouseover="this.className='item rotate'; 
+        spins_span.innerHTML = ++spins;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);" 
+
+        onclick="this.className='item';  
+        hits_span.innerHTML = ++hits;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
 
         <h2>Apple</h2>
         <p>&dollar;75.00</p>
@@ -50,8 +67,13 @@
     </section>
 
     <section class="item" 
-        onmouseover="this.className='item rotate'; spins_span.innerHTML = ++spins;"
-        onclick="this.className='item'; hits_span.innerHTML = ++hits;">
+        onmouseover="this.className='item rotate'; 
+        spins_span.innerHTML = ++spins;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);" 
+
+        onclick="this.className='item';  
+        hits_span.innerHTML = ++hits;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
 
         <h2>Nokia</h2>
         <p>&dollar;35.00</p>
@@ -59,8 +81,13 @@
     </section>
 
     <section class="item" 
-        onmouseover="this.className='item rotate'; spins_span.innerHTML = ++spins;"
-        onclick="this.className='item'; hits_span.innerHTML = ++hits;">
+        onmouseover="this.className='item rotate'; 
+        spins_span.innerHTML = ++spins;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);" 
+
+        onclick="this.className='item';  
+        hits_span.innerHTML = ++hits;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
 
         <h2>Samsung</h2>
         <p>&dollar;45.00</p>
@@ -68,8 +95,13 @@
     </section>
 
     <section class="item" 
-        onmouseover="this.className='item rotate'; spins_span.innerHTML = ++spins;"
-        onclick="this.className='item'; hits_span.innerHTML = ++hits;">
+        onmouseover="this.className='item rotate'; 
+        spins_span.innerHTML = ++spins;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);" 
+
+        onclick="this.className='item';  
+        hits_span.innerHTML = ++hits;
+        hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
 
         <h2>Blackberry</h2>
         <p>&dollar;10.00</p>
@@ -81,11 +113,24 @@
 </main></div>
 
 <footer>
-    <h1>Your One Stop Phone Shop - <script>document.write(store_name)</script></h1>
+<script>
+    var line = 1;
+    now = new Date(Date object)
+    document.write(`
+    <table border="1" style="margin-left: auto; margin-right: auto; text-align: center;">
+        <tbody>
+            <tr><th colspan="2"><h1>Your One Stop For Used Phones - ${first_name[0] + "." + last_name[0] +"." + "'s"}</h1></th></tr>
+            <tr><td>${line + "."}</td><td><br>Copyright @ ${first_name + " " + last_name}</td></tr>
+            <tr><td>${++line + "."}</td><td>2021</td></tr>
+            <tr><td>${++line + "."}</td><td>11:15 AM</td></tr>
+        </tbody>
+    </table>
+    `);
+</script>
 </footer>
 
 <script>
         var hits = 0;
-        spins = 1;
+        var spins = 0;
 </script>
 </html>
