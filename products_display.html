@@ -14,6 +14,7 @@
         var store_name="Monica Mau";
         var hits = 0;
         var spins = 0;
+        var over_half = false;
         var progress = "";
         var hits_spins_ratio = hits/spins;
         var hit_spin_spans = 0;
@@ -36,7 +37,8 @@
         Hits:<span id="hits_span">0</span>
         Spins:<span id="spins_span">0</span>
         Hit/Spin:<span id="hit_spin_span">0</span>
-        You win:<span id="progress_span"></span>
+        You win:<span id="win_span">pending...</span>
+        Progress:<span id="progress_span"></span>
     </p>
 
 </header>
@@ -51,6 +53,8 @@
         spins++;
         spins_span.innerHTML = spins;
         hit_spin_span.innerHTML = (hits/spins).toFixed(2);
+        over_half = over_half || (spins < 2*hits) && (hits < spins);
+        win_span.innerHTML = over_half;
         }
 
         // -- Winning progress depends on hits/spins
@@ -58,7 +62,7 @@
 
        if ( 0 < hits_spins_ratio < 0.25){
             progress = 'On your way!';
-            progress_span.innerHTML = progress;
+            progress_span.innerHTML= progress;
         } else if ( 0.25 <= hits_spins_ratio < 0.5) {
             progress = 'Almost there!'
             progress_span.innerHTML= progress;
@@ -80,6 +84,8 @@
     } else {
         this.className = 'item rotate'
     }
+        over_half || (spins < 2*hits) && (hits < spins);
+        win_span.innerHTML = over_half;
 
         // -- Winning progress depends on hits/spins
         hits_spins_ratio = hits/spins;
@@ -110,6 +116,8 @@
     spins++;
     spins_span.innerHTML = spins;
     hit_spin_span.innerHTML = (hits/spins).toFixed(2);
+    over_half = over_half || (spins < 2*hits) && (hits < spins);
+    win_span.innerHTML = over_half;
     }
 
     // -- Winning progress depends on hits/spins
@@ -139,6 +147,8 @@
 } else {
     this.className = 'item rotate'
 }
+    over_half || (spins < 2*hits) && (hits < spins);
+    win_span.innerHTML = over_half;
 
     // -- Winning progress depends on hits/spins
     hits_spins_ratio = hits/spins;
@@ -169,6 +179,8 @@
         spins++;
         spins_span.innerHTML = spins;
         hit_spin_span.innerHTML = (hits/spins).toFixed(2);
+        over_half = over_half || (spins < 2*hits) && (hits < spins);
+        win_span.innerHTML = over_half;
         }
 
         // -- Winning progress depends on hits/spins
@@ -198,6 +210,8 @@
     } else {
         this.className = 'item rotate'
     }
+        over_half || (spins < 2*hits) && (hits < spins);
+        win_span.innerHTML = over_half;
 
         // -- Winning progress depends on hits/spins
         hits_spins_ratio = hits/spins;
@@ -227,6 +241,8 @@
     spins++;
     spins_span.innerHTML = spins;
     hit_spin_span.innerHTML = (hits/spins).toFixed(2);
+    over_half = over_half || (spins < 2*hits) && (hits < spins);
+    win_span.innerHTML = over_half;
     }
 
     // -- Winning progress depends on hits/spins
@@ -256,6 +272,8 @@
 } else {
     this.className = 'item rotate'
 }
+    over_half || (spins < 2*hits) && (hits < spins);
+    win_span.innerHTML = over_half;
 
     // -- Winning progress depends on hits/spins
     hits_spins_ratio = hits/spins;
@@ -286,6 +304,8 @@
     spins++;
     spins_span.innerHTML = spins;
     hit_spin_span.innerHTML = (hits/spins).toFixed(2);
+    over_half = over_half || (spins < 2*hits) && (hits < spins);
+    win_span.innerHTML = over_half;
     }
 
     // -- Winning progress depends on hits/spins
@@ -315,6 +335,8 @@
 } else {
     this.className = 'item rotate'
 }
+    over_half || (spins < 2*hits) && (hits < spins);
+    win_span.innerHTML = over_half;
 
     // -- Winning progress depends on hits/spins
     hits_spins_ratio = hits/spins;
