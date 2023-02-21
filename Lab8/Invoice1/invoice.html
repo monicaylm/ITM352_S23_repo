@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt Sales</title>
-
+    <script src="./products_data.js"></script>
     <script>
         /*
         Sales Receipt
@@ -14,29 +14,19 @@
         // Product Data
     
          // Product 1
-         var item1 = 'Gillette Sensor 3 Razor';
          var quantity1 = 2;
-         var price1 = 1.23;
     
          // Product 2
-         var item2 = 'Barbasol Shaving Cream';
          var quantity2 = 1;
-         var price2 = 2.64;
-    
+
          // Product 3
-         var item3 = 'Nautica Cologne';
          var quantity3 = 1;
-         var price3 = 6.17;
     
          // Product 4
-         var item4 = 'Rubbing Alcohol';
          var quantity4 = 3;
-         var price4 = 0.98;
     
          // Product 5
-         var item5 = 'Colgate Classic Toothbrush';
          var quantity5 = 12;
-         var price5 = 1.89;
     
          // Compute extended price
          var extended_price1 = price1 * quantity1;
@@ -61,49 +51,25 @@
     <div>
         <table border="2">
           <tbody>
-            <script>
-                document.write(`
+            
             <tr>
               <th style="text-align: center;" width="43%">Item</th>
               <th style="text-align: center;" width="11%">quantity</th>
               <th style="text-align: center;" width="13%">price</th>
               <th style="text-align: center;" width="54%">extended price</th>
             </tr>
+          <script>
+            for(let i = 1; eval(`typeof ${'name'+i}!= "undefined"`); i++)
+            //product row 1
+            {document.write(`
             <tr>
-              <td width="43%">${item1}</td>
-              <td align="center" width="11%">${quantity1}</td>
-              <td width="13%">$${price1}</td>
-              <td width="54%">$${extended_price1}</td>
+              <td width="43%">${eval('name' + i)}</td>
+              <td align="center" width="11%">${eval('quantity' + i)}</td>
+              <td width="13%">$${eval('price' + i)}</td>
+              <td width="54%">$${eval('extended_price' + i)}</td>
             </tr>
-
-            <tr>
-              <td width="43%">${item2}</td>
-              <td align="center" width="11%">${quantity2}</td>
-              <td width="13%">$${price2}</td>
-              <td width="54%">$${extended_price2}</td>
-            </tr>
-
-            <tr>
-              <td width="43%">${item3}</td>
-              <td align="center" width="11%">${quantity3}</td>
-              <td width="13%">$${price3}</td>
-              <td width="54%">$${extended_price3}</td>
-            </tr>
-
-            <tr>
-              <td width="43%">${item4}</td>
-              <td align="center" width="11%">${quantity4}</td>
-              <td width="13%">$${price4}</td>
-              <td width="54%">$${extended_price4}</td>
-            </tr>
-
-            <tr>
-              <td width="43%">${item5}</td>
-              <td align="center" width="11%">${quantity5}</td>
-              <td width="13%">$${price5}</td>
-              <td width="54%">$${extended_price5}</td>
-            </tr>
-            
+            `)}
+            document.write(`
             <tr>
               <td colspan="4" width="100%">&nbsp;</td>
             </tr>
