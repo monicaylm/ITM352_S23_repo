@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Smart Phone Store</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Cherry+Swash|Raleway" rel="stylesheet">
+
+    <link href="products-style.css" rel="stylesheet">
+    <script>
+    var name1 = "HTC";
+     var price1 = 40.00;
+     var image1 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/HTC.jpg";
+
+     var name2 = "Apple";
+     var price2 = 75.00;
+     var image2 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/iphone-3gs.jpg";
+
+     var name3 = "Nokia";
+     var price3 = 35.00;
+     var image3 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/Nokia.jpg";
+
+     var name4 = "Samsung";
+     var price4 = 45.00;
+     var image4 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/Samsung.jpg";
+
+     var name5 = "Blackberry";
+     var price5 = 10.00;
+     var image5 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/Blackberry.jpg";
+    </script>
+</head>
+
+<body>
+    
+    <header>
+        <h1>Monica Mau's Used Smart Phone Store</h1>
+    </header>
+    <div>
+        <aside>
+            <div style="font-size:4rem;text-align:center;font-weight: bold;font-style: italic; color: white">
+                We sell from
+                around the globe!
+            </div>
+        </aside>
+
+        <main>
+
+    <script> 
+    
+    for(var i = 1; eval("typeof name"+i) != 'undefined'; i++)
+    {document.write(`
+            <section class="item">
+                <h2>${eval("name" + i)}</h2>
+                <p>$${eval("price" + i)}</p>
+                <img src=${eval("image" + i)}>
+            </section>
+            `)}
+            </script>
+        </main>
+    </div>
+    <footer>
+        <h1>
+            Your One Stop Shop For Used Phones
+        </h1>
+    </footer>
+</body>
+
+</html>
