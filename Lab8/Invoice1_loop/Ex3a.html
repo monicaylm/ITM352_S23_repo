@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Sales</title>
+<body>
+    <script>
+
+        var product_quantities = [2,1,1,3,12];
+
+document.write(`
+<table style="border: 1px solid black;text-align: center;">
+<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Product #</th><th>Quantity</th></tr>
+
+  `);
+for(let i in product_quantities) {
+document.write(`
+<tr style="border: 1px solid black;"><td style="border: 1px solid black;">${i}</td><td>${product_quantities[i]}</td></tr>
+`);
+}
+    
+    </script>
+    </body>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Sales</title>
+<body>
+    <script>
+
+        var product_quantities = [2,1,1,3,12];
+        
+        // array of all products
+        // corresponds to product_quantities array
+        // product_quantities[i] is the quantity for products[i]
+
+        products = [
+            { 'name': 'small gumball', 'price': 0.02 },
+            { 'name': 'medium gumball', 'price': 0.05 },
+            { 'name': 'large gumball', 'price': 0.07 },
+            { 'name': 'small jawbreaker', 'price': 0.06 },
+            { 'name': 'large jawbreaker', 'price': 0.10 }
+];
+
+document.write(`
+            
+<table style="border: 1px solid black;text-align: center;">
+<tr> 
+    <th style="border: 1px solid black;">Product Name</th>
+    <th style="border: 1px solid black;">Price</th>
+    <th style="border: 1px solid black;">Extended Price</th></tr>
+
+  `)
+  
+for(let i in products) {
+document.write(`
+    <td style="border: 1px solid black;">${products[i].name}</td>
+        <td style="border: 1px solid black;">$${products[i].price.toFixed(2)}</td>
+        <td style="border: 1px solid black;">$${(product_quantities[i]*products[i].price).toFixed(2)}</td></tr>
+        
+`);
+}
+
+
+
+// Compute extended price
+        var extended_price1 = product1.product_price * product1.quantity;
+         var extended_price2 = price2 * quantity2;
+         var extended_price3 = price3 * quantity3;
+         var extended_price4 = price4 * quantity4;
+         var extended_price5 = price5 * quantity5;
+    
+         // Subtotal
+         var subtotal = extended_price1 + extended_price2 + extended_price3 + extended_price4 + extended_price5;
+    
+         // Tax rate
+         var tax_rate = 0.0575;
+         var tax = tax_rate * subtotal;
+    
+         // Grand total
+         var total = subtotal + tax;
+
+    </script>
+    </body>
