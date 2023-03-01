@@ -12,12 +12,12 @@
 
 document.write(`
 <table style="border: 1px solid black;text-align: center;">
-<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Product #</th><th>Quantity</th></tr>
+<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Product #</th><th style="border: 1px solid black;">Quantity</th></tr>
 
   `);
 for(let i in product_quantities) {
 document.write(`
-<tr style="border: 1px solid black;"><td style="border: 1px solid black;">${i}</td><td>${product_quantities[i]}</td></tr>
+<tr style="border: 1px solid black;"><td style="border: 1px solid black;">${i}</td><td style="border: 1px solid black;">${product_quantities[i]}</td></tr>
 `);
 }
     

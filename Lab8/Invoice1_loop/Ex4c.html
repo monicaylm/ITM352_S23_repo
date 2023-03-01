@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt Sales</title>
+    <head></head>
 <body>
     <script>
 
@@ -24,7 +25,11 @@
 
 document.write(`
             
-<table style="border: 1px solid black;text-align: center;">
+<style>tr:hover {background-color: yellow;}</style>
+<table style="border: 1px solid black;text-align: center;" >    
+<tbody onclick = "tBody = document.getElementsByTagName('table')[0];
+tBody.deleteRow(tBody.rows.length - 1);"
+    
 <tr> 
     <th style="border: 1px solid black;">Product Name</th>
     <th style="border: 1px solid black;">Price</th>
@@ -35,11 +40,32 @@ document.write(`
 for(let i in products) {
 document.write(`
     <td style="border: 1px solid black;">${products[i].name}</td>
-        <td style="border: 1px solid black;">$${products[i].price.toFixed(2)}</td>
-        <td style="border: 1px solid black;">$${(product_quantities[i]*products[i].price).toFixed(2)}</td></tr>
+    <td style="border: 1px solid black;">$${products[i].price.toFixed(2)}</td>
+    <td style="border: 1px solid black;">$${(product_quantities[i]*products[i].price).toFixed(2)}</td></tr>
+    
         
 `);
 }
 
-    </script>
-    </body>
+document.write(`
+</table>
+<input type="button" value="Add new row"
+onclick="new_row = this.appendChild(document.createElement('tr')); 
+    for(var row = 0; row > this.rows[0].cells.length; row++)
+    {new_cell = new_row.appendChild(document.createElement('td'));
+    new_cell.innerHTML='xxx';
+    }"
+`);
+</script>
+</body>
+
+
+onclick = "tBody = document.getElementsByTagName('table')[0];
+tBody.deleteRow(tBody.rows.length - 1);"
+
+
+onclick="new_row = this.appendChild(document.createElement('tr')); 
+    for(var row = 0; row < this.rows[0].cells.length; row++)
+    {new_cell = new_row.appendChild(document.createElement('td'));
+    new_cell.innerHTML='xxx';
+    }"
