@@ -24,7 +24,7 @@
 
 document.write(`
             
-<table style="border: 1px solid black;text-align: center;">
+<table id = "invoice_table" style="border: 1px solid black;text-align: center;">
 <tbody onclick="new_row = this.appendChild(document.createElement('tr')); 
     for(var row = 0; row < this.rows[0].cells.length; row++)
     {new_cell = new_row.appendChild(document.createElement('td'));
