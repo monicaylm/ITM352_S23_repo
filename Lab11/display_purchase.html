@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script>
+        let params = (new URL(document.location)).searchParams;
+        function findNonNegInt(q){ //the function returns non-negative integers in the object.
+    errors = []; // assume no errors at first
+    if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
+    else{
+    if(q < 0) errors.push('Negative value!'); // Check if it is non-negative
+    if(parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+    }
+    return errors;
+      }
+    </script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        if(params.has('quantity_textbox')){
+            let qty=params.get('quantity_textbox');
+
+        if(findNonNegInt(qty).length==0){document.write(`Thank you for ordering ${qty} things!`)} else(window.stop(document.write(`Invalid quantity. Press the back button and try again.`)));
+
+// Validate qty; if valid then display thank you
+        } else(
+            document.write("Hey you need to select some quantities!")
+        )
+    </script>
+</body>
+</html>
