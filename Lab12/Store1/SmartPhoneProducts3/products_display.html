@@ -13,7 +13,6 @@
 </head>
 
 <body>
-    
     <header>
         <h1>Monica Mau's Used Smart Phone Store</h1>
     </header>
@@ -27,19 +26,19 @@
 
         <main>
 
-    <script> 
-    
+<script> 
     for(i = 0; i < products.length; i++)
     {document.write(`
             <section class="item">
                 <h2>${products[i].brand}</h2>
                 <p>$${products[i].price}</p>
                 <img src=${products[i].image}>
-                Quantity desired: <input type="text" id="quantity${[i]}_label" name="quantity${[i]}">
-            </section>
-            `)}
+                <form>
+                <label for="quantity${[i]}">Quantity<br>Desired:</label><input type="text" id="quantity${[i]}" name="quantity${[i]}">
+                </form>
+            `);
+    }
             </script>
-            </main>
 
         </main>
     </div>
@@ -48,10 +47,10 @@
             Your One Stop Shop For Used Phones
             <br>
             <form action="./invoice.html" method="GET">
-            <input type="submit" value="Purchase">
-        </form>
+            <input type="submit" value="Purchase"></form>
         </h1>
     </footer>
+
 </body>
 
 </html>

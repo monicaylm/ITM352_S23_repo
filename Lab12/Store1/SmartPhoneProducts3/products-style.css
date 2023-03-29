@@ -4,7 +4,7 @@
 html {
   
   font-family: 'Raleway', sans-serif;
-  background-color: rgb(188, 236, 246);
+  background-color: cornflowerblue;
   font-size: 10px;
   
 }
@@ -34,13 +34,13 @@ h1 {
 
 h2 {
   font-size: 2rem;
-  color: rgb(90, 19, 116);
+  color: blue;
   text-align: right;
-  width: 160px;
+  width: 60px;
   position: absolute;
   right: 4%;
   z-index: 3000;
-  text-shadow: 2px 2px 1px white;
+  text-shadow: 2px 2px 1px black;
   line-height: 2rem;
   padding-top: 0.3rem;
 }
@@ -88,7 +88,7 @@ aside {
 }
 
 main {
-  flex: 7;
+  flex: 9;
 }
 
 
@@ -117,22 +117,22 @@ aside div {
 
 
 section {
-  width: 45%;
+  width: 48%;
   margin: 5px;
-  background-color: rgb(212, 193, 227);
+  background-color: lavender;
   position: relative;
   height: 215px;
 }
 
 section p {
-  color: rgb(239, 209, 247);
+  color: yellow;
   background: black;
   width: 50px;
   height: 50px;
   line-height: 50px;
   text-align: center;
   border-radius: 50%;
-  box-shadow: 2px 2px 1px rgb(187, 26, 246);
+  box-shadow: 2px 2px 1px yellow;
   position: absolute;
   right: 10px;
   bottom: -6px;
@@ -152,5 +152,31 @@ section p {
     display: block;
     position: absolute;
     bottom: 0px;
+    right: 60px;
     
+}
+
+label {
+  position: absolute;
+  color: #2ca4c2;
+  width: 130px;
+  top: 45px;
+  margin-top: 10px;
+  left: 220px;
+
+}
+
+.item input {
+  position: absolute;
+  top: 80px;
+  right: 6px;
+  width: 40px;
+  height: 30px;
+}
+
+input[type=submit] {
+  font-size: 25px;
+  font-family: 'Georgia', cursive;
+  background-color: rgb(180, 220, 250);
+  color: navy;
 }

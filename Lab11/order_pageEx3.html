@@ -29,7 +29,7 @@
     </script>
 </head>
 <body>
-    <form name="quantity_form" action="" method="GET">
+    <form name="quantity_form" action="./display_purchase.html" method="GET">
         
     Quantity desired: <input id="quantity_textbox" name="quantity_textbox" type="text"  onkeyup=checkQuantityTextbox(this)>
     <span id='quantity_textbox_message'>Enter a quantity</span>
@@ -37,7 +37,7 @@
     <input disabled type="submit" id = "purchase_button" value="Purchase">
 <br>
 <script>
-
+/*
 if (params.has('quantity_textbox')) {
     quantity_form["quantity_textbox"].value = params.get('quantity_textbox');
     checkQuantityTextbox(quantity_form["quantity_textbox"]);
@@ -52,6 +52,7 @@ if (params.has('quantity_textbox')) {
         } else(
             document.write("Hey you need to select some quantities!")
         );
+        */
     </script>
 </form>
 </body>
