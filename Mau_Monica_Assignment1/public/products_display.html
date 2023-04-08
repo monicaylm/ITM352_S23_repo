@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="./products_data.js" type="text/javascript"></script>
+    <link href="products-style.css" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHINee Album Shop</title>
+
+</head>
+
+<body>
+    <h1>SHINee Album Shop</h1>
+    <div>
+        <main>
+            <form action="./purchase" method="POST">
+            <script>
+                for(i = 0; i < products.length; i++)
+                    {document.write(`
+                        <section class="item">
+                        <h2>${products[i].album}</h2>
+                        <p>&dollar;${products[i].price}</p>
+                        <img src ="./images/${products[i].image}">
+                        <h3>Quantity Available: ${products[i].quantity_available}</h3>
+                        <label id="quantity${i}_label">Quantity Desired</label>
+                        <input id = "type="text" placeholder="0" name="quantity${i}">
+                        </section>
+                     `)}
+             </script>
+            </main>
+        </div>
+    <footer>
+        <input type="submit" value="Purchase"></footer>
+</body>
+</form>
+
+</html>

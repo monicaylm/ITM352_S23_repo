@@ -1,0 +1,43 @@
+[
+{
+    "album":"The Story of Light", 
+    "price":39.99, 
+    "image":"storyoflight.jpeg",
+    "quantity_available":20
+},
+
+{
+    "album":"Odd", 
+    "price":34.99, 
+    "image":"odd.jpg",
+    "quantity_available":20
+},
+
+{
+    "album":"Atlantis", 
+    "price":27.99, 
+    "image":"atlantis.jpeg",
+    "quantity_available":20
+},
+
+{
+    "album":"Everybody", 
+    "price":45, 
+    "image":"everybody.jpg", 
+    "quantity_available":20
+},
+
+{
+    "album":"1 of 1", 
+    "price":29.95, 
+    "image":"1of1.jpg", 
+    "quantity_available":20
+},
+
+{
+    "album":"Misconceptions of Me", 
+    "price":29.95, 
+    "image":"misconceptions.jpg", 
+    "quantity_available":20}
+]
+
