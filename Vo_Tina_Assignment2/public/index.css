@@ -1,0 +1,22 @@
+/*
+Author: Tina Vo 
+Date Due: 11/30/2021 
+Description: CSS style for index page 
+ */
+
+#store_title {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color:#D8A47F;
+    font-size: 60px;
+  }
+
+  a:link {
+    text-decoration: none;  /* get rid of underline */
+  }
+
+  #clickmetext {
+    font-size: 20px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: #0F7173;
+    
+  }

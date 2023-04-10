@@ -1,0 +1,39 @@
+/*
+Author: Tina Vo 
+Date Due: 11/30/2021 
+Description: CSS style for navigation bar 
+ */
+
+ul {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #333;
+    
+}
+
+#nav {
+position: relative;
+top: 240px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+li a {
+    color:honeydew;
+    font-size: 20px;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    
+    
+}
+
+li {
+    float: left;
+}
+
+li a:hover:not(.active) {
+    color: #dfd9e2;
+}

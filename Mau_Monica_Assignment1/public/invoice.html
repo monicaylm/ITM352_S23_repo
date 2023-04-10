@@ -7,6 +7,9 @@
     <title>Receipt Sales</title>
 
     <script src="./products_data.js"></script>
+    <link href="invoice.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+
     <script>
 
   var params = (new URL(document.location)).searchParams
@@ -18,9 +21,9 @@
         //Quantities Array
         const quantities = []
 
-        for(i = 0; i < products.length; i++){
+        for(i in products){
           if(params.has(`quantity${i}`)){
-            const albums = params.get(`quantity${i}`); quantities.push(albums);
+            const album = params.get(`quantity${i}`); quantities.push(album);
           }
         }
         
@@ -31,19 +34,21 @@
     </script>
 </head>
 <body>
+  <h2>Thank you for ordering!</h2>
     <div>
         <table border="2">
           <tbody>
-            <script>
-                document.write(`
+            
+            <!-- column titles row -->
             <tr>
-              <th style="text-align: center;" width="43%">Item</th>
-              <th style="text-align: center;" width="11%">quantity</th>
-              <th style="text-align: center;" width="13%">price</th>
-              <th style="text-align: center;" width="54%">extended price</th>
+              <th style="text-align: center;" width="13%">Image</th>
+              <th style="text-align: center;" width="35%">Item</th>
+              <th style="text-align: center;" width="11%">Quantity</th>
+              <th style="text-align: center;" width="13%">Price</th>
+              <th style="text-align: center;" width="60%">Extended Price</th>
             </tr>
-            `)
-
+            <script>
+            // generates rows with prices based on quantities
             function generate_item_rows(quantities){
               for(let i in quantities){
                 if(quantities[i]==0){continue};
@@ -53,18 +58,26 @@
                 subtotal += extended_price;
                 }
                 else(extended_price=0);
-                document.write(`
+            
+            function showDescription() {
+              const popupWindow = window.open('', '', 'width=300,height=200');
+              popupWindow.document.write(`<p>${products[i].description}</p>`);
+              }
+
+        // IR 5 - When diplaying the invoice, add a small icon image of the product to the line item
+          document.write(`
             <tr>
-              <td width="43%">${products[i].brand}</td>
+             <td height="70px" width="10%"><img src="./images/${products[i].image}" height="50px" width="50px" onmouseover="showDescription(); return false;"></td>
+              <td width="43%">${products[i].album}</td>
               <td align="center" width="11%">${quantities[i]}<br><font color = "red">${errors.join('<br>')}</td>
               <td width="13%">$${products[i].price}</td>
-              <td width="54%">$${extended_price}</td>
+              <td width="54%">$${(extended_price).toFixed(2)}</td>
             </tr>
             `)
               }
             }
 
-            function findNonNegInt(q, returnErrors = false){ //the function returns non-negative integers in the object.
+function findNonNegInt(q, returnErrors = false){ //the function returns non-negative integers in the object.
     errors = []; // assume no errors at first
     if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
     if(q < 0) errors.push('Negative value!'); // Check if it is non-negative
@@ -75,10 +88,10 @@
 
             generate_item_rows(quantities);
         // Tax rate
-         var tax_rate = 0.0575;
+         var tax_rate = 0.04712;
          var tax = tax_rate * subtotal;
 
-         // Compute shipping
+         // Compute shipping (if less than $50, shipping is $2, if between $50 and $100 then $5, if over 100 then shipping is 5%)
          if(subtotal<=50){shipping=2}
          else if (50<subtotal<100){shipping=5}
          else {shipping=subtotal*0.05};
@@ -88,29 +101,29 @@
           
          document.write(`
             <tr>
-              <td colspan="4" width="100%">&nbsp;</td>
+              <td colspan="5" width="100%">&nbsp;</td>
             </tr>
             <tr>
-              <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
-              <td width="54%">$${subtotal}</td>
+              <td style="text-align: center;" colspan="3" width="67%">Subtotal</td>
+              <td colspan="2" width="54%">$${(subtotal).toFixed(2)}</td>
             </tr>
             <tr>
-              <td style="text-align: center;" colspan="3" width="67%">Tax @ 5.75%</span></td>
-              <td width="54%">$${(tax).toFixed(2)}</td>
+              <td style="text-align: center;" colspan="3" width="67%">Tax @ 4.71%</span></td>
+              <td colspan="2" width="54%">$${(tax).toFixed(2)}</td>
             </tr>
             <tr>
               <td style="text-align: center;" colspan="3" width="67%">Shipping</span></td>
-              <td width="54%">$${shipping}</td>
+              <td colspan="2" width="54%">$${shipping}</td>
             </tr>
             <tr>
               <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
-              <td width="54%"><strong>$${(total).toFixed(2)}</strong></td>
+              <td colspan="2" width="54%"><b>$${(total).toFixed(2)}</b></td>
             </tr>
             `)
         </script>
           </tbody>
         </table>
         
-        </div>
+    </div>
 </body>
 </html>

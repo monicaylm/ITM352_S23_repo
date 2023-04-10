@@ -1,0 +1,17 @@
+h1{
+    font-family: 'Montserrat', sans serif
+}
+
+body {
+    text-align: center;
+    background: rgb(198, 247, 242);
+}
+
+.image {
+    justify-content: center;
+    align-items: center;
+    height: 10%; 
+    width: 10%;
+}
+
+
