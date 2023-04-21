@@ -1,3 +1,8 @@
+<!-- Author: Monica Mau -->
+<!-- Assignment 2 -->
+<!-- Date: 4/20/2023 -->
+<!-- Login Page -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +37,7 @@
             } else if (typeof errorsObject["password_error"] != "undefined"){
                 document.getElementById('password_error_span').innerHTML = errorsObject[`password_error`];
             // make username sticky if password is wrong
-                document.getElementById('username').value = params.get('email');
+                document.getElementById('username').value = params.get('username');
             }
         }
     }

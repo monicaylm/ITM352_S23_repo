@@ -31,25 +31,6 @@ if (fs.existsSync(filename)) {
 	console.log(`Hey, I couldn't find ${filename}!`);
 }
 
-// IR 1: Store passwords encrypted, referenced from https://stackoverflow.com/questions/51280576/trying-to-add-data-in-unsupported-state-at-cipher-update
-/*let secrateKey = "secrateKey";
-const crypto = require('crypto');
-
-
-function encrypt(text) {
-    const encryptalgo = crypto.createCipher('aes192', secrateKey);
-    let encrypted = encryptalgo.update(text, 'utf8', 'hex');
-    encrypted += encryptalgo.final('hex');
-    return encrypted;
-}
-
-function decrypt(encrypted) {
-    const decryptalgo = crypto.createDecipher('aes192', secrateKey);
-    let decrypted = decryptalgo.update(encrypted, 'hex', 'utf8');
-    decrypted += decryptalgo.final('utf8');
-    return decrypted;
-}*/
-
 // middleware, code based on lab 12 ex. 2c
 app.use(express.urlencoded({ extended: true }));
 
@@ -181,7 +162,7 @@ app.post("/login", function (request, response, next) {
 		}
 
 		let params = new URLSearchParams(selected_qty);
-		params.append("email", username);
+		params.append("username", username);
 		params.append("name", name);
 		response.redirect("./invoice.html?" + params.toString());
 	}
@@ -190,7 +171,7 @@ app.post("/login", function (request, response, next) {
 		// add errors object to request.body to put into the querystring
 		//request.body["errorsJSONstring"] = JSON.stringify(errors);
 		let params = new URLSearchParams();
-		params.append("email", username);
+		params.append("username", username);
 		params.append("name", name);
 		params.append("errorsJSONstring", JSON.stringify(errors));
 		response.redirect("./login.html?" + params.toString());
@@ -204,7 +185,7 @@ app.post("/login", function (request, response, next) {
 
 // post registration page, referenced from assignment 2 workshop code
 app.post("/register", function (request, response, next) {
-
+	
 	// set variables as the input field values in the request body
 	var username = request.body["username"].toLowerCase();
 	var password = request.body["password"];
@@ -220,7 +201,6 @@ app.post("/register", function (request, response, next) {
 	errors['password'] = [];
 	errors['repeatpassword'] = [];
 
-
 	// -------------------- USERNAME/EMAIL ERROR VALIDATION -------------------- //
 
 	// username field is blank
@@ -228,7 +208,7 @@ app.post("/register", function (request, response, next) {
 		errors['username'].push(`Enter an email address!`);
 
 	// not a valid email address (regex referenced from ChatGPT)
-	} else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username) == false){
+	} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username)){
 		errors['username'].push(`Enter a valid email address!`)
 
 	// email address is already registered
@@ -243,32 +223,28 @@ app.post("/register", function (request, response, next) {
 		errors['name'].push(`Enter a name!`);
 
 	// name does not include both first and last (regex referenced from ChatGPT)
-	} else if (/^[a-zA-Z]+\s+[a-zA-Z]+$/.test(name) == false) {
-		errors['name'].push(`Enter both a first and last name!`);
-
+	} else if (!/^[a-zA-Z]+\s+[a-zA-Z]+$/.test(name)) {
+		errors['name'].push(`Enter first and last name!`);
+	}
 	// name length is greater than 30 characters
-	} else if (name.length > 30){
+	if (name.length > 30){
 		errors['name'].push(`Name entered is too long. Enter a name less than 30 characters.`)
 	};
+
 
 	// -------------------- PASSWORD ERROR VALIDATION -------------------- //
 
 	// password field is blank
 	if (password == "") {
 		errors['password'].push(`Please create a password!`)
-	}
 	
-	// password length is more than 1 but less than 6 characters
-	else if (password.length < 6 && password.length >= 1) {
-		errors['password'].push(`Password length must be greater than 6 characters!`)
-
 	// password contains spaces, (regex referenced from ChatGPT)
-	} else if (/^\S+$/.test(password) == false) {
+	} else if (!/^\S+$/.test(password)) {
 		errors['password'].push(`Password must not contain spaces!`);
-
-	// IR2 Require that passwords have at least one number and one special character.
-	} else if (!validatePassword(password)) {
-		errors['password'].push(`Password must contain at least one number and one special character!`);
+	
+	// IR2 Require that passwords have at least one number and one special character. (regex referenced from ChatGPT)
+	} else if (!/^(?=.*\d)(?=.*\W).+$/.test(password)) {
+		errors['password'].push(`Password must contain at least one letter, one number, and one special character!`);
 
 	// repeat password is blank
 	} else if (repeatpassword == "") {
@@ -277,27 +253,40 @@ app.post("/register", function (request, response, next) {
 	// passwords do not match
 	} else if (password !== repeatpassword) {
 		errors['repeatpassword'].push(`Passwords do not match!`);
-	} 
-	
+	}
 
+	// password length is more than 1 but less than 6 characters
+	if (password.length < 6 && password.length >= 1) {
+		errors['password'].push(`Password length must be greater than 6 characters!`)
+	}
+
+	// -------------------- NO ERRORS -------------------- //
 	// if there are no errors with registration info, go to invoice and send all info to querystring
 
-	if (Object.keys(errors).length === 0) {
+	var totalLength = 0;
+
+	for (var prop in errors) {
+		totalLength += errors[prop].length;
+	  }
+
+	if (totalLength === 0) {
 		for (i in products) {
 			// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
 			products[i].quantity_available -= selected_qty[`quantity${i}`];
 			products[i].quantity_sold += Number(selected_qty[`quantity${i}`]);
 		}
 
-		// write updated data with all form fields to user_data.json file
+		// write updated data to filename (user_data.json)
 		user_data[username] = {};
 		user_data[username].name = request.body.name;
 		user_data[username].password = request.body.password;
 		fs.writeFileSync(filename, JSON.stringify(user_data));
 
+		//selected_qty['email'] = username;
+		//selected_qty['name'] = user_data[username].name;
 		// set value of params to selected_qty var
 		let params = new URLSearchParams(selected_qty);
-		params.append("email", username);
+		params.append("username", username);
 		params.append("name", name);
 		response.redirect("./invoice.html?" + params.toString());
 
@@ -305,7 +294,7 @@ app.post("/register", function (request, response, next) {
 		// if there are errors, put them in the jsonstring and return to the registration page
 	} else {
 		let params = new URLSearchParams();
-		params.append("email", username);
+		params.append("username", username);
 		params.append("name", name);
 		params.append("errorsJSONstring", JSON.stringify(errors));
 		response.redirect("./registration.html?" + params.toString());

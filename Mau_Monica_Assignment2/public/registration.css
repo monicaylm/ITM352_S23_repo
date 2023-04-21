@@ -1,7 +1,7 @@
 /*
 Author: Monica Mau
 Assignment 2
-Date: 4/19/2023
+Date: 4/20/2023
 Description: CSS stylesheet for registration page 
  */
 
@@ -57,6 +57,7 @@ h2 {
     text-decoration: none;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .navbar .logo {
@@ -91,7 +92,7 @@ body {
     margin-right: auto;
     margin-top: 50px;
     padding-bottom: 30px;
-    border: 3px solid #def7f6;
+    border: 10px solid #def7f6;
     border-radius: 10px;
     /* box shadow help from Tina Vo */
     box-shadow: 0 4px 8px 0 rgba(20, 89, 90, 0.2), 0 6px 20px 0 rgba(20, 89, 90, 0.2);
@@ -132,8 +133,9 @@ body {
     border-width: 1.5px;
     padding: 5px 10px;
     margin: 0 auto;
-    margin-top: 8px;
+    margin-top: 2px;
     margin-bottom: -10px;
+    cursor: pointer;
 }
 
 #generate_password:hover{
@@ -156,9 +158,45 @@ body {
     padding: 10px 20px;
     margin: 0 auto;
     margin-top: 20px;
+    cursor: pointer;
   }
 
 #register_button:hover{
+    background-color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    color: rgb(62, 107, 104);
+}
+
+#password_suggest_span {
+    background-color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    color: rgb(62, 107, 104);
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;    
+    font-size: 14px;
+    border-width: 1.5px;
+    padding: 5px 10px;
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: -10px;
+    cursor: pointer;
+}
+
+#click_me {
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+span {
+    visibility: hidden;
+    display: inline-block;
+    max-width: 400px;
+}
+
+#password_suggest_span:hover{
+    background-color: rgb(62, 107, 104);
+    color: #ffffff;
+    border-color: rgb(62, 107, 104);
     background-color: #ffffff;
     border-color: rgb(62, 107, 104);
     color: rgb(62, 107, 104);

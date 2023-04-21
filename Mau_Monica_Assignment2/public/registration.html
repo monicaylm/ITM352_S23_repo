@@ -1,3 +1,8 @@
+<!-- Author: Monica Mau -->
+<!-- Assignment 2 -->
+<!-- Date: 4/20/2023 -->
+<!-- Registration Page -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,13 +23,21 @@
         var params = (new URL(document.location)).searchParams;
         // on window onload execute function
         window.onload=function(){
-          if(params.has("errorsJSONstring")){
-            // convert string to JSONstring to object
-              var errors = JSON.parse(params.get("errorsJSONstring"));
-              
-          }
-      }
-
+            if(params.has("errorsJSONstring")){
+                // convert string to JSONstring to object
+                var errors = JSON.parse(params.get("errorsJSONstring"));
+                for(err in errors) { 
+                    // put the error messages in the span for the element where the error occured
+                    if (err in errors > 0){
+                    document.getElementById(`${err}_error`).innerHTML = errors[err].join('<br>');
+                    document.getElementById(`${err}_error`).style.visibility = 'visible';
+                    // make textbox sticky
+                    document.getElementById(err).value = params.get(err);
+                    }
+                }
+        }
+        }
+      
       // IR3: When the user is registering, suggest a “strong” password that is 10 random characters including numbers and special characters. this function generates a random password. Function referenced from https://stackoverflow.com/questions/1497481/javascript-password-generator.
       function generatePassword() {
         // set length of password to 10 characters
@@ -43,6 +56,10 @@
         }
         // output generated password to span
         document.getElementById("password_suggest_span").innerHTML = retVal;
+        //make span visible
+        document.getElementById("password_suggest_span").style.visibility = 'visible';
+
+        document.getElementById("click_me").style.visibility = 'visible';
         //return retval
         return retVal;
         }
@@ -70,31 +87,32 @@
 <body>
     <form id="register_form" action="./register" method="POST">
     <div class="create">
-        <h2>Create An Account</h2>
+        <h2>Create an Account</h2>
         <div class="set">
         <br><label for="name" class="label">Name</label>
         <br><input type="text" id="name" name="name" class="input_box" placeholder="ex. Monica Mau">
-        <br><span id="name_error_span" style="color:red"></span>
+        <br><span id="name_error" style="color:red; font-size: 13px;"></span>
         </div>
 
         <div class="set">
         <br><label for="username" class="label">Email Address</label>
         <br><input type="text" id="username" name="username" class="input_box" placeholder="ex. mylm@hawaii.edu">
-        <br><span id="username_error_span" style="color:red"></span>
+        <br><span id="username_error" style="color:red; font-size: 13px;"></span>
         </div>
 
         <div class="set">
         <br><label for="password" class="label">Create a password</label>
         <br><input type="password" id="password" name="password" class="input_box"><i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
+        <br><span id="password_error" style="color:red; font-size: 13px;"></span>
         <br><button type="button" id="generate_password" onclick="generatePassword()">Generate Strong Password</button>
         <br><span id="password_suggest_span" onclick="replacePassword()"></span>
-        <br><span id="password_error_span" style="color:red"></span>
+        <br><span id="click_me">Click to select!</span>
         </div>
 
         <div class="set"></div>
         <br><label for="password" class="label">Re-enter password</label>
         <br><input type="password" id="repeatpassword" name="repeatpassword" class="input_box"><i class="far fa-eye" id="toggleRepeatPassword" style="margin-left: -30px; cursor: pointer;"></i>
-        <br><span id="repeatpassword_error_span" style="color:red"></span>
+        <br><span id="repeatpassword_error" style="color:red; font-size: 13px;"></span>
         </div>
     <input type="submit" id="register_button" value="Register">
     </form>

@@ -31,25 +31,6 @@ if (fs.existsSync(filename)) {
 	console.log(`Hey, I couldn't find ${filename}!`);
 }
 
-// IR 1: Store passwords encrypted, referenced from https://stackoverflow.com/questions/51280576/trying-to-add-data-in-unsupported-state-at-cipher-update
-/*let secrateKey = "secrateKey";
-const crypto = require('crypto');
-
-
-function encrypt(text) {
-    const encryptalgo = crypto.createCipher('aes192', secrateKey);
-    let encrypted = encryptalgo.update(text, 'utf8', 'hex');
-    encrypted += encryptalgo.final('hex');
-    return encrypted;
-}
-
-function decrypt(encrypted) {
-    const decryptalgo = crypto.createDecipher('aes192', secrateKey);
-    let decrypted = decryptalgo.update(encrypted, 'hex', 'utf8');
-    decrypted += decryptalgo.final('utf8');
-    return decrypted;
-}*/
-
 // middleware, code based on lab 12 ex. 2c
 app.use(express.urlencoded({ extended: true }));
 
@@ -204,112 +185,114 @@ app.post("/login", function (request, response, next) {
 
 // post registration page, referenced from assignment 2 workshop code
 app.post("/register", function (request, response, next) {
-	var errors = {};
+
+	// set variables as the input field values in the request body
 	var username = request.body["username"].toLowerCase();
 	var password = request.body["password"];
 	var repeatpassword = request.body["repeatpassword"];
 	var name = request.body["name"];
 
-	// if email address is already registered, output errors
-	if (typeof user_data[username] != "undefined") {
-		errors[
-			`username_taken`
-		] = `${username} is already registered! Please enter a different email address.`;
-	}
-	// if username is blank, output error
+	// empty errors object
+	var errors = {};
+
+	// empty arrays for input fields errors
+	errors['username'] = [];
+	errors['name'] = [];
+	errors['password'] = [];
+	errors['repeatpassword'] = [];
+
+
+	// -------------------- USERNAME/EMAIL ERROR VALIDATION -------------------- //
+
+	// username field is blank
 	if (username == "") {
-		errors["no_username"] = `You need to add your email address!`;
-	}
+		errors['username'].push(`Enter an email address!`);
 
-	// function from chatgpt
-	function isValidEmail() {
-		// regular expression pattern for email validation
-		var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailPattern.test(username);
-	}
+	// not a valid email address (regex referenced from ChatGPT)
+	} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username)){
+		errors['username'].push(`Enter a valid email address!`)
 
-	// if username is not a valid email address
-	if (!isValidEmail(username)) {
-		errors["invalid_email"] = `Please enter a valid email address!`;
-	}
+	// email address is already registered
+	} else if (typeof user_data[username] != "undefined"){
+		errors['username'].push(`${username} is already registered! Please enter a different email address.`)
+	};
 
-	// function referenced from chatgpt to validate that there are two words for first and last name
-	function validateTwoWords(name) {
-		var pattern = /^[a-zA-Z]+\s+[a-zA-Z]+$/;
-		return pattern.test(name) && name.split(" ").length === 2;
-	}
+	// -------------------- NAME ERROR VALIDATION -------------------- //
 
-	if (!validateTwoWords(name)) {
-		errors["invalid_name"] = `Please enter a first and last name!`;
-	}
+	// name field is blank
+	if (name == ""){
+		errors['name'].push(`Enter a name!`);
 
-	// if name is blank, output error
-	if (name == "") {
-		errors["no_name"] = `Please enter your name!`;
+	// name does not include both first and last (regex referenced from ChatGPT)
+	} else if (!/^[a-zA-Z]+\s+[a-zA-Z]+$/.test(name)) {
+		errors['name'].push(`Enter both a first and last name!`);
 	}
+	// name length is greater than 30 characters
+	if (name.length > 30){
+		errors['name'].push(`Name entered is too long. Enter a name less than 30 characters.`)
+	};
 
-	// if password field is blank, output error
+	// -------------------- PASSWORD ERROR VALIDATION -------------------- //
+
+	// password field is blank
 	if (password == "") {
-		errors["no_password"] = `Please create a password!`;
-		// if repeat password is blank, output error
+		errors['password'].push(`Please create a password!`)
+	
+	// password contains spaces, (regex referenced from ChatGPT)
+	} else if (!/^\S+$/.test(password)) {
+		errors['password'].push(`Password must not contain spaces!`);
+	
+	// IR2 Require that passwords have at least one number and one special character. (regex referenced from ChatGPT)
+	} else if (!/^(?=.*\d)(?=.*\W).+$/.test(password)) {
+		errors['password'].push(`Password must contain at least one letter, one number, and one special character!`);
+
+	// repeat password is blank
 	} else if (repeatpassword == "") {
-		errors["no_repeatpassword"] = `Please retype your password!`;
-		// if passwords do not match, output error
+		errors['repeatpassword'].push(`Please retype your password!`);
+
+	// passwords do not match
 	} else if (password !== repeatpassword) {
-		errors["password_mismatch"] = `Passwords do not match!`;
+		errors['repeatpassword'].push(`Passwords do not match!`);
 	}
 
-	// if password length is more than 1 but less than 6 characters, output error
-	if (password.length < 6 && password.length > 1) {
-		errors[
-			"password_length"
-		] = `Password length must be greater than 6 characters!`;
+	// password length is more than 1 but less than 6 characters
+	if (password.length < 6 && password.length >= 1) {
+		errors['password'].push(`Password length must be greater than 6 characters!`)
 	}
 
-	// function referenced from chatgpt to validate that there are no spaces in password
-	function PasswordSpaces() {
-		var pattern = /^\S+$/;
-		return pattern.test(password);
-	}
-
-	// if password contains spaces
-	if (!PasswordSpaces(password)) {
-		errors["password_spaces"] = `Password must not contain spaces!`;
-	}
-
-	// function referenced from chatgpt to validate that the password has at least one number and one special character
-	function validatePassword(password) {
-		const regex = /^(?=.*\d)(?=.*\W).+$/;
-		return regex.test(password);
-	}
-
-	// IR2 Require that passwords have at least one number and one special character.
-	if (!validatePassword(password)) {
-		errors[
-			"password_IR"
-		] = `Password must contain at least one number and one special character!`;
-	}
-
+	// -------------------- NO ERRORS -------------------- //
 	// if there are no errors with registration info, go to invoice and send all info to querystring
 
-	if (Object.keys(errors).length === 0) {
+	var totalLength = 0;
+
+	for (var prop in errors) {
+		totalLength += errors[prop].length;
+	  }
+
+	if (totalLength == 0) {
 		for (i in products) {
 			// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
 			products[i].quantity_available -= selected_qty[`quantity${i}`];
 			products[i].quantity_sold += Number(selected_qty[`quantity${i}`]);
 		}
 
-		// write updated data to filename (user_data.json)
+		// remember user information given no errors (save info)
+		var num_errors = 0;
+		for (err in errors) {
+			num_errors += errors[err].length;
+		}
+		if (num_errors == 0) {
+			POST = request.body;
+
+		// write updated data with all form fields to user_data.json file
 		user_data[username] = {};
 		user_data[username].name = request.body.name;
 		user_data[username].password = request.body.password;
 		fs.writeFileSync(filename, JSON.stringify(user_data));
 
-		//selected_qty['email'] = username;
-		//selected_qty['name'] = user_data[username].name;
 		// set value of params to selected_qty var
 		let params = new URLSearchParams(selected_qty);
-		params.append("email", username);
+		params.append("username", username);
 		params.append("name", name);
 		response.redirect("./invoice.html?" + params.toString());
 
@@ -317,11 +300,12 @@ app.post("/register", function (request, response, next) {
 		// if there are errors, put them in the jsonstring and return to the registration page
 	} else {
 		let params = new URLSearchParams();
-		params.append("email", username);
+		params.append("username", username);
 		params.append("name", name);
 		params.append("errorsJSONstring", JSON.stringify(errors));
 		response.redirect("./registration.html?" + params.toString());
-	}
+	}}
+	
 });
 
 // route all other GET requests to files in public
