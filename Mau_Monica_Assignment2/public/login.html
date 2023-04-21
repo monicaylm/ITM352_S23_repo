@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="login.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  
+    <title>Login Page</title>
+
+    <script>
+      
+      var params = (new URL(document.location)).searchParams;
+      // on window onload execute function
+      window.onload=function(){
+        if(params.has("errorsJSONstring")){
+            var errorsObject = JSON.parse(params.get("errorsJSONstring"));
+
+          // if there are errors in the validity of the email address format
+          if (typeof errorsObject[`email_error`] != "undefined"){
+              document.getElementById('username_error_span').innerHTML = errorsObject[`email_error`];
+          }
+          // if there are username errors, output errors
+            if(typeof errorsObject["username_error"] != "undefined"){
+                document.getElementById('username_error_span').innerHTML = errorsObject[`username_error`];
+            
+            // if there are password errors, output errors
+            } else if (typeof errorsObject["password_error"] != "undefined"){
+                document.getElementById('password_error_span').innerHTML = errorsObject[`password_error`];
+            // make username sticky if password is wrong
+                document.getElementById('username').value = params.get('email');
+            }
+        }
+    }
+
+    //function to show welcome login alert if there are no errors
+    function showAlert(){
+        if(document.getElementById('password_error_span').innerHTML=="" && document.getElementById('username_error_span').innerHTML==""){
+            alert(`Logged in! Welcome back!`);
+      }};
+      
+    </script>
+</head>
+
+<!--Nav bar-->
+<section class="navbar">
+  <img src="./images/logo.png" class="logo">
+  <a class="button" href="/index.html">Home</a>
+  <a class="button" href="/products_display.html">Products</a>
+</section>
+
+    <!--Shop Title-->
+    <h1>&#8415; SHINee Album Shop &#x20DF;</h1>
+    
+<form id=loginForm onsubmit="showAlert" action="./login" method="POST">
+<body>
+    <div class="loginForm">
+      <h2>Login</h2>
+          <label class="label" for="username">Email: </label><input type="text" id="username" class="input_box" name="username">
+          <br>
+          <span style="color:red" id="username_error_span"></span>
+          <br><label class="label" for="password">Password: </label>
+
+          <input type="password" id="password" class="input_box" name="password"><i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
+          <br><span style="color:red" id="password_error_span"></span>
+    </div>
+      <br><input type="submit" id="login_button" value="Login">
+    </form>
+      <br>
+      <form id=createaccount action="./registration.html" method="GET">
+        <h2>New user? Please register below to create an account.</h2>
+        <input type="submit" id="register_button" value="Create An Account">
+      </form>
+</body>
+
+<script>
+// function referenced from csestack
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
+</script>
+
+</html>

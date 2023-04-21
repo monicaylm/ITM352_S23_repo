@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="registration.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+    <title>Create An Account</title>
+
+    <script>
+      
+        var params = (new URL(document.location)).searchParams;
+        // on window onload execute function
+        window.onload=function(){
+          if(params.has("errorsJSONstring")){
+              var errorsObject = JSON.parse(params.get("errorsJSONstring"));
+  
+    // ----------------------------- EMAIL ADDRESS / USERNAME ERRORS ----------------------------- //
+    
+            // if the email address is already registered
+            if (typeof errorsObject[`username_taken`] != "undefined"){
+                document.getElementById('username_error_span').innerHTML = errorsObject[`username_taken`];
+                document.getElementById('username').value = "";
+
+                // make name input field sticky if error
+                if (document.getElementById('name_error_span').innerHTML == "" && document.getElementById('name_error_span').value == "") { // name errors
+                    document.getElementById('name').value = params.get('name');
+                } else {
+                    document.getElementById('name').value = "";
+                };
+
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+            // if username is blank
+            if (typeof errorsObject[`no_username`] != "undefined"){
+                document.getElementById('username_error_span').innerHTML = errorsObject[`no_username`];
+
+                // make name input field sticky if error
+                if (document.getElementById('name_error_span').innerHTML == "" && document.getElementById('name_error_span').value == "") { // name errors
+                    document.getElementById('name').value = params.get('name');
+                } else {
+                    document.getElementById('name').value = "";
+                };
+
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+
+            // if username is an invalid email address
+            if (typeof errorsObject[`invalid_email`] != "undefined"){
+                document.getElementById('username_error_span').innerHTML = errorsObject[`invalid_email`];
+                document.getElementById('username').value = ""
+
+                // make name input field sticky if error
+                if (document.getElementById('name_error_span').innerHTML == "" && document.getElementById('name_error_span').value == "") { // name errors
+                    document.getElementById('name').value = params.get('name');
+                } else {
+                    document.getElementById('name').value = "";
+                };
+
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+    
+     // ----------------------------------- NAME ERRORS ----------------------------------- //
+
+            // if there is no first and last name
+            if (typeof errorsObject[`invalid_name`] != "undefined"){
+                document.getElementById('name_error_span').innerHTML = errorsObject[`invalid_name`];
+                document.getElementById('username').value = "";
+
+                // make other input fields sticky if error and if the input fields have no other errors
+                if (document.getElementById('username_error_span').innerHTML = "") { //username email errors
+                    document.getElementById('username').value = params.get('email');
+                } else {
+                    document.getElementById('username').value = "";
+                };
+
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+
+            // if name is blank
+            if (typeof errorsObject[`no_name`] != "undefined"){
+                document.getElementById('name_error_span').innerHTML = errorsObject[`no_name`];
+                document.getElementById('username').value = "";
+
+                // make other input fields sticky if error and if the input fields have no other errors
+                if (document.getElementById('username_error_span').innerHTML = "") { //username email errors
+                    document.getElementById('username').value = params.get('email');
+                } else {
+                    document.getElementById('username').value = "";
+                };
+    
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+    
+     // ----------------------------- PASSWORD ERRORS ----------------------------- //
+
+            // if password field is blank
+            if (typeof errorsObject[`no_password`] != "undefined"){
+                document.getElementById('password_error_span').innerHTML = errorsObject[`no_password`];
+
+                // make other input fields sticky if error and if the input fields have no other errors
+                if (document.getElementById('username_error_span').innerHTML = "") { //username email errors
+                    document.getElementById('username').value = params.get('email');
+                } else {
+                    document.getElementById('username').value = "";
+                };
+                
+                if (document.getElementById('name_error_span').innerHTML = "") { // name errors
+                    document.getElementById('name').value = params.get('name');
+                } else {
+                    document.getElementById('name').value = "";
+                }
+
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+
+            // if password length is less than 6 characters or greater than 100
+            if (typeof errorsObject[`password_length`] != "undefined"){
+                document.getElementById('password_error_span').innerHTML = errorsObject[`password_length`];
+
+                // make other input fields sticky if error and if the input fields have no other errors
+                if (document.getElementById('username_error_span').innerHTML = "") { //username email errors
+                    document.getElementById('username').value = params.get('email');
+                } else {
+                    document.getElementById('username').value = "";
+                }
+                
+                if (document.getElementById('name_error_span').innerHTML = "") { // name errors
+                    document.getElementById('name').value = params.get('name');
+                } else {
+                    document.getElementById('name').value = "";
+                }
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+
+            // if password contains spaces
+            if (typeof errorsObject[`password_spaces`] != "undefined"){
+                document.getElementById('password_error_span').innerHTML = errorsObject[`password_spaces`];
+
+                // make other input fields sticky if error and if the input fields have no other errors
+                if (document.getElementById('username_error_span').innerHTML = "") { //username email errors
+                    document.getElementById('username').value = params.get('email');
+                } else {
+                    document.getElementById('username').value = "";
+                }
+                
+                if (document.getElementById('name_error_span').innerHTML = "") { // name errors
+                    document.getElementById('name').value = params.get('name');
+                } else {
+                    document.getElementById('name').value = "";
+                }
+
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+
+            // IR2 Require that passwords have at least one number and one special character. if there are errors push to the password errors span
+            if (typeof errorsObject[`password_IR`] != "undefined"){
+                document.getElementById('password_error_span').innerHTML = errorsObject[`password_IR`];
+
+                // make other input fields sticky if error and if the input fields have no other errors
+                if (document.getElementById('username_error_span').innerHTML = "") { //username email errors
+                    document.getElementById('username').value = params.get('email');
+                } else {
+                    document.getElementById('username').value = "";
+                }
+                
+                if (document.getElementById('name_error_span').innerHTML = "") { // name errors
+                    document.getElementById('name').value = params.get('name');
+                } else {
+                    document.getElementById('name').value = "";
+                }
+
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+
+    // ----------------------------- REPEAT PASSWORD ERRORS ----------------------------- //
+
+            // if repeat password field is blank
+            if (typeof errorsObject[`no_repeatpassword`] != "undefined"){
+                document.getElementById('repeatpassword_error_span').innerHTML = errorsObject[`no_repeatpassword`];
+
+                // make other input fields sticky if error
+                document.getElementById('username').value = params.get('email');
+                document.getElementById('name').value = params.get('name');
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+
+            // if passwords do not match
+            if (typeof errorsObject[`password_mismatch`] != "undefined"){
+                document.getElementById('repeatpassword_error_span').innerHTML = errorsObject[`password_mismatch`];
+
+                // make other input fields sticky if error
+                document.getElementById('username').value = params.get('email');
+                document.getElementById('name').value = params.get('name');
+                // change button value to continue when user is correcting errors
+                document.getElementById('register_button').value = 'Continue';
+            }
+          }
+      }
+
+      // IR3: When the user is registering, suggest a “strong” password that is 10 random characters including numbers and special characters. this function generates a random password. Function referenced from https://stackoverflow.com/questions/1497481/javascript-password-generator.
+      function generatePassword() {
+        // set length of password to 10 characters
+        var length = 10,
+        // character set to randomize and take values from
+        characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=",
+        // empty return value
+        retVal = "";
+        // for i being less than the length, add random characters to the return value
+        for (var i = 0, n = characters.length; i < length; ++i) {
+            retVal += characters.charAt(Math.floor(Math.random() * n));
+        }
+        // if the suggested password does not have enough characters, add until it reaches the length, ensure it is always 10 characters
+        while (retVal.length < length) {
+        retVal += characters.charAt(Math.floor(Math.random() * n));
+        }
+        // output generated password to span
+        document.getElementById("password_suggest_span").innerHTML = retVal;
+        //return retval
+        return retVal;
+        }
+
+    // function to set the suggested strong password as the password input field's value
+    function replacePassword() {
+        var passwordSpan = document.getElementById("password_suggest_span");
+        if (passwordSpan.innerHTML) {
+            var password = passwordSpan.innerHTML;
+            document.getElementById("password").value = password;
+        }
+    };
+
+      </script>
+
+</head>
+
+<!--Nav bar-->
+<section class="navbar">
+    <img src="./images/logo.png" class="logo">
+    <a class="button" href="/index.html">Home</a>
+    <a class="button" href="/products_display.html">Products</a>
+</section>
+
+<body>
+    <form id="register_form" action="./register" method="POST">
+    <div class="create">
+        <h2>Create An Account</h2>
+        <div class="set">
+        <br><label for="name" class="label">Name</label>
+        <br><input type="text" id="name" name="name" class="input_box" placeholder="ex. Monica Mau">
+        <br><span id="name_error_span" style="color:red"></span>
+        </div>
+
+        <div class="set">
+        <br><label for="username" class="label">Email Address</label>
+        <br><input type="text" id="username" name="username" class="input_box" placeholder="ex. mylm@hawaii.edu">
+        <br><span id="username_error_span" style="color:red"></span>
+        </div>
+
+        <div class="set">
+        <br><label for="password" class="label">Create a password</label>
+        <br><input type="password" id="password" name="password" class="input_box"><i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
+        <br><button type="button" id="generate_password" onclick="generatePassword()">Generate Strong Password</button>
+        <br><span id="password_suggest_span" onclick="replacePassword()"></span>
+        <br><span id="password_error_span" style="color:red"></span>
+        </div>
+
+        <div class="set"></div>
+        <br><label for="password" class="label">Re-enter password</label>
+        <br><input type="password" id="repeatpassword" name="repeatpassword" class="input_box"><i class="far fa-eye" id="toggleRepeatPassword" style="margin-left: -30px; cursor: pointer;"></i>
+        <br><span id="repeatpassword_error_span" style="color:red"></span>
+        </div>
+    <input type="submit" id="register_button" value="Register">
+    </form>
+</body>
+
+    <script>
+    // function referenced from csestack
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+    
+        togglePassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    // function referenced from csestack
+    const toggleRepeatPassword = document.querySelector('#toggleRepeatPassword');
+        const repeatpassword = document.querySelector('#repeatpassword');
+    
+        toggleRepeatPassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = repeatpassword.getAttribute('type') === 'password' ? 'text' : 'password';
+        repeatpassword.setAttribute('type', type);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+    </script>
+
+</html>

@@ -1,16 +1,9 @@
-/*
-Author: Monica Mau
-Assignment 1
-Date: 4/10/2023
-Description: server.js file to run server 
- */
-
 var express = require("express");
 var app = express();
 var products = require(__dirname + "/products.json");
 var querystring = require("querystring");
 
-// middleware, code based on lab 12 ex. 2c
+// middleware, code based on lab 12
 app.use(express.urlencoded({ extended: true }));
 
 // monitor all requests
@@ -21,6 +14,7 @@ app.all("*", function (request, response, next) {
 
 // Routing
 app.get("/products_data.js", function (request, response, next) {
+	// respond with js by giving var products = product data in memory and turns it into a json string and sends it back
 	response.type(".js"); // send response as javascript
 	var products_str = `var products = ${JSON.stringify(products)}`; // sets var products_str, converts JSON products array into string
 	response.send(products_str); // sends response
@@ -32,10 +26,13 @@ app.post("/purchase", function (request, response, next) {
 	console.log(request.body);
 	// empty errors object
 	var errors = {};
+	// initialize empty object to store sold quantities
+	var sold = {};
+	for (let i in products) {
+		sold[i] = 0;
+	}
 	// no quantities
 	var hasQty = false;
-	// has any input, valid or invalid
-	var hasInput = false;
 	// loop through all quantities
 	for (let i in products) {
 		// set var qty to the value of the quantity i in the request body
@@ -43,7 +40,6 @@ app.post("/purchase", function (request, response, next) {
 		// qty is greater than zero
 		if (qty > 0) {
 			hasQty = true;
-			hasInput = true;
 		}
 		// if nothing entered, then qty is 0
 		if (qty == "") {
@@ -51,21 +47,17 @@ app.post("/purchase", function (request, response, next) {
 		}
 		// check if quantity is a non neg integer, if so then fill errors object
 		if (findNonNegInt(qty) == false) {
-			errors[`quantity${i}_error`] = findNonNegInt(qty, true).join("<br>");
-			hasInput = true;
+			errors[`quantity${i}_error`] = findNonNegInt(qty, true).join('<br>');
 		}
 		// check if quantities are available
 		if (qty > products[i].quantity_available) {
-			errors[
-				`quantity${i}_available_error`
-			] = `We don't have ${qty} available!`;
-			hasInput = true;
+			errors[`quantity${i}_available_error`] = `We don't have ${qty} available!`;
 		}
 	}
 
-	// check if at least 1 item was selected (regardless of qty validity), if not then output message
-	if (hasQty == false && hasInput == false) {
-		errors[`noQty`] = `Please select some items to purchase!`;
+	// check if at least 1 item was selected, if not then output message
+	if (hasQty == false) {
+		errors[`noQty`] = `Please select some quantities!`;
 	}
 
 	// log contents of the errors object to the console
@@ -85,7 +77,7 @@ app.post("/purchase", function (request, response, next) {
 	else {
 		// add errors object to request.body to put into the querystring
 		request.body["errorsJSONstring"] = JSON.stringify(errors);
-		// back to the order page and putting errors in the querystring
+        // back to the order page and putting errors in the querystring
 		response.redirect(
 			"./products_display.html?" + querystring.stringify(request.body)
 		);
@@ -107,4 +99,4 @@ function findNonNegInt(q, returnErrors = false) {
 app.use(express.static(__dirname + "/public"));
 
 // start server
-app.listen(8000, () => console.log(`listening on port 8000`));
+app.listen(8080, () => console.log(`listening on port 8080`));

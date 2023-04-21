@@ -1,0 +1,24 @@
+{
+	"dport@hawaii.edu": { "name": "Dan Port", "password": "portspassword" },
+	"kazman@hawaii.edu": { "name": "Rick Kazman", "password": "kazmanpassword" },
+	"itm352@hawaii.edu": { "name": "ITM 352", "password": "grader" },
+	"mylm@hawaii.edu": { "name": "Monica Mau", "password": "monica" },
+	"deeznuts@gmail.com": { "name": "Deez Nuts", "password": "monica" },
+	"ramosb3@hawaii.edu": { "name": "Brandon Ramos", "password": "brandon" },
+	"tinavo@gmail.com": { "name": "Tina Vo", "password": "tinavo" },
+	"xiaolongbao@gmail.com": {
+		"name": "xiaolong bao",
+		"password": "xiaolongbao"
+	},
+	"monicaamau@gmail.com": { "name": "Deez Nuts", "password": "monica1*" },
+	"mylm@hawaii.ed": { "name": "Deez Nuts", "password": "monica1*" },
+	"bajablast@tacobell.com": {
+		"name": "Baja Blast",
+		"password": "sx;3tGz&gt;@W"
+	},
+	"maumau@gmail.com": { "name": "mau mau", "password": "$-P9`e^7xR" },
+	"jknadsfnjkdf@esjndf.feajkbh": {
+		"name": "mauwaua asfjkdfsakj",
+		"password": "y7Om|rrk{/"
+	}
+}

@@ -63,6 +63,9 @@ body {
     text-align: center;
     font-size: 15px;
     background-color: #c1e2e4;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
 .item img{
@@ -118,6 +121,31 @@ table td {
 
 .img-mouseover:hover .product-description {
     display: block;
+}
+
+/* home button */
+.home-button{
+    margin-right: 20px;
+    font-size: 12px;
+    display: block;
+    background-color: rgb(62, 107, 104);
+    border-radius: 10px;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;    
+    font-size: 17px;
+    padding: 10px 20px;
+    width: 55px;
+    height: 20px;
+    text-decoration: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+.home-button:hover{
+    background-color: rgb(0, 0, 0);
 }
 
 /* shipping policy */

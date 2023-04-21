@@ -19,21 +19,24 @@
 
     <script>
 
-  var params = (new URL(document.location)).searchParams
+        
+    // Sales Invoice
+        
 
-        /*
-        Sales Receipt
-        */
+var params = (new URL(document.location)).searchParams;
 
-        //Quantities Arrayq
-        const quantities = []
+//Quantities Array
+const quantities = [];
 
-        // written by me in store 1 wod
-        for(i in products){
-          if(params.has(`quantity${i}`)){
-            const album = params.get(`quantity${i}`); quantities.push(album);
-          }
-        }
+for (i in products) {
+  if (params.has(`quantity${i}`)) {
+    const quantity = params.get(`quantity${i}`);
+    quantities.push(quantity);
+  }
+}
+
+var name = params.get('name');
+var email = params.get('email');
         
          // Subtotal
          var subtotal = 0;
@@ -50,7 +53,8 @@
   <a class="button" href="/products_display.html">Products</a>
 </section>
 
-  <h1>Thank you for ordering!</h1>
+  <h1>Thank you <script>document.write(name)</script> for your order!</h1>
+  <h2>Your invoice has been emailed to <script>document.write(email)</script></h2>
     <div>
         <table border="2">
           <tbody>
@@ -140,6 +144,7 @@ function findNonNegInt(q, returnErrors = false){ //the function returns non-nega
           </tbody>
         </table>
     </div>
+      <a class="home-button" href="/index.html">Home</a>
     
     <!-- shipping policy -->
     <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under $80 will be charged a flat rate of $10 per order. &#8415;</h3>

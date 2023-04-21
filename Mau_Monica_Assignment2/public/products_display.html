@@ -29,7 +29,7 @@
                 document.getElementById('purchase_button').value = errorsObject["noQty"];
             } else {
                 // alert if any errors
-                alert('Invalid quantities!')
+                //alert('Invalid quantities!')
                 // put quantities back in textboxes 
                 for(let i in products){
                     qtyForm[`quantity${i}`].value=params.get(`quantity${i}`);
@@ -82,7 +82,7 @@
 
 <header>&#8415; SHINee Album Shop &#8415;</header>
 <body>
-<form id= "qtyForm" action="./purchase" method="POST">
+<form id="qtyForm" action="./purchase" method="POST">
     <div class="products">
         <main class="container">
             <script>

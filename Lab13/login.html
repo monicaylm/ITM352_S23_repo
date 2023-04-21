@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="login.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <title>Login Page</title>
+</head>
+    <!--Shop Title-->
+    <h1>&#8415; SHINee Album Shop &#x20DF;</h1>
+    
+<form id=loginForm action="./login" method="POST">
+<body>
+    <table border="2" style="width: 34%; text-align: center">
+        <tbody>
+            <tr>
+                <td colspan="2"><h2>Login</h2></td>
+              </tr>
+          <tr>
+            <td style="text-align: right;" width="35%"><label class="label" for="username">Username:</label></td>
+            <td style="text-align: left;" width="65%"><input type="text" id="username" class="input_box" name="username"></td>
+          </tr>
+          <tr>
+            <td style="text-align: right;" width=35%><label class="label" for="password">Password:</label></td>
+            <td style="text-align: left;" width="65%"><input type="password" id="password" class="input_box" name="password"><i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i></td>
+          </tr>
+        </tbody>
+      </table>
+      <input type="submit" id="login_button" value="Login">
+    </form>
+      <br><br>
+      <form action="./registration.html" method="GET">
+        <h2>New user? Please register below to create an account.</h2>
+        <input type="submit" id="register_button" value="Create An Account">
+      </form>
+</body>
+
+<script>
+// function referenced from csestack
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
+</script>
+
+</html>
