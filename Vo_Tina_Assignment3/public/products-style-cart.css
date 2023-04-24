@@ -1,0 +1,178 @@
+/* 
+Author: Tina Vo
+Date: 12/14/2021
+CSS for products_display.html
+*/
+
+/* General */
+
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #272932;
+  margin: -50px auto;
+  background-color: #f7e4d9;
+  text-align: center;
+} 
+
+/* Header sizing */
+
+h1 {
+  font-size: 70px;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+/* Checkout button design */
+#tinas_cart_button {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 16px;
+  width: 130px; 
+  height: 40px;
+  color: black;
+  border-color: #6D696A;
+  background-color: #f7e4d9;
+  border-style: solid;
+  transition: 0.3s;
+}
+
+/* Very cool hover, color changes - thank you W3 schools */
+#tinas_cart_button:hover {
+  background-color:#5a5353;
+  transition: 0.3s;
+  color:white;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 16px;
+  width: 130px; 
+  height: 40px;
+  
+}
+
+#intro {
+  float:left;
+  text-align:left;
+  
+}
+#pic2 {
+   float:left;
+  text-align:left;
+  
+  
+}
+/* Tina's Stationery Shop */
+.title {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background-color: #C3A29E;
+  color:honeydew;
+  font-size: 60px;
+  height: 240px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+#product_names {
+  color: black;
+}
+
+
+#tinastext {
+  position: relative;
+  top: -8px;
+  font-size: 35px;
+}
+
+#window {
+  position: relative;
+  bottom: -39px;
+}
+
+
+/* Checkout button design */
+#cart_button {
+  background-color: #6D696A;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  width: 150px; 
+  margin-left: 65px;
+  position: sticky;
+  transition: 0.3s;
+}
+
+/* Very cool hover, color changes */
+#cart_button:hover {
+  background:#5a5353;
+  transition: 0.3s;
+  border: none;
+}
+
+
+/* Align container */
+main {
+  justify-content: space-around;
+}
+
+/* Class of all the items (name, price, etc.) */
+.product_items {
+  margin: 18px 18px 18px 18px;
+  border: 1px;
+  padding: 2.5px;
+  border-radius: 25px;
+  float: left;
+  line-height: 0.8;
+  
+}
+
+
+div.description {
+  background-color: #d0b9ad;
+  width: 295px;
+  border-radius: 15px;
+}
+
+/* Size of images */
+img {
+  height: 300px;
+  width: 300px;
+  padding: 5px;
+ 
+}
+
+/* invoice table decoration */
+table {
+  border-collapse: collapse;
+  background-color: #E6CCBE;
+  margin-left: auto;
+  margin-right: auto;
+  width:50%;
+  border: 1px solid #E6CCBE;
+  /* box shadow help from w3 schools */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+th {
+  background-color: #C2B0A6;
+  color: #5A5353;
+}
+
+td, th {
+  padding: 8px;
+}
+
+input[type='number']{
+  width: 40px;
+} 
+
+/* return policy banner on the bottom */
+.return_policy {
+  margin-top: 50px;
+  background-color: #A07178;
+  padding-bottom: 70px;
+  padding-top: 40px;
+  color:cornsilk;
+  box-shadow: 1px 1px 1px #999;
+  
+}

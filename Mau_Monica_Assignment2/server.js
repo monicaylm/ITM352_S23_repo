@@ -15,16 +15,16 @@ var selected_qty = {};
 // load file system interface
 var fs = require("fs");
 const { response } = require("express");
+
+// code referenced from lab 13 fileio exercise 1a and 1b, set variable for the json file
 var filename = __dirname + "/user_data.json";
 
 if (fs.existsSync(filename)) {
 	// read in user data （check that exists)
 	var user_data_obj_JSON = fs.readFileSync(filename, "utf-8");
-	console.log(`Hey, I found ${filename}!`);
 
 	// convert user data JSON to object
 	var user_data = JSON.parse(user_data_obj_JSON);
-	console.log(JSON.stringify(user_data));
 
 	// if filename not found
 } else {
@@ -132,19 +132,21 @@ app.post("/login", function (request, response, next) {
 	var username = request.body["username"].toLowerCase();
 	var password = request.body["password"];
 
-	function isValidEmail() {
-		// regular expression pattern for email validation - referenced from chatGPT
-		var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailPattern.test(username);
-	}
+	// check if username field is blank
+	if (username == ""){
+		errors[`email_error`] = `Enter an email address!`
 
 	// check if username entered is a valid email address
-	if (!isValidEmail(username)) {
+	} else if (!/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(username)) {
 		errors[`email_error`] = `${username} is an invalid email address!`;
 
-		// check if username email is in user data
+	// check if username email is in user data
 	} else if (user_data.hasOwnProperty(username) !== true) {
 		errors[`username_error`] = `${username} is not a registered email!`;
+
+	// check if password is blank
+	} else if (password == ""){
+			errors[`password_error`] = `Enter your password!`
 
 		// check to see if user's password matches password saved, entered
 	} else if (password !== user_data[username].password) {
@@ -185,7 +187,6 @@ app.post("/login", function (request, response, next) {
 
 // post registration page, referenced from assignment 2 workshop code
 app.post("/register", function (request, response, next) {
-	
 	// set variables as the input field values in the request body
 	var username = request.body["username"].toLowerCase();
 	var password = request.body["password"];
@@ -196,68 +197,75 @@ app.post("/register", function (request, response, next) {
 	var errors = {};
 
 	// empty arrays for input fields errors
-	errors['username'] = [];
-	errors['name'] = [];
-	errors['password'] = [];
-	errors['repeatpassword'] = [];
+	errors["username"] = [];
+	errors["name"] = [];
+	errors["password"] = [];
+	errors["repeatpassword"] = [];
 
 	// -------------------- USERNAME/EMAIL ERROR VALIDATION -------------------- //
 
 	// username field is blank
 	if (username == "") {
-		errors['username'].push(`Enter an email address!`);
+		errors["username"].push(`Enter an email address!`);
 
-	// not a valid email address (regex referenced from ChatGPT)
-	} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username)){
-		errors['username'].push(`Enter a valid email address!`)
+		// not a valid email address (regex referenced from ChatGPT)
+	} else if (!/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(username)) {
+		errors["username"].push(`Enter a valid email address!`);
 
-	// email address is already registered
-	} else if (typeof user_data[username] != "undefined"){
-		errors['username'].push(`${username} is already registered! Please enter a different email address.`)
-	};
+		// email address is already registered
+	} else if (typeof user_data[username] != "undefined") {
+		errors["username"].push(
+			`${username} is already registered! Please enter a different email address.`
+		);
+	}
 
 	// -------------------- NAME ERROR VALIDATION -------------------- //
 
 	// name field is blank
-	if (name == ""){
-		errors['name'].push(`Enter a name!`);
+	if (name == "") {
+		errors["name"].push(`Enter a name!`);
 
-	// name does not include both first and last (regex referenced from ChatGPT)
+		// name does not include both first and last (regex referenced from ChatGPT)
 	} else if (!/^[a-zA-Z]+\s+[a-zA-Z]+$/.test(name)) {
-		errors['name'].push(`Enter first and last name!`);
+		errors["name"].push(`Enter first and last name!`);
 	}
 	// name length is greater than 30 characters
-	if (name.length > 30){
-		errors['name'].push(`Name entered is too long. Enter a name less than 30 characters.`)
-	};
-
+	if (name.length > 30 || name.length < 2) {
+		errors["name"].push(
+			`Enter a name greater than 2 characters and less than 30 characters.`
+		);
+	}
 
 	// -------------------- PASSWORD ERROR VALIDATION -------------------- //
 
 	// password field is blank
 	if (password == "") {
-		errors['password'].push(`Please create a password!`)
-	
-	// password contains spaces, (regex referenced from ChatGPT)
+		errors["password"].push(`Please create a password!`);
+
+		// password contains spaces, (regex referenced from ChatGPT)
 	} else if (!/^\S+$/.test(password)) {
-		errors['password'].push(`Password must not contain spaces!`);
-	
-	// IR2 Require that passwords have at least one number and one special character. (regex referenced from ChatGPT)
+		errors["password"].push(`Password must not contain spaces!`);
+
+		// IR2 Require that passwords have at least one number and one special character. (regex referenced from ChatGPT)
 	} else if (!/^(?=.*\d)(?=.*\W).+$/.test(password)) {
-		errors['password'].push(`Password must contain at least one letter, one number, and one special character!`);
+		errors["password"].push(
+			`Password must contain at least one letter, one number, and one special character!`
+		);
 
-	// repeat password is blank
+		// repeat password is blank
 	} else if (repeatpassword == "") {
-		errors['repeatpassword'].push(`Please retype your password!`);
+		errors["repeatpassword"].push(`Please retype your password!`);
 
-	// passwords do not match
+		// passwords do not match
 	} else if (password !== repeatpassword) {
-		errors['repeatpassword'].push(`Passwords do not match!`);
+		errors["repeatpassword"].push(`Passwords do not match!`);
 	}
 
-	// password length is more than 1 but less than 6 characters
-	if (password.length < 6 && password.length >= 1) {
-		errors['password'].push(`Password length must be greater than 6 characters!`)
+	// password length is more than 1 but less than 10 characters
+	if ((password.length < 10 && password.length >= 1) || password.length > 10) {
+		errors["password"].push(
+			`Password length must be between 10 and 16 characters!`
+		);
 	}
 
 	// -------------------- NO ERRORS -------------------- //
@@ -267,7 +275,7 @@ app.post("/register", function (request, response, next) {
 
 	for (var prop in errors) {
 		totalLength += errors[prop].length;
-	  }
+	}
 
 	if (totalLength === 0) {
 		for (i in products) {

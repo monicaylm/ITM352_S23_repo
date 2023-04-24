@@ -1,0 +1,119 @@
+<!-- Author: Tina Vo -->
+<!-- Date Due: 12/14/2021 -->
+<!-- Description: Login Page -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./login.css">
+    <link
+    href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Be+Vietnam+Pro:wght@100&family=Dancing+Script&family=Didact+Gothic&family=Nixie+One&display=swap"
+    rel="stylesheet">
+    <script src="./navigation.js" type="text/javascript"></script>
+    <title>Login</title>
+
+</head>
+
+<body>
+
+    <body>
+        <!-----------------login form---------------->
+        <form name="login" action="process_login" method=POST>
+
+            <center>
+                <div class="container">
+                    <div id="loginBoxTop">
+                        <h1 id="loginTextTop"><b>Tina's Stationery Login Page</b></h1>
+
+                    </div>
+
+                    <br>
+                    <br>
+                    <br>
+
+                    <div id="gif"><img src="./images/spacefriends.gif" style="width:150; height:100px"></div>
+                    <br>
+
+                    <div class="section">
+                        <p><span id="clock"></span></p>
+
+                        <!--span id for incorrect username error message-->
+                        <span id="incorrect_username_errors"></span>
+                        <!--username input box-->
+                        <input id="username_tag" type="text" name="username" class="input" style="padding:8px"
+                            placeholder="Enter username">
+
+                    </div>
+
+                    <div class="section">
+                        <!--span id for incorrect password error message-->
+                        <span id="incorrect_password_errors"></span>
+                        <!--password input box-->
+                        <input type="password" name="password" class="input" style="padding:8px"
+                            placeholder="Enter password">
+                    </div>
+
+                    <div>
+                        <!--submit button-->
+                        <br><input type="submit" class="button" value="Login" id="loginbutton"></br>
+                        <br>
+
+                    </div>
+                    <br>
+
+                    <p><b>New user? Click below to sign up!</b>
+                        <br>
+                        <br>
+
+                        <!--registration page if user does not have an account-->
+                        <input type="button" class="button" id="button_to_register_page" value="Register here"
+                            onclick="window.location.href = './register.html' + document.location.search;">
+
+                        <script>
+                            //display alert as a response when for loops from server.js are executed depending on the quantity inserted
+                            window.onload = function () {
+                                let params = (new URL(document.location)).searchParams;
+                                //if errorMessage is in qry string then put up alert with error message
+                                if (params.has("loginMessage")) {
+                                    alert(params.get("loginMessage"));
+                                }
+                                //make username sticky after inputting wrong password
+                                if (params.has('wrong_pass')) {
+                                    //username_tag is the ID of username box
+                                    username_tag.value = params.get('wrong_pass')
+                                }
+                            }
+
+                            // source from https://stackoverflow.com/questions/6525538/convert-utc-date-time-to-local-date-time
+                            var date = new Date();
+                            document.getElementById("clock").innerHTML = date.toLocaleString();
+
+
+                        </script>
+
+
+            </center>
+            </div>
+        </form>
+    </body>
+</body>
+
+</html>
+<script>
+    let params = (new URL(document.location)).searchParams;
+    if (params.has('errors_object')) {
+        //convert string to json string to object
+        var errors = JSON.parse(params.get('errors_object'));
+        for (err in errors) {
+            // put the erroor messages in the span for the element where the error occured
+            document.getElementById(`${err}_errors`).innerHTML = errors[err].join('<br>');
+            // put value back in textbox (make sticky)
+            document.getElementById(err).value = params.get(err);
+        }
+
+    }
+</script>

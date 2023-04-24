@@ -1,0 +1,76 @@
+/*
+Author: Tina Vo 
+Date Due: 12/14/2021 
+Description: CSS style for navigation bar in products page
+ */
+
+
+
+ ul {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #333;
+    list-style-type:none;
+    display:flex;
+    justify-content: center;
+  }
+  
+  
+   /* text decoration for links on tabs */
+  li a {
+      color:honeydew;
+      font-size: 18px;
+      padding: 8px 16px;
+      text-decoration: none;
+      display:inline-block
+  
+      
+  }
+  
+  a {
+      color: honeydew;
+      text-decoration: none;
+      font-size: 17px;
+  }
+  
+  a:hover:not(.active) {
+      color: #dfd9e2;
+      transition: 0.3s;
+  }
+  
+  li {
+      float: left;
+      text-decoration: none;
+  }
+  
+  li a:hover:not(.active) {
+      color: #dfd9e2;
+      transition: 0.3s;
+  }
+  
+   /* moving the entire nav bar */
+  #nav {
+      position: relative;
+      top: -25px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+  
+  /* nav links on the top right */
+  #topnav_right {
+    position: absolute;
+    right: 10px;
+    bottom: 620px;
+    width: 200px;
+    height: 120px;
+  
+  }
+
+  #topnav_right2 {
+    position: absolute;
+    right: 10px;
+    bottom: 620px;
+    width: 200px;
+    height: 120px;
+  }
+  

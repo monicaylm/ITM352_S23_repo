@@ -1,0 +1,135 @@
+/* 
+Author: Tina Vo
+Date: 12/14/2021
+CSS for products_display.html
+*/
+
+/* General */
+
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #272932;
+  margin: -50px auto;
+  background-image: url("./images/image.jpg");
+  background-size: 1500px;
+  background-repeat: no-repeat;
+  text-align: center;
+} 
+
+
+
+/* Header sizing */
+
+h1 {
+  font-size: 50px;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.quote {
+  color: white;
+  line-height: 30px; 
+}
+
+/* register page button */
+#button_to_shop {
+  background-color: #C3A29E;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 20px;
+  border: none;   
+  padding: 15px;
+}
+
+/* change color when hover */
+#button_to_shop:hover {
+    background:#9AA0A8;
+    border: none;
+    transition: 0.3s;
+}
+
+#intro {
+  float:left;
+  text-align:left;
+  
+}
+#pic2 {
+   float:left;
+  text-align:left;
+  
+  
+}
+/* Tina's Stationery Shop */
+#title {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background-color: #C3A29E;
+  color:honeydew;
+  font-size: 60px;
+  margin-top:40px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#product_names {
+  color: black;
+}
+
+
+#tinastext {
+  position: relative;
+  top: -40px;
+  font-size: 35px;
+}
+
+
+/* Checkout button design */
+#checkout_button {
+  background-color: #9AA0A8;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 20px;
+  border: none;
+  width: 200px; 
+  margin-left:100px;
+  position: sticky;
+}
+
+/* Very cool hover, color changes */
+#checkout_button:hover {
+  background:#5a5353;
+  border: none;
+}
+
+
+/* Align container */
+main {
+  justify-content: space-around;
+}
+
+/* Class of all the items (name, price, etc.) */
+.product_items {
+  margin: 18px 18px 18px 18px;
+  border: 1px;
+  padding: 2.5px;
+  border-radius: 25px;
+  float: left;
+  line-height: 0.8;
+  
+}
+
+
+div.description {
+  background-color: #d0b9ad;
+  width: 295px;
+  border-radius: 15px;
+}
+
+/* Size of images */
+img {
+  height: 300px;
+  width: 300px;
+  padding: 5px;
+ 
+}

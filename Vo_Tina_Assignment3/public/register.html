@@ -1,0 +1,114 @@
+
+<!-- Author: Tina Vo -->
+<!-- Date: 12/14/2021 -->
+<!-- Description: Registration Page -->
+
+<script src="./product_data.js"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+    href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Be+Vietnam+Pro:wght@100&family=Dancing+Script&family=Didact+Gothic&family=Nixie+One&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="./register.css">
+    <title>Registration</title>
+</head>
+<body>
+    <!----------------------registration form--------------------------->
+    <form id="register_form" name="register_form" action="process_register" method="POST">
+        <center><div class="container">
+            <div id="createAccountBox">
+            <!--Banner at the top-->
+            <h1 id="createAccountText">Create an Account</h1></div>
+
+            <div id="typing_gif"><img src="./images/typing.gif" style="width:200; height:200px"></div>
+
+            <!--DIV box of form as a whole-->
+            <div id="formBoxes">
+                <p><span id="clock"></span></p>
+
+                <!--label for inputs (name, username, email, password)-->
+                <br><label for="name"><b>Name</b></label></br>
+                <input type="text" name="name" id="name" placeholder="Enter Name" style="padding:8px">
+                <br>
+                <!--span id for name error message in query-->
+                <span id="name_errors"></span>
+                <br>
+
+                <br><label for="username"><b>Username</b></label></br>
+                <input type="text" name="username" id="username" placeholder="Enter Username" style="padding:8px">
+                <br>
+                 <!--span id for username error message in query-->
+                <span id="username_errors"></span>
+                <br>
+
+                <br><label for="email"><b>Email</b></label></br>
+                <input type="text" name="email" id="email" placeholder="(ex. tinavo@gmail.com)" style="padding:8px">
+                <br>
+                 <!--span id for email error message in query-->
+                <span id="email_errors"></span>
+                <br>
+
+                <br><label for="password"><b>Password</b></label></br>
+                <input type="password" name="password" id="password" placeholder="Enter Password" style="padding:8px">
+                <br>
+                 <!--span id for password message in query-->
+                <span id="password_errors"></span>
+                <br>
+                <br><label for="repeat_password"><b>Re-enter Password</b></label></br>
+               
+                <input type="password" name="repeat_password" id="repeat_password" placeholder="Re-enter Password" style="padding:8px">
+                <br>
+                <span id="repeat_password_errors"></span>
+                <br>
+            </div>
+
+            <!--submit button-->
+            <br><input type="submit" class="button" name="register_button" id="register_button" value=Register></input></br>
+            
+            <p><b>Already have an account?</b>
+            <br>    
+            <!--login button-->
+            <br><input type="button" class="button" id="loginhere_button" value="Login here" onclick="window.location.href = './login.html' + document.location.search;"></br></p>
+            </hr>
+        </center></div>
+        <script>
+            //display alert as a response when for loops from server.js are executed depending on the quantity inserted
+          window.onload = function () {
+                let params = (new URL(document.location)).searchParams;
+                //if errorMessage is in qry string then put up alert with error message
+                if (params.has("loginMessage")) {
+                    alert(params.get("loginMessage"));
+                }
+            }
+            
+             // source from https://stackoverflow.com/questions/6525538/convert-utc-date-time-to-local-date-time
+             var date = new Date();
+            document.getElementById("clock").innerHTML = date.toLocaleString();
+
+        </script>
+       
+    </form>
+
+    
+</body>
+</html>
+<script>
+    let params = (new URL(document.location)).searchParams;
+    if (params.has('errors_obj')) {
+        //convert string to json string to object
+        var errors = JSON.parse(params.get('errors_obj'));
+        for(err in errors) { 
+            // put the erroor messages in the span for the element where the error occured
+            document.getElementById(`${err}_errors`).innerHTML = errors[err].join('<br>');
+            // put value back in textbox (make sticky)
+            document.getElementById(err).value = params.get(err);
+        }
+     
+            
+    }
+</script>

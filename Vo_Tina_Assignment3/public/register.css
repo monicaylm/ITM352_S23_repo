@@ -1,0 +1,98 @@
+/*
+Author: Tina Vo 
+Date: 12/14/2021
+Description: CSS style for register page 
+ */
+
+body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background-image: url("./images/bluedots.jpeg");
+    margin:0;
+    padding:0;
+}
+
+/* style for input box */
+input {
+    border: none;
+    border-bottom: 1px solid;
+    width: 30%;
+
+}
+
+/* position gif */
+#typing_gif {
+    padding-left: 30px;
+}
+
+/* background banner behind "create an account" */
+#createAccountBox {
+    background-color: #C3A29E;
+    height: 100px;
+  }
+
+/* position the text "create an account" */
+#createAccountText {
+    position: relative;
+    top: 30px;
+    color: cornsilk;
+  }
+
+#formBoxes {
+    margin-bottom: 5px;
+}
+
+/* style register button */
+#register_button {
+    background-color: #9AA0A8;
+    color: #fff;
+    font-size: 20px;
+    border: none;   
+  }
+  /* button changes color when hovered */
+  #register_button:hover {
+      transition: 0.3s;
+      background:#C3A29E;
+      border: none;
+  }
+
+  #loginhere_button {
+    background-color: #9AA0A8;
+    color: #fff;
+    font-size: 20px;
+    border: none;   
+    
+  }
+  
+  /* button changes color when hovered */
+  #loginhere_button:hover {
+      transition: 0.3s;
+      background:#C3A29E;
+      border: none;
+  }
+
+  /* make error messages red */
+  #name_errors {
+    color: #D1495B;
+    font-size: 15px;
+  }
+
+  #username_errors {
+    color: #D1495B;
+    font-size: 15px;
+  }
+
+  #email_errors {
+    color: #D1495B;
+    font-size: 15px;
+  }
+
+  #password_errors {
+    color: #D1495B;
+    font-size: 15px;
+  }
+
+  #repeat_password_errors {
+    color: #D1495B;
+    font-size: 15px;
+  }
+

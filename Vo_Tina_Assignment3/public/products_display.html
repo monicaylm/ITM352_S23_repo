@@ -1,0 +1,265 @@
+<!--
+Author: Tina Vo 
+Date Due: 12/14/2021 
+Description: Main page that displays products with different tabs
+Credits: Thank you Professor Port and Brandon Jude Marcos for help and guidance 
+Borrowed and modified code from: Assignment1_2file, Lab 12, Assignment 3 Code Example, Kimberly Matutina
+Products and logo from: https://www.inthemoodfor.net/shop (I do not own the logo)! 
+-->
+
+<!--load product data-->
+<script src="./product_data.js" type="text/javascript"></script>
+<!-- Load cart data -->
+<script src="./cart_data.js" type="text/javascript"></script>
+
+<!-- This file loads the order page with products, prices, and quantity -->
+
+<script>
+
+    //search for product key to display on navigation
+    //product key concept from assignment 3 example code
+    let params = (new URL(document.location)).searchParams;
+    if (params.has('prod_key')) {
+        var product_type = params.get('prod_key');
+    } else {
+        response.redirect(`./products_display.html?${params.toString()}`);
+        //alert('Must have a product key to display products!');
+        window.stop;
+    }
+
+    //display alert as a response when for loops from server.js are executed depending on the quantity inserted
+    window.onload = function () {
+        //if errorMessage is in qry string then put up alert with error message
+        if (params.has("loginMessage")) {
+            alert(params.get("loginMessage"));
+        }
+    }
+
+    // function altered from assignment1_2file
+    // checks if a string q is a non negative integer. 
+    function isNonNegInt(q, returnErrors = false) {
+        errors = []; // assume no errors at first
+        if (q == '') q = 0; //don't show anything if txt box is blank
+        if (Number(q) != q) errors.push('<font color="brightpink">Not a number!</font>'); // check if string is a number value
+        else {
+            if (q < 0) errors.push('<font color="brightpink">Negative value!</font>'); // check if it is non-negative
+            if (parseInt(q) != q) errors.push('<font color="brightpink">Not an integer!</font>'); // check that it is an integer
+            if (q > 10) errors.push('<font color="brightpink">Not available</font>');
+
+        }
+        return returnErrors ? errors : (errors.length == 0);
+    }
+
+    // is the textbox value a non-negative integer?
+    // function is from lab 12, modified for assignment 1
+    function checkQuantityTextbox(theTextbox) {
+        var errors_invalid = isNonNegInt(theTextbox.value, true);
+        //  if no errors -> change msg
+        if (errors_invalid.length == 0) errors_invalid = ['Quantity desired'];
+        // if box is empty, enter quantity
+        if (theTextbox.value.trim() == '') errors_invalid = ['Insert quantity'];
+        // if errors, show all errors
+        document.getElementById(theTextbox.name + '_label').innerHTML = errors_invalid.join(", ");
+    }
+
+    // get a cookie https://www.w3schools.com/js/js_cookies.asp
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    };
+
+    // save product to shopping cart 
+    function saveProduct(i) {
+        // get the quantity added from the textbox
+        product_form['prod_index'].value = i;
+        product_form['quantity'].value = product_form[`quantity${i}`].value;
+        product_form.submit();
+        //alert('Successfully added to cart!');
+    };
+
+</script>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Be+Vietnam+Pro:wght@100&family=Dancing+Script&family=Didact+Gothic&family=Nixie+One&display=swap"
+        rel="stylesheet">
+    <title>Stationery Store</title>
+    <link rel="stylesheet" href="./products-style.css">
+    <link rel="stylesheet" href="./navigation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+    <center>
+        <!--banner title at the top page-->
+        <div id="title">
+            <div id="window"><img src="./images/window.png" style="width:110px; height:110px"></div>
+            <h1 id="tinastext">Tina's Stationery</h1>
+        </div>
+        <div id="nav_prods">
+            <script>
+
+                //nav bar of products (stickers, prints, etc.)
+                document.write(`
+   <div id="nav">
+    <ul style="list-style-type: none;">`);
+
+                for (let p_key in products_array) {
+                    document.write(`
+    <li style="list-style-type: none;"><a href="./products_display.html?prod_key=${p_key}">${p_key}</a></li>
+  
+    `);
+                }
+
+            </script>
+        </div>
+
+
+        <div id="nav_for_user">
+            <script>
+
+                //get total quantities in cart
+                //make p_key local
+                var num_of_items_cart = 0;
+                for (let p_key in cart) {
+                    for (let i in cart[p_key]) {
+                        num_of_items_cart += Number(cart[p_key][i]);
+                    }
+                }
+
+                // get user information to see whether they are logged in
+                //if not, the login icon will pop up
+                if (getCookie('user_info') == false) {
+                    document.write(`
+    
+        </ul>
+        </div>
+    
+       
+        <div id="topnav_right">
+            <a href="./login.html"><i class="fa fa-user-o" aria-hidden="true"></i></i> Login</a>
+            <a href="./shopping_cart.html"><i class="fa fa-fw fa-shopping-cart"></i>(${num_of_items_cart})</a>
+           
+        </div>
+            `);
+                }
+                //otherwise, show the logout button so the logged in user can logout 
+                //note that these are favicons!
+                else {
+                    document.write(`
+            <div id="topnav_right">
+            <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+            <a href="./shopping_cart.html"><i class="fa fa-fw fa-shopping-cart"></i>(${num_of_items_cart})</a>
+      
+            </div>
+                
+                `);
+                }
+
+            </script>
+        </div>
+    </center>
+
+    <body>
+        <!--The form for purchasing begins here-->
+        <form name="product_form" action="./add_to_cart" method="POST">
+       
+            <input type="hidden" name="prod_index">
+            <input type="hidden" name="quantity">
+
+            <!--get username cookie to display name and amt in cart-->
+            <!--credits to kimberly matutina for getCookie-->
+            <script>
+                if (getCookie('user_info') != false) {
+                    var user_info = JSON.parse(getCookie('user_info'));
+                    // if the user has a cookie called "user_info", welcome them by name
+                    document.write(`Welcome, ${user_info["name"]}`); 
+                 
+
+                } else {
+                    // if the user does not have a cookie called "user_info", display not logged in msg
+                    document.write(`You are not logged in.`); 
+                };
+
+            </script>
+            <br>
+            <div>
+                <main>
+                    <script>
+
+                        // product_key as a hidden input so server can get products_array quantity
+                        document.write(`<input type="hidden" name="product_type" value="${product_type}">`);
+
+                        //setting up the form with for statement
+                        //load the product information into the order page with for loop
+                        for (i = 0; i < products_array[product_type].length; i++) {
+                            document.write(`
+                            <div class="product_items">
+                                <img src="${products_array[product_type][i].image}">
+                                <div class="description">
+                                    <br>
+                                <h2 id="product_names">${products_array[product_type][i].name}</h2>
+                                <p>$${products_array[product_type][i].price}</p>
+                                <p>Items Available: ${products_array[product_type][i].quantity_available}</p>
+                                <label id="quantity${i}_label"}">Quantity</label>
+                                <input type="text" placeholder="0" name="quantity${i}" onkeyup="checkQuantityTextbox(this);"></input>
+                                
+                                <input class="button" type="button" value="Add to Bag" name="addProduct${i}" id="cart_button" onclick="saveProduct(${i});">
+                                
+                                <br>
+                                <br>
+                            </div>
+                            
+                        </div>
+                        
+                        `);
+                        }
+
+                    </script>
+
+                 
+
+                    <script>
+                        //display alert as a response when for loops from server.js are executed depending on the quantity inserted
+                        window.onload = function () {
+                            let params = (new URL(document.location)).searchParams;
+                            //if errorMessage is in qry string then put up alert with error message
+                            if (params.has("errorMessage")) {
+                                alert(params.get("errorMessage"));
+                                //put the quantity in error back into the qty textbox
+                                let qty_obj = JSON.parse(params.get('qty_obj'));
+                                // make textboxes sticky for invalid data (professor port helped)
+                                product_form[`quantity${qty_obj.prod_index}`].value = qty_obj.quantity;
+                                checkQuantityTextbox(product_form[`quantity${qty_obj.prod_index}`]);
+                            }
+                        }
+                    </script>
+               
+                </main>
+            </div>
+            <br>
+        </form>
+    
+    </body>
+</html>

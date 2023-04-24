@@ -1,0 +1,108 @@
+{
+    "Stickers": [
+        {
+            "name": "Japan Sticker Sheet",
+            "price": 3.55,
+            "image": "./images/japanstickers.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Film Strip Stickers (Set)",
+            "price": 13.95,
+            "image": "./images/film.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Magical Things Stickers",
+            "price": 3.55,
+            "image": "./images/magical.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Flower Field Sticker Sheet",
+            "price": 12.75,
+            "image": "./images/field.png",
+            "quantity_available": 10
+        }
+
+    ],
+    "Prints": [
+        {
+            "name": "Laundromat Portal Print",
+            "price": 3.95,
+            "image": "./images/postcards.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Dream Art Print",
+            "price": 3.15,
+            "image": "./images/cute.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Flower Field Art Print",
+            "price": 13.35,
+            "image": "./images/grassy.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Backyard Art Print",
+            "price": 3.95,
+            "image": "./images/bluesky.png",
+            "quantity_available": 10
+        }
+    ],
+    "Tapes": [
+        {
+            "name": "Sky Washi Tape Set",
+            "price": 12.95,
+            "image": "./images/washitapes.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Doodle Washi Tape",
+            "price": 3.95,
+            "image": "./images/places.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Shiba Inu Tape Cutter",
+            "price": 5.85,
+            "image": "./images/cat1.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Gray Cat Tape Cutter",
+            "price": 5.85,
+            "image": "./images/cat2.png",
+            "quantity_available": 10
+        }
+    ],
+    "Pins": [
+        {
+            "name": "Enamel Pins Bundle",
+            "price": 36.55,
+            "image": "./images/pins.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Doorway Pin",
+            "price": 12.95,
+            "image": "./images/pin1.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Pocket Watch Pin",
+            "price": 12.95,
+            "image": "./images/pin2.png",
+            "quantity_available": 10
+        },
+        {
+            "name": "Hourglass Pin",
+            "price": 12.95,
+            "image": "./images/pin3.png",
+            "quantity_available": 10
+        }
+    ]
+ }
+ 

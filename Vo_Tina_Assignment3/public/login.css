@@ -1,0 +1,64 @@
+/*
+Author: Tina Vo 
+Date Due: 12/14/2021 
+Description: CSS style for login page 
+ */
+
+body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background-image: url("./images/bluedots.jpeg");
+    margin:0;
+    padding:0;
+}
+
+/* style for input boxes */
+/* style for input box */
+input {
+  border: none;
+  border-bottom: 1px solid;
+  width: 30%;
+}
+
+/* bg color banner behind text */
+#loginBoxTop {
+    background-color: #C3A29E;
+    height: 105px;
+    margin-top: -30px;
+  }
+
+/* text color and position on top*/
+  #loginTextTop {
+    position: relative;
+    top: 30px;
+    color: cornsilk;
+  }
+
+/* register page button */
+#button_to_register_page {
+  background-color: #9AA0A8;
+  color: #fff;
+  font-size: 20px;
+  border: none;   
+}
+
+/* change color when hover */
+#button_to_register_page:hover {
+    background:#C3A29E;
+    transition: 0.3s;
+    border: none;
+}
+
+/* login button */
+#loginbutton {
+    background-color: #9AA0A8;
+    color: #fff;
+    font-size: 20px;
+    border: none;   
+  }
+  
+  /* change color when hover */
+  #loginbutton:hover {
+      background:#C3A29E;
+      transition: 0.3s;
+      border: none;
+  }
