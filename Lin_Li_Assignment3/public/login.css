@@ -1,0 +1,59 @@
+/* Styling for login page*/
+
+.login_form {
+    text-align: center;
+    font-size: 30px;
+    height: 600px;
+}
+
+.login {
+    font-size: 60px;
+}
+
+.sign_up {
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+.update {
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+body {
+    background-image: url("https://wallpaperaccess.com/full/2473757.jpg");
+    width: 100%; 
+    height: 100%;
+    color: black;
+}
+
+/* The very top container */
+.container1 {
+    position: relative;
+    margin: 10px;
+    width: auto;
+    color: black;
+}
+
+h1 {
+    text-align: center;
+}
+
+footer {
+    color: black;
+}
+
+.navbar-nav {
+    font-size: 20px;
+}
+
+/* The footer container */
+.container-fluid2 {
+    position: flex;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    font-size: 28px;
+}

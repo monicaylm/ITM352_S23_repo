@@ -1,0 +1,122 @@
+/* Styling for Invoice page*/
+
+body{
+    background-image: url("https://wallpaperaccess.com/full/2473757.jpg");
+    width: 100%;
+    height: 100%;
+}
+
+.invoice-container {
+  padding: 1rem;
+}
+
+.invoice-container .invoice-header .invoice-logo {
+  margin: 0.8rem 0 0 0;
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2e323c;
+}
+
+.invoice-container .invoice-header .invoice-logo img {
+  max-width: 130px;
+}
+
+.invoice-container .invoice-header address {
+  font-size: 0.8rem;
+  color: #9fa8b9;
+  margin: 0;
+}
+
+.invoice-container .invoice-details {
+  margin: 1rem 0 0 0;
+  padding: 1rem;
+  line-height: 180%;
+  background: #f5f6fa;
+}
+
+.invoice-container .invoice-details .invoice-num {
+  text-align: right;
+  font-size: 0.8rem;
+}
+
+.invoice-container .invoice-body {
+  padding: 1rem 0 0 0;
+}
+
+.custom-table {
+  border: 1px solid #e0e3ec;
+}
+
+.custom-table thead {
+  background: #007ae1;
+}
+
+.custom-table thead th {
+  border: 0;
+  color: #ffffff;
+}
+
+.custom-table > tbody tr:hover {
+  background: #fafafa;
+}
+
+.custom-table > tbody tr:nth-of-type(even) {
+  background-color: #ffffff;
+}
+
+.custom-table > tbody td {
+  border: 1px solid #e6e9f0;
+}
+
+.card {
+  background: #ffffff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 0;
+  margin-bottom: 1rem;
+}
+
+.invoice-container .invoice-footer {
+  text-align: center;
+  font-size: 0.7rem;
+  margin: 5px 0 0 0;
+}
+
+.invoice-container .notice {
+  margin-left: 10px;
+}
+
+.value_validation {
+  text-align: center;
+  font-size: 40px;
+  color: black;
+}
+
+h1 {
+  text-align: center;
+}
+
+.navbar-nav {
+  font-size: 20px;
+}
+
+/* The footer container */
+.container-fluid2 {
+  position: flex;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  font-size: 28px;
+}
+
+.update_cart {
+  text-align: center;
+  font-size: 24px;
+}
+
+.final_purchase{
+  text-align: center;
+  font-size: 24px;
+}

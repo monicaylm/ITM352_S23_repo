@@ -1,0 +1,137 @@
+<!-- Authors: Monica Mau, Le Yi Feng Zheng, Brandon Ramos -->
+<!-- Assignment 3 -->
+<!-- Date: 5/12/2023 -->
+<!-- Products Display Page -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="./products_data.js" type="text/javascript"></script>
+    <link href="products-style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap" rel="stylesheet">
+
+    <script>
+        // get querystring data
+        var params = (new URL(document.location)).searchParams;
+        // execute function when on window load // assisted by prof port
+        window.onload=function(){
+        // define variable to represent qty sold
+        var sold = JSON.parse(params.get("amountSold"));
+        // if errors, go get errors and quantities and display them
+        if(params.has("errorsJSONstring")){
+            var errorsObject = JSON.parse(params.get("errorsJSONstring"));
+        // check if there are no selections
+            if(typeof errorsObject["noQty"] != "undefined"){
+                // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (no quantities selected)
+                document.getElementById('purchase_button').value = errorsObject["noQty"];
+            } else {
+                // alert if any errors
+                //alert('Invalid quantities!')
+                // put quantities back in textboxes 
+                for(let i in products){
+                    qtyForm[`quantity${i}`].value=params.get(`quantity${i}`);
+                    
+                    // handle invalid quantity
+                    if(typeof errorsObject[`quantity${i}_error`] != "undefined"){
+
+                    // display specific quantity error by textbox   
+                        document.getElementById(`quantity${i}_errors_span`).innerHTML = errorsObject[`quantity${i}_error`];
+                        
+                    // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (invalid quantity, not a non-neg integer)
+                        document.getElementById('purchase_button').value = 'Invalid quantity!';
+                    }
+                    // handle qty not available 
+                    else if(typeof errorsObject[`quantity${i}_available_error`] != "undefined"){
+
+                    // display specific quantity error by textbox   
+                        document.getElementById(`quantity${i}_errors_span`).innerHTML = errorsObject[`quantity${i}_available_error`];
+
+                    // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (quantity unavailable)    
+                        document.getElementById('purchase_button').value = 'Quantity unavailable!';
+
+                    // IR 3: set textbox value to quantity available if requested quantity is greater than available and make textbox red 
+                        qtyForm[`quantity${i}`].value = products[i].quantity_available;
+                        qtyForm[`quantity${i}`].style.border = "2px solid red";
+                        qtyForm[`quantity${i}`].style.borderRadius = "5px";
+
+                    
+                    }
+                }
+            }
+        }
+    }
+
+    // display product page based on products key in the querystring
+    // get the query string
+        if (params.has('products_key')) {
+            var products_key = params.get('products_key');
+        } else {
+            document.write('no products key in query string');
+            document.stop;
+        }
+
+        var products_data;
+        loadJSON('get_products_data', function (response) {
+            // Parsing JSON string into object
+            products_data = JSON.parse(response);
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHINee Album Shop</title>
+
+</head>
+
+<center>
+    <script> nav_bar(products_key, products_data);</script>
+</center>
+
+<!--Nav bar-->
+<section class="navbar">
+    <img src="./images/logo.png" class="logo">
+    <a class="button" href="/index.html">Home</a>
+    <a class="button" href="/products_display.html">Products</a>
+</section>
+
+<header>&#8415; SHINee Album Shop &#8415;</header>
+<body>
+<form id="qtyForm" action="./purchase" method="POST">
+    <div class="products">
+        <main class="container">
+            <script>
+                // loops through products array to display product information, also includes IR 1 - tracking quantity sold and IR 5 - image next to the product name in the invoice and having a description pop up on mouseover
+                for(i = 0; i < products.length; i++)
+                    {document.write(`
+                        <section class="item">
+                        <h2>${products[i].album}</h2>
+                        <img src ="./images/${products[i].image}">
+                        <div class="details">
+                        <p>&dollar;${products[i].price}</p>
+                        <h3>In stock: ${products[i].quantity_available}<br>&#9671;<br>Sold: ${products[i].quantity_sold}</h3>
+                        <div class="qty">
+                        <label id="quantity${i}_label">Quantity:</label><input type="text" id="quantity${i}_id" placeholder="0" name="quantity${i}">
+                        </div>
+                        <br>
+                        <span class="errors-span" id="quantity${i}_errors_span"></span>
+                        </div>
+                        </section>
+                     `)}
+             </script>
+            </main>
+        </div>
+    
+        <!-- purchase button -->
+        <input type="submit" class="purchase_button" id="purchase_button" value="Purchase">
+    
+    <!-- copyright -->
+    <footer>
+        &copy; 2023 Monica's SHINee Album Shop
+    </footer>
+</body>
+</form>
+</html>

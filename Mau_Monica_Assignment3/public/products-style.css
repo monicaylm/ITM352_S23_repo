@@ -1,0 +1,240 @@
+/*
+Authors: Monica Mau, Le Yi Feng Zheng, Brandon Ramos
+Assignment 3
+Date: 5/12/2023
+Description: CSS stylesheet for products display page
+ */
+
+html {
+    background-image: linear-gradient(to bottom, #8fbdb9, #dcf1f0);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+body {
+    min-width: 1150px;
+}
+
+/* navbar styling */
+.navbar {
+    display: flex;
+    align-items: left;
+    background-color: rgb(171, 224, 219);
+    color: #fff;
+    padding: 10px;
+    padding-top: 15px;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.navbar .button{
+    margin-right: 20px;
+    font-size: 12px;
+    display: block;
+    background-color: rgb(62, 107, 104);
+    border-radius: 10px;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;    
+    font-size: 17px;
+    padding: 10px 20px;
+    width: auto;
+    height: 20px;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar .logo {
+    width: 10%;
+    height: 10%;
+    padding-right: 20px;
+}
+
+.navbar .button:hover{
+    background-color: rgb(0, 0, 0);
+}
+
+/* Header styling */
+header {
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+    background-color: rgb(15, 106, 106);
+    color:rgb(200, 246, 249);
+    font-size: 40px;
+    font-family: 'Varela-Round', sans-serif;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-top: -10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+/* Grid and product styling */
+main {
+    display: flex;
+    justify-content: space-around;
+    color: black;
+    width: 100%;
+}
+
+.products {
+    display: flex;
+    font-family: 'Quicksand', sans-serif;
+    justify-content: center;
+  }
+
+/* all products together */
+.container { 
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: minmax(auto, auto);
+    grid-auto-flow: dense;
+    grid-row-gap: 15px;
+    grid-column-gap: 10px;
+    justify-items: center;
+    align-items: center;
+    padding-top: 25px;
+    padding-bottom: 35px;
+    height: 400px;
+    width: 90%;
+}
+
+/* individual products */
+.item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 175px;
+    height: 410px;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.item:hover{
+    box-shadow: 0 0 15px 0 rgba(255, 255, 255, 0.581);
+    background-color: rgb(214, 243, 238);
+    border: 1px solid rgb(255, 255, 255)
+}
+
+.details {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(50, 91, 86);
+    border-radius: 10px;
+    background-color: #e0faf8;
+    width: 155px;
+    height: 190px;
+    margin-top: 20px;
+}
+
+/* make section light up on hover */
+.details:hover{
+    box-shadow: 0 0 15px 0 rgba(255, 255, 255, 0.581);
+}
+
+/* adding a line under the price, referenced from chatgpt */
+.details::before {
+    content: "";
+    position: absolute;
+    top: 21%;
+    left: 6px;
+    right: 6px;
+    height: 1px;
+    background-color: rgb(50, 91, 86);
+}
+    
+
+.item h2 {
+    font-size: 20px;
+    font-family: 'Comfortaa', sans-serif;
+    text-align: center;
+}
+
+.item img{
+    display: block;
+    width: 125px;
+    height: 125px;
+    border: 1.5px solid black;
+    padding: 3px;
+    margin: 0 auto;
+}
+
+/* price */
+
+.item p {
+    font-size: 23px;
+    color: rgb(47, 101, 97);
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 13px;
+    text-align: left;
+}
+
+.item h3 {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 1px;
+}
+
+.item label {
+    display: inline-block;
+    position: absolute;
+    left: 40%;
+    transform: translateX(-60%); /* help from chatgpt */
+    margin-left: 0px;
+    text-align: center;
+}
+
+/* input box */
+.item input {
+    display: block;
+    width: 30px;
+    margin-left: 100px;
+    text-align: center;
+}
+
+.errors-span {
+    color: red;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: -10px;
+    margin-bottom: 3px;
+    text-align: center;
+}
+
+/* Purchase button styling */
+#purchase_button {
+    display: block;
+    background-color: rgb(62, 107, 104);
+    color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;    
+    font-size: 17px;
+    border-width: 1.5px;
+    min-width: 100px;
+    padding: 10px 20px;
+    margin: 0 auto;
+    width: auto;
+  }
+
+#purchase_button:hover{
+    background-color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    color: rgb(62, 107, 104);
+}
+
+/* shipping info */
+footer {
+    font-family: 'Comfortaa', sans-serif;
+    text-align: center;
+    padding-top: 35px;
+    color:rgb(62, 107, 104);
+}
