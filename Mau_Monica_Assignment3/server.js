@@ -1,7 +1,7 @@
 /*
-Author: Monica Mau
-Assignment 2
-Date: 4/19/2023
+Authors: Monica Mau, Le Yi Feng Zheng, Brandon Ramos
+Assignment 3
+Date: 5/12/2023
 Description: server.js file to run server, validates quantities, login information, and registration information 
  */
 
@@ -49,6 +49,9 @@ app.get("/products_data.js", function (request, response, next) {
 
 // process purchase request (validate quantities, check quantity available) - assisted by Prof Port
 app.post("/purchase", function (request, response, next) {
+	
+	//set variable for product_type
+	var product_type = request.body["product_type"]
 	// output the data in the request body (quantities) to the console
 	console.log(request.body);
 	// empty errors object
@@ -58,7 +61,7 @@ app.post("/purchase", function (request, response, next) {
 	// has any input, valid or invalid
 	var hasInput = false;
 	// loop through all quantities
-	for (let i in products) {
+	for (i = 0; i < products[product_type].length; i++) {
 		// set var qty to the value of the quantity i in the request body
 		var qty = request.body[`quantity${i}`];
 		// qty is greater than zero
@@ -76,7 +79,7 @@ app.post("/purchase", function (request, response, next) {
 			hasInput = true;
 		}
 		// check if quantities are available
-		if (qty > products[i].quantity_available) {
+		if (qty > products[product_type][i].quantity_available) {
 			errors[
 				`quantity${i}_available_error`
 			] = `We don't have ${qty} available!`;
@@ -102,11 +105,13 @@ app.post("/purchase", function (request, response, next) {
 	else {
 		// add errors object to request.body to put into the querystring
 		request.body["errorsJSONstring"] = JSON.stringify(errors);
+		
 		// back to the order page and putting errors in the querystring
+		for (key in products){
 		response.redirect(
-			"./products_display.html?" + querystring.stringify(request.body)
-		);
-	}
+			`./products_display.html?product_type=${key}` + querystring.stringify(request.body)
+		)}
+	};
 });
 
 // function to find if a number is a non negative integer, and if not, output errors
@@ -290,9 +295,6 @@ app.post("/register", function (request, response, next) {
 		user_data[username].password = request.body.password;
 		fs.writeFileSync(filename, JSON.stringify(user_data));
 
-		//selected_qty['email'] = username;
-		//selected_qty['name'] = user_data[username].name;
-		// set value of params to selected_qty var
 		let params = new URLSearchParams(selected_qty);
 		params.append("username", username);
 		params.append("name", name);

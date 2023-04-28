@@ -45,6 +45,7 @@ app.get("/use_cookie", function (request, response) {
  });
 
 app.get("/login", function (request, response) {
+    console.log(request.session);
     // check if last login is in requester's session
     var lastlogin = "first login!"
     if (typeof request.session["lastlogin"] != "undefined"){
@@ -80,6 +81,7 @@ app.post("/login", function (request, response) {
             response.send(` ${username} logged in on ${loginDate}`);
             // add lastlogin to session
             request.session["lastlogin"] = loginDate;
+            console.log(request.session);
         } else {
             response.send(`invalid password`);
         }

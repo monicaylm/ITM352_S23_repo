@@ -15,15 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
 
-    <script src="./functions.js"></script> 
-    <script>
-        var products;
-        loadJSON('get_products_data', function(response) {
-            // Parsing JSON string into object
-            products = JSON.parse(response);
-            });
-        var this_product_key = ''
-    </script>
 </head>
 
 <body>
@@ -32,14 +23,13 @@
         <img src="./images/logo.png" class="logo">
         <a class="button" href="/index.html">Home</a>
         <a class="button" href="/products_display.html">Products</a>
-        <script> nav_bar(this_product_key, products);</script>
     </section>
 
     <!--Shop Title-->
     <h1>&#8415; SHINee Album Shop &#x20DF;</h1>
     
     <!-- Styling page -->
-    <a href="./products_display.html">
+    <a href="./products_display.html?product_type=SHINee">
         <img src="./images/shatingstarapng.png" class="image">
     </a>
     <h2>&#8415; Click the lightstick to enter! &#x20DF;</h2>

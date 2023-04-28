@@ -64,20 +64,15 @@
         }
     }
 
-    // display product page based on products key in the querystring
-    // get the query string
-        if (params.has('products_key')) {
-            var products_key = params.get('products_key');
-        } else {
-            document.write('no products key in query string');
-            document.stop;
-        }
+    //search for product key to display on navigation
+    //product key concept from assignment 3 example code
+    if (params.has('product_type')) {
+        var product_type = params.get('product_type');
+    } else {
+        response.redirect(`./products_display.html?${params.toString()}`);
+        window.stop;
+    }
 
-        var products_data;
-        loadJSON('get_products_data', function (response) {
-            // Parsing JSON string into object
-            products_data = JSON.parse(response);
-        });
     </script>
 
     <meta charset="UTF-8">
@@ -87,32 +82,44 @@
 
 </head>
 
-<center>
-    <script> nav_bar(products_key, products_data);</script>
-</center>
+<header>&#8415; SHINee Album Shop &#8415;</header>
 
 <!--Nav bar-->
 <section class="navbar">
-    <img src="./images/logo.png" class="logo">
-    <a class="button" href="/index.html">Home</a>
-    <a class="button" href="/products_display.html">Products</a>
+    <script>
+        document.write(`
+            <div id="nav">
+            <ul style="list-style-type: none;">`);
+
+            for(let key in products) {
+                document.write(`
+                <li style="list-style-type: none;"><a href="./products_display.html?product_type=${key}">${key}</a></li>
+  
+            `);
+    }
+    </script>
 </section>
 
-<header>&#8415; SHINee Album Shop &#8415;</header>
 <body>
+    
 <form id="qtyForm" action="./purchase" method="POST">
     <div class="products">
         <main class="container">
             <script>
+            // product_key as a hidden input so server can get products quantity
+                document.write(`<input type="hidden" name="product_type" value="${product_type}">`);
+            </script>
+
+            <script>
                 // loops through products array to display product information, also includes IR 1 - tracking quantity sold and IR 5 - image next to the product name in the invoice and having a description pop up on mouseover
-                for(i = 0; i < products.length; i++)
+                for(i = 0; i < products[product_type].length; i++)
                     {document.write(`
                         <section class="item">
-                        <h2>${products[i].album}</h2>
-                        <img src ="./images/${products[i].image}">
+                        <h2>${products[product_type][i].name}</h2>
+                        <img src ="./images/${products[product_type][i].image}">
                         <div class="details">
-                        <p>&dollar;${products[i].price}</p>
-                        <h3>In stock: ${products[i].quantity_available}<br>&#9671;<br>Sold: ${products[i].quantity_sold}</h3>
+                        <p>&dollar;${products[product_type][i].price}</p>
+                        <h3>In stock: ${products[product_type][i].quantity_available}<br>&#9671;<br>Sold: ${products[product_type][i].quantity_sold}</h3>
                         <div class="qty">
                         <label id="quantity${i}_label">Quantity:</label><input type="text" id="quantity${i}_id" placeholder="0" name="quantity${i}">
                         </div>

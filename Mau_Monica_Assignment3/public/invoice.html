@@ -20,11 +20,16 @@
     <script>
 
 var params = (new URL(document.location)).searchParams;
+//search for product key to display on navigation
+    //product key concept from assignment 3 example code
+    if (params.has('product_type')) {
+        var product_type = params.get('product_type')
+    }
 
 //Quantities Array
 const quantities = [];
 
-for (i in products) {
+for (i = 0; i < products[product_type].length; i++) {
   if (params.has(`quantity${i}`)) {
     const quantity = params.get(`quantity${i}`);
     quantities.push(quantity);
@@ -70,7 +75,7 @@ var email = params.get('username');
                 if(quantities[i]==0){continue};
                 errors = findNonNegInt(quantities[i], true);
                 if(errors.length == 0){
-                var extended_price = quantities[i] * products[i].price;
+                var extended_price = quantities[i] * products[product_type][i].price;
                 subtotal += extended_price;
                 }
                 else(extended_price=0);
@@ -80,14 +85,14 @@ var email = params.get('username');
             <tr>
              <td height="70px" width="11%">
               <div class="img-mouseover">
-                <img src="./images/${products[i].image}" height="50px" width="50px">
+                <img src="./images/${products[product_type][i].image}" height="50px" width="50px">
                 <div class="product-description">
-                  ${products[i].description}
+                  ${products[product_type][i].description}
                   </div>
                 </div></td>
-              <td width="26%">${products[i].album}</td>
+              <td width="26%">${products[product_type][i].name}</td>
               <td align="center" width="11%">${quantities[i]}<br><font color = "red">${errors.join('<br>')}</td>
-              <td width="13%">$${products[i].price}</td>
+              <td width="13%">$${products[product_type][i].price}</td>
               <td width="39%">$${(extended_price).toFixed(2)}</td>
             </tr>
             `)
