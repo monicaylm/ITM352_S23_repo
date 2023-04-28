@@ -52,6 +52,7 @@ h1 {
     width: 7%;
     height: 7%;
     padding-right: 20px;
+    padding-right: 20px;
 }
 
 li{
@@ -79,6 +80,13 @@ li a:visited {
 li a:hover,
 li a:active {
     color: rgb(0, 0, 0);
+}
+
+i {
+    font-size: 30px;
+    color: rgb(15, 106, 106);
+    text-align: right;
+    margin-left: 450px;
 }
 
 /* Grid and product styling */

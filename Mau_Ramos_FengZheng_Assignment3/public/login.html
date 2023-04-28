@@ -20,6 +20,9 @@
     <script>
       
       var params = (new URL(document.location)).searchParams;
+      if (params.has('product_type')) {
+            var product_type = params.get('product_type');
+        }
       // on window onload execute function
       window.onload=function(){
         if(params.has("errorsJSONstring")){
@@ -41,13 +44,6 @@
             }
         }
     }
-
-    //function to show welcome login alert if there are no errors
-    function showAlert(){
-        if(document.getElementById('password_error_span').innerHTML=="" && document.getElementById('username_error_span').innerHTML==""){
-            alert(`Logged in! Welcome back!`);
-      }};
-      
     </script>
 </head>
 

@@ -17,6 +17,16 @@
     <script>
         // get querystring data
         var params = (new URL(document.location)).searchParams;
+
+        //search for product key to display on navigation
+        //product key concept from assignment 3 example code
+        if (params.has('product_type')) {
+            var product_type = params.get('product_type');
+        } else {
+            response.redirect(`./products_display.html?${params.toString()}`);
+            window.stop;
+        }
+
         // execute function when on window load // assisted by prof port
         window.onload=function(){
         // define variable to represent qty sold
@@ -32,7 +42,7 @@
                 // alert if any errors
                 //alert('Invalid quantities!')
                 // put quantities back in textboxes 
-                for(let i in products){
+                for(i = 0; i < products[product_type].length; i++){
                     qtyForm[`quantity${i}`].value=params.get(`quantity${i}`);
                     
                     // handle invalid quantity
@@ -65,15 +75,6 @@
         }
     }
 
-    //search for product key to display on navigation
-    //product key concept from assignment 3 example code
-    if (params.has('product_type')) {
-        var product_type = params.get('product_type');
-    } else {
-        response.redirect(`./products_display.html?${params.toString()}`);
-        window.stop;
-    }
-
     </script>
 
     <meta charset="UTF-8">
@@ -93,7 +94,7 @@
             `);
         }
     </script>
-    <i class='fas fa-shopping-cart' style='font-size:30px;color:rgb(15, 106, 106);text-align:right;'></i>
+    <div class="cart_icon"><i class='fas fa-shopping-cart'></i></div>
 </div>
 
 <body>

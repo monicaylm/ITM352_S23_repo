@@ -127,6 +127,7 @@ function findNonNegInt(q, returnErrors = false) {
 
 // process login, validate username and password
 app.post("/login", function (request, response, next) {
+
 	// output the data in the request body (quantities) to the console
 	console.log(request.body);
 
@@ -162,11 +163,11 @@ app.post("/login", function (request, response, next) {
 
 	// if all login is valid, redirect to invoice and put quantities, name, email in query string
 	if (Object.keys(errors).length === 0) {
-		for (i = 0; i < products[product_type].length; i++) {
+		/*for (i = 0; i < products[product_type].length; i++) {
 			// tracking the quantity available by subtracting purchased quantities
 			products[product_type][i].quantity_available -= selected_qty[`quantity${i}`];
 			products[product_type][i].quantity_sold += Number(selected_qty[`quantity${i}`]);
-		}
+		}*/
 
 		let params = new URLSearchParams(selected_qty);
 		params.append("username", username);
