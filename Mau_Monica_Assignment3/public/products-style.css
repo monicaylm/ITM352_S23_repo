@@ -6,20 +6,39 @@ Description: CSS stylesheet for products display page
  */
 
 html {
-    background-image: linear-gradient(to bottom, #8fbdb9, #dcf1f0);
+    background-color:#b6d9d6;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
 }
 
 body {
     min-width: 1150px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header styling */
+h1 {
+    align-items: center;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: rgb(15, 106, 106);
+    color:rgb(200, 246, 249);
+    font-size: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 100%;
 }
 
 /* navbar styling */
 .navbar {
     display: flex;
-    align-items: left;
     background-color: rgb(171, 224, 219);
     color: #fff;
     padding: 10px;
@@ -29,50 +48,37 @@ body {
     top: 0;
 }
 
-.navbar .button{
+.navbar .logo {
+    width: 7%;
+    height: 7%;
+    padding-right: 20px;
+}
+
+li{
+    display: inline-block;
     margin-right: 20px;
-    font-size: 12px;
-    display: block;
-    background-color: rgb(62, 107, 104);
-    border-radius: 10px;
-    color: #ffffff;
+    font-size: 20px;
+    color: rgb(15, 106, 106);
     border: none;
     border-radius: 10px;
-    font-family: 'Montserrat', sans-serif;    
-    font-size: 17px;
+    font-family: 'Montserrat', sans-serif;
     padding: 10px 20px;
     width: auto;
-    height: 20px;
+    height: 21px;
     text-decoration: none;
     justify-content: center;
     align-items: center;
 }
 
-.navbar .logo {
-    width: 10%;
-    height: 10%;
-    padding-right: 20px;
+li a:link,
+li a:visited {
+  color: rgb(15, 106, 106);
+  text-decoration: none
 }
 
-.navbar .button:hover{
-    background-color: rgb(0, 0, 0);
-}
-
-/* Header styling */
-header {
-    align-items: center;
-    text-align: center;
-    margin-top: 20px;
-    background-color: rgb(15, 106, 106);
-    color:rgb(200, 246, 249);
-    font-size: 40px;
-    font-family: 'Varela-Round', sans-serif;
-    font-weight: bolder;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    margin-top: -10px;
-    border-radius: 10px;
-    width: 100%;
+li a:hover,
+li a:active {
+    color: rgb(0, 0, 0);
 }
 
 /* Grid and product styling */
@@ -111,6 +117,7 @@ main {
     display: flex;
     flex-direction: column;
     width: 175px;
+    font-size: medium;
     height: 410px;
     border-radius: 10px;
     align-items: center;

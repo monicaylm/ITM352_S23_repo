@@ -107,10 +107,10 @@ app.post("/purchase", function (request, response, next) {
 		request.body["errorsJSONstring"] = JSON.stringify(errors);
 		
 		// back to the order page and putting errors in the querystring
-		for (key in products){
+		//for (key in products){
 		response.redirect(
-			`./products_display.html?product_type=${key}` + querystring.stringify(request.body)
-		)}
+			`./products_display.html?` + querystring.stringify(request.body)
+		)
 	};
 });
 
@@ -162,10 +162,10 @@ app.post("/login", function (request, response, next) {
 
 	// if all login is valid, redirect to invoice and put quantities, name, email in query string
 	if (Object.keys(errors).length === 0) {
-		for (i in products) {
+		for (i = 0; i < products[product_type].length; i++) {
 			// tracking the quantity available by subtracting purchased quantities
-			products[i].quantity_available -= selected_qty[`quantity${i}`];
-			products[i].quantity_sold += Number(selected_qty[`quantity${i}`]);
+			products[product_type][i].quantity_available -= selected_qty[`quantity${i}`];
+			products[product_type][i].quantity_sold += Number(selected_qty[`quantity${i}`]);
 		}
 
 		let params = new URLSearchParams(selected_qty);
@@ -283,10 +283,10 @@ app.post("/register", function (request, response, next) {
 	}
 
 	if (totalLength === 0) {
-		for (i in products) {
+		for (i = 0; i < products[product_type].length; i++) {
 			// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
-			products[i].quantity_available -= selected_qty[`quantity${i}`];
-			products[i].quantity_sold += Number(selected_qty[`quantity${i}`]);
+			products[product_type][i].quantity_available -= selected_qty[`quantity${i}`];
+			products[product_type][i].quantity_sold += Number(selected_qty[`quantity${i}`]);
 		}
 
 		// write updated data to filename (user_data.json)

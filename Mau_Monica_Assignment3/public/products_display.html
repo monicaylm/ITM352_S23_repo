@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
     <script>
         // get querystring data
@@ -53,7 +54,7 @@
                         document.getElementById('purchase_button').value = 'Quantity unavailable!';
 
                     // IR 3: set textbox value to quantity available if requested quantity is greater than available and make textbox red 
-                        qtyForm[`quantity${i}`].value = products[i].quantity_available;
+                        qtyForm[`quantity${i}`].value = products[product_type][i].quantity_available;
                         qtyForm[`quantity${i}`].style.border = "2px solid red";
                         qtyForm[`quantity${i}`].style.borderRadius = "5px";
 
@@ -82,23 +83,18 @@
 
 </head>
 
-<header>&#8415; SHINee Album Shop &#8415;</header>
-
+<h1>SHINee Album Shop</h1>
 <!--Nav bar-->
-<section class="navbar">
+<div class="navbar">
+    <img src="./images/logo.png" class="logo">
     <script>
-        document.write(`
-            <div id="nav">
-            <ul style="list-style-type: none;">`);
-
-            for(let key in products) {
-                document.write(`
-                <li style="list-style-type: none;"><a href="./products_display.html?product_type=${key}">${key}</a></li>
-  
+        for(let key in products) {
+            document.write(`<li style="list-style-type: none;"><a href="./products_display.html?product_type=${key}">${key}</a></li>
             `);
-    }
+        }
     </script>
-</section>
+    <i class='fas fa-shopping-cart' style='font-size:30px;color:rgb(15, 106, 106);text-align:right;'></i>
+</div>
 
 <body>
     
