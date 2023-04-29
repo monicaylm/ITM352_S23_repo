@@ -39,6 +39,7 @@ h1 {
 /* navbar styling */
 .navbar {
     display: flex;
+    position: relative;
     background-color: rgb(171, 224, 219);
     color: #fff;
     padding: 10px;
@@ -82,11 +83,15 @@ li a:active {
     color: rgb(0, 0, 0);
 }
 
+.cart_icon {
+    position: absolute;
+    right: 1000;
+}
+
 i {
     font-size: 30px;
     color: rgb(15, 106, 106);
-    text-align: right;
-    margin-left: 450px;
+    position: fixed;
 }
 
 /* Grid and product styling */
@@ -232,11 +237,12 @@ main {
     border-color: rgb(62, 107, 104);
     border-radius: 10px;
     font-family: 'Montserrat', sans-serif;    
-    font-size: 17px;
+    font-size: 13px;
     border-width: 1.5px;
     min-width: 100px;
     padding: 10px 20px;
     margin: 0 auto;
+    margin-top: 10px;
     width: auto;
   }
 
