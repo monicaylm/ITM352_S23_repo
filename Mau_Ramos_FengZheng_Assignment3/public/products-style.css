@@ -84,12 +84,8 @@ li a:active {
 }
 
 .cart_icon {
-<<<<<<< Updated upstream
-    float: right;
-=======
     position: right;
     right: 1000;
->>>>>>> Stashed changes
 }
 
 i {
