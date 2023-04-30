@@ -83,14 +83,12 @@ li a:active {
     color: rgb(0, 0, 0);
 }
 
-.cart_icon {
-    float: right;
-}
-
 i {
     font-size: 30px;
     color: rgb(15, 106, 106);
-    float: right;
+    position: absolute;
+    right: 30px;
+    top: 102px;
 }
 
 /* Grid and product styling */
