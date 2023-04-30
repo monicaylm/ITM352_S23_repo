@@ -5,13 +5,15 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script src="./products_data.js" type="text/javascript"></script>
     <link href="products-style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap"
+        rel="stylesheet">
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
     <script>
@@ -28,52 +30,62 @@
         }
 
         // execute function when on window load // assisted by prof port
-        window.onload=function(){
-        // define variable to represent qty sold
-        var sold = JSON.parse(params.get("amountSold"));
-        // if errors, go get errors and quantities and display them
-        if(params.has("errorsJSONstring")){
-            var errorsObject = JSON.parse(params.get("errorsJSONstring"));
-        // check if there are no selections
-            if(typeof errorsObject["noQty"] != "undefined"){
-                // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (no quantities selected)
-                document.getElementById('purchase_button').value = errorsObject["noQty"];
-            } else {
-                // alert if any errors
-                //alert('Invalid quantities!')
-                // put quantities back in textboxes 
-                for(i = 0; i < products[product_type].length; i++){
-                    qtyForm[`quantity${i}`].value=params.get(`quantity${i}`);
-                    
-                    // handle invalid quantity
-                    if(typeof errorsObject[`quantity${i}_error`] != "undefined"){
+        window.onload = async function () {
+            await getcart();
+            // put items in cart back into textboxes
+            if (cart.hasOwnProperty(product_type)) {
+                for (let i in cart[product_type]) {
+                    qtyForm[`quantity${i}`].value = cart[product_type][i];
 
-                    // display specific quantity error by textbox   
-                        document.getElementById(`quantity${i}_errors_span`).innerHTML = errorsObject[`quantity${i}_error`];
-                        
-                    // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (invalid quantity, not a non-neg integer)
-                        document.getElementById('purchase_button').value = 'Invalid quantity!';
-                    }
-                    // handle qty not available 
-                    else if(typeof errorsObject[`quantity${i}_available_error`] != "undefined"){
+                }
 
-                    // display specific quantity error by textbox   
-                        document.getElementById(`quantity${i}_errors_span`).innerHTML = errorsObject[`quantity${i}_available_error`];
+            }
 
-                    // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (quantity unavailable)    
-                        document.getElementById('purchase_button').value = 'Quantity unavailable!';
+            // define variable to represent qty sold
+            var sold = JSON.parse(params.get("amountSold"));
+            // if errors, go get errors and quantities and display them
+            if (params.has("errorsJSONstring")) {
+                var errorsObject = JSON.parse(params.get("errorsJSONstring"));
+                // check if there are no selections
+                if (typeof errorsObject["noQty"] != "undefined") {
+                    // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (no quantities selected)
+                    document.getElementById('purchase_button').value = errorsObject["noQty"];
+                } else {
+                    // alert if any errors
+                    //alert('Invalid quantities!')
+                    // put quantities back in textboxes 
+                    for (i = 0; i < products[product_type].length; i++) {
+                        qtyForm[`quantity${i}`].value = params.get(`quantity${i}`);
 
-                    // IR 3: set textbox value to quantity available if requested quantity is greater than available and make textbox red 
-                        qtyForm[`quantity${i}`].value = products[product_type][i].quantity_available;
-                        qtyForm[`quantity${i}`].style.border = "2px solid red";
-                        qtyForm[`quantity${i}`].style.borderRadius = "5px";
+                        // handle invalid quantity
+                        if (typeof errorsObject[`quantity${i}_error`] != "undefined") {
 
-                    
+                            // display specific quantity error by textbox   
+                            document.getElementById(`quantity${i}_errors_span`).innerHTML = errorsObject[`quantity${i}_error`];
+
+                            // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (invalid quantity, not a non-neg integer)
+                            document.getElementById('purchase_button').value = 'Invalid quantity!';
+                        }
+                        // handle qty not available 
+                        else if (typeof errorsObject[`quantity${i}_available_error`] != "undefined") {
+
+                            // display specific quantity error by textbox   
+                            document.getElementById(`quantity${i}_errors_span`).innerHTML = errorsObject[`quantity${i}_available_error`];
+
+                            // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (quantity unavailable)    
+                            document.getElementById('purchase_button').value = 'Quantity unavailable!';
+
+                            // IR 3: set textbox value to quantity available if requested quantity is greater than available and make textbox red 
+                            qtyForm[`quantity${i}`].value = products[product_type][i].quantity_available;
+                            qtyForm[`quantity${i}`].style.border = "2px solid red";
+                            qtyForm[`quantity${i}`].style.borderRadius = "5px";
+
+
+                        }
                     }
                 }
             }
         }
-    }
 
     </script>
 
@@ -89,7 +101,7 @@
 <div class="navbar">
     <img src="./images/logo.png" class="logo">
     <script>
-        for(let key in products) {
+        for (let key in products) {
             document.write(`<li style="list-style-type: none;"><a href="./products_display.html?product_type=${key}">${key}</a></li>
             `);
         }
@@ -98,19 +110,20 @@
 </div>
 
 <body>
-    
-<form id="qtyForm" action="./purchase" method="POST">
-    <div class="products">
-        <main class="container">
-            <script>
-            // product_key as a hidden input so server can get products quantity
-                document.write(`<input type="hidden" name="product_type" value="${product_type}">`);
-            </script>
 
-            <script>
-                // loops through products array to display product information, also includes IR 1 - tracking quantity sold and IR 5 - image next to the product name in the invoice and having a description pop up on mouseover
-                for(i = 0; i < products[product_type].length; i++)
-                    {document.write(`
+    <form id="qtyForm" action="./purchase" method="POST">
+        <div class="products">
+            <main class="container">
+                <script>
+                    // product_key as a hidden input so server can get products quantity
+                    document.write(`<input type="hidden" name="product_type" value="${product_type}">`);
+                </script>
+
+                <script>
+                    // loops through products array to display product information, also includes IR 1 - tracking quantity sold and IR 5 - image next to the product name in the invoice and having a description pop up on mouseover
+
+                    for (i = 0; i < products[product_type].length; i++) {
+                        document.write(`
                         <section class="item">
                         <h2>${products[product_type][i].name}</h2>
                         <img src ="./images/${products[product_type][i].image}">
@@ -123,20 +136,96 @@
                         <br>
                         <span class="errors-span" id="quantity${i}_errors_span"></span>
                         </div>
-                        <input type="submit" class="purchase_button" id="purchase_button" value="Add to cart">
+                        <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </section>
-                     `)}
-             </script>
+                     `)
+                    }
+                </script>
             </main>
         </div>
-    
+
         <!-- purchase button -->
         <!--<input type="submit" class="purchase_button" id="purchase_button" value="Purchase">-->
-    
-    <!-- copyright -->
-    <footer>
-        &copy; 2023 Monica's SHINee Album Shop
-    </footer>
+
+        <!-- copyright -->
+        <footer>
+            &copy; 2023 Monica's SHINee Album Shop
+        </footer>
+
+
+        <script>
+            // get users cart data
+            var cart;
+            async function getcart() {
+                try {
+                    const response = await fetch("./get_cart", {
+                        method: "POST", // or 'PUT'
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    });
+
+                    cart = await response.json();
+                    console.log("Success:", cart);
+
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            }
+
+            async function addToCart(prod_index) {
+                var quantity = document.getElementById(`quantity${prod_index}_id`).value
+                var data = { 'prod_type': product_type, 'product_index': prod_index, 'prod_quantity': quantity };
+                console.log('adding to cart', data)
+                try {
+                    const response = await fetch("./addToCart", {
+                        method: "POST", // or 'PUT'
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    const errorsObject = await response.json();
+                    console.log("Success:", errorsObject);
+
+                    if (Object.keys(errorsObject).length === 0) {
+                        getcart();
+                        alert(`You have added ${quantity} of ${products[product_type][prod_index].name}`);
+                    } else {
+                        // handle invalid quantity
+                        if (typeof errorsObject[`quantity${prod_index}_error`] != "undefined") {
+
+                            // display specific quantity error by textbox   
+                            document.getElementById(`quantity${prod_index}_errors_span`).innerHTML = errorsObject[`quantity${prod_index}_error`];
+
+                            // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (invalid quantity, not a non-neg integer)
+                            document.getElementById('purchase_button').value = 'Invalid quantity!';
+                        }
+                        // handle qty not available 
+                        else if (typeof errorsObject[`quantity${prod_index}_available_error`] != "undefined") {
+
+                            // display specific quantity error by textbox   
+                            document.getElementById(`quantity${prod_index}_errors_span`).innerHTML = errorsObject[`quantity${prod_index}_available_error`];
+
+                            // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (quantity unavailable)    
+                            document.getElementById('purchase_button').value = 'Quantity unavailable!';
+
+                            // IR 3: set textbox value to quantity available if requested quantity is greater than available and make textbox red 
+                            qtyForm[`quantity${prod_index}`].value = products[product_type][prod_index].quantity_available;
+                            qtyForm[`quantity${prod_index}`].style.border = "2px solid red";
+                            qtyForm[`quantity${prod_index}`].style.borderRadius = "5px";
+
+
+                        }
+                    }
+
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            }
+        </script>
 </body>
 </form>
+
 </html>
