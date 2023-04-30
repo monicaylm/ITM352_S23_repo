@@ -14,7 +14,10 @@ var selected_qty = {};
 
 // load file system interface
 var fs = require("fs");
-const { response } = require("express");
+
+var session = require('express-session');
+
+app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
 
 // code referenced from lab 13 fileio exercise 1a and 1b, set variable for the json file
 var filename = __dirname + "/user_data.json";
@@ -33,10 +36,15 @@ if (fs.existsSync(filename)) {
 
 // middleware, code based on lab 12 ex. 2c
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // monitor all requests
 app.all("*", function (request, response, next) {
 	console.log(request.method + " to " + request.path);
+	if (request.session.hasOwnProperty('cart') == false) {
+		request.session.cart = {};
+	}
+	console.log(request.session);
 	next();
 });
 
@@ -47,9 +55,54 @@ app.get("/products_data.js", function (request, response, next) {
 	response.send(products_str); // sends response
 });
 
+app.post("/addToCart", function (request, response, next) {
+	console.log(request.body);
+
+	var errors = {};
+
+	var i = request.body['product_index'];
+
+	var product_type = request.body['prod_type'];
+
+	var qty = request.body['prod_quantity'];
+
+	// validate quantity selected
+	// check if quantity is a non neg integer, if so then fill errors object
+	if (findNonNegInt(qty) == false) {
+		errors[`quantity${i}_error`] = findNonNegInt(qty, true).join("<br>");
+	}
+	// check if quantities are available
+	if (qty > products[product_type][i].quantity_available) {
+		errors[
+			`quantity${i}_available_error`
+		] = `We don't have ${qty} available!`;
+	}
+
+	// if quantity is valid, add to session
+	if (Object.keys(errors).length === 0) {
+
+		if (request.session.cart.hasOwnProperty(product_type) == false) {
+			request.session.cart[product_type] = [];
+		}
+		request.session.cart[product_type][i] = qty;
+	}
+
+	request.session.save(function (err) {
+		// session saved
+	})
+
+	response.json(errors); // sends response 
+
+});
+
+// retrieve current cart
+app.post("/get_cart", function (request, response, next) {
+response.json(request.session.cart)
+});
+
 // process purchase request (validate quantities, check quantity available) - assisted by Prof Port
 app.post("/purchase", function (request, response, next) {
-	
+
 	//set variable for product_type
 	var product_type = request.body["product_type"]
 	// output the data in the request body (quantities) to the console
@@ -105,7 +158,7 @@ app.post("/purchase", function (request, response, next) {
 	else {
 		// add errors object to request.body to put into the querystring
 		request.body["errorsJSONstring"] = JSON.stringify(errors);
-		
+
 		// back to the order page and putting errors in the querystring
 		//for (key in products){
 		response.redirect(
