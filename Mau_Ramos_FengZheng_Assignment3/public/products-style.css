@@ -91,7 +91,9 @@ li a:active {
 i {
     font-size: 30px;
     color: rgb(15, 106, 106);
-    float: right;
+    position: absolute;
+    right: 30px;
+    top: 102px;
 }
 
 /* Grid and product styling */
