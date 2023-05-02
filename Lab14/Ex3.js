@@ -35,7 +35,7 @@ app.get("/use_session", function (request, response) {
 })
 // route to set a cookie
 app.get("/set_cookie", function (request, response) {
-    var username = "Erick";
+    var username = "Monica";
     response.cookie("user_id", username, {maxAge: 20000});
     response.send(`${username} cookie sent`)
 })

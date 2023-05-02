@@ -7,13 +7,18 @@
 <html lang="en">
 
 <head>
+    <!-- Products Data -->
     <script src="./products_data.js" type="text/javascript"></script>
     <link href="products-style.css" rel="stylesheet">
+
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap"
         rel="stylesheet">
+
+    <!-- Shopping Cart Icon Source -->
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
     <script>
@@ -21,7 +26,6 @@
         var params = (new URL(document.location)).searchParams;
 
         //search for product key to display on navigation
-        //product key concept from assignment 3 example code
         if (params.has('product_type')) {
             var product_type = params.get('product_type');
         } else {
@@ -29,7 +33,7 @@
             window.stop;
         }
 
-        // execute function when on window load // assisted by prof port
+        // execute async function when on window load // assisted by prof port
         window.onload = async function () {
             await getcart();
             // put items in cart back into textboxes
@@ -110,7 +114,11 @@
         <a onclick="window.location.href = 'login.html'">Login</a>
     </div>
 </div>
-<div class="cart_icon"><i class='fas fa-shopping-cart'></i></div>
+<div class="cart_icon">
+    <a href="./cart.html">
+      <i class='fas fa-shopping-cart'></i>
+    </a>
+  </div>
 
 
 <body>
@@ -156,7 +164,7 @@
             &copy; 2023 Monica's SHINee Album Shop
         </footer>
 
-
+        <!-- cart microservice assisted by Prof Port -->
         <script>
             // get users cart data
             var cart;
@@ -179,7 +187,7 @@
 
             async function addToCart(prod_index) {
                 var quantity = document.getElementById(`quantity${prod_index}_id`).value
-                var data = { 'prod_type': product_type, 'product_index': prod_index, 'prod_quantity': quantity };
+                var data = { 'prod_type': product_type, 'prod_index': prod_index, 'prod_quantity': quantity };
                 console.log('adding to cart', data)
                 try {
                     const response = await fetch("./addToCart", {
@@ -195,7 +203,7 @@
 
                     if (Object.keys(errorsObject).length === 0) {
                         getcart();
-                        alert(`You have added ${quantity} of ${products[product_type][prod_index].name}`);
+                        alert(`You have added ${quantity} ${products[product_type][prod_index].name} album(s) to your shopping cart!`);
                     } else {
                         // handle invalid quantity
                         if (typeof errorsObject[`quantity${prod_index}_error`] != "undefined") {
