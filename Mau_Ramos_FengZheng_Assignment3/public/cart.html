@@ -1,0 +1,154 @@
+<!-- Authors: Monica Mau, Le Yi Feng Zheng, Brandon Ramos -->
+<!-- Assignment 3 -->
+<!-- Date: 5/12/2023 -->
+<!-- Invoice Page -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+
+    <script src="./products_data.js"></script>
+    <link href="invoice.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
+
+    <script>
+
+var params = (new URL(document.location)).searchParams;
+//search for product key to display on navigation
+    //product key concept from assignment 3 example code
+    if (params.has('product_type')) {
+        var product_type = params.get('product_type')
+    }
+
+//Quantities Array
+const quantities = [];
+
+for (i = 0; i < products[product_type].length; i++) {
+  if (params.has(`quantity${i}`)) {
+    const quantity = params.get(`quantity${i}`);
+    quantities.push(quantity);
+  }
+}
+
+var name = params.get('name');
+var email = params.get('username');
+        
+         // Subtotal
+         var subtotal = 0;
+    
+    
+    </script>
+</head>
+<body>
+
+<!--Nav bar-->
+<section class="navbar">
+  <img src="./images/logo.png" class="logo">
+  <a class="button" href="/index.html">Home</a>
+  <a class="button" href="/products_display.html">Products</a>
+</section>
+
+  <h1>Welcome <script>document.write(name)</script></h1>
+  <h2>Your shopping cart <script>document.write(email)</script></h2>
+    <div>
+        <table border="2">
+          <tbody>
+
+            <!-- column titles row -->
+            <tr>
+              <th style="text-align: center;" width="11%">Image</th>
+              <th style="text-align: center;" width="26%">Item</th>
+              <th style="text-align: center;" width="11%">Quantity</th>
+              <th style="text-align: center;" width="13%">Price</th>
+              <th style="text-align: center;" width="39%">Extended Price</th>
+            </tr>
+            <script>
+            // generates rows with prices based on quantities
+            function generate_item_rows(quantities){
+              for(let i in quantities){
+                if(quantities[i]==0){continue};
+                errors = findNonNegInt(quantities[i], true);
+                if(errors.length == 0){
+                var extended_price = quantities[i] * products[product_type][i].price;
+                subtotal += extended_price;
+                }
+                else(extended_price=0);
+
+        // IR 5 - When diplaying the invoice, add a small icon image of the product to the line item, show description on mouseover
+          document.write(`
+            <tr>
+             <td height="70px" width="11%">
+              <div class="img-mouseover">
+                <img src="./images/${products[product_type][i].image}" height="50px" width="50px">
+                <div class="product-description">
+                  ${products[product_type][i].description}
+                  </div>
+                </div></td>
+              <td width="26%">${products[product_type][i].name}</td>
+              <td align="center" width="11%">${quantities[i]}<br><font color = "red">${errors.join('<br>')}</td>
+              <td width="13%">$${products[product_type][i].price}</td>
+              <td width="39%">$${(extended_price).toFixed(2)}</td>
+            </tr>
+            `)
+              }
+            }
+
+function findNonNegInt(q, returnErrors = false){ //the function returns non-negative integers in the object.
+    errors = []; // assume no errors at first
+    if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
+    if(q < 0) errors.push('Negative value!'); // Check if it is non-negative
+    if(parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+
+    return returnErrors ? errors : (errors.length == 0);
+      }
+
+            generate_item_rows(quantities);
+        // Tax rate
+         var tax_rate = 0.04712;
+         var tax = tax_rate * subtotal;
+
+         // Compute shipping (if less than $50, shipping is $5, if between $50 and $100 then $7, if over 100 then shipping is 10%)
+         if(subtotal<=80){shipping=10}
+         else {shipping=0};
+    
+         // Grand total
+         var total = subtotal + tax + shipping;
+          
+         document.write(`
+            <tr>
+              <td colspan="5" width="100%">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="text-align: right;" colspan="3" width="67%">Subtotal</td>
+              <td colspan="2" width="54%">$${(subtotal).toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td style="text-align: right;" colspan="3" width="67%">Tax @ 4.71%</span></td>
+              <td colspan="2" width="54%">$${(tax).toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td style="text-align: right;" colspan="3" width="67%">Shipping</span></td>
+              <td colspan="2" width="54%">$${shipping}</td>
+            </tr>
+            <tr>
+              <td style="text-align: right;" colspan="3" width="67%"><b>Total</b></td>
+              <td colspan="2" width="54%"><b>$${(total).toFixed(2)}</b></td>
+            </tr>
+            `)
+        </script>
+          </tbody>
+        </table>
+    </div>
+      <a class="home-button" href="/index.html">Home</a>
+    
+    <!-- shipping policy -->
+    <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under $80 will be charged a flat rate of $10 per order. &#8415;</h3>
+    <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
+</body>
+</html>
