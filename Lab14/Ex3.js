@@ -77,7 +77,7 @@ app.post("/login", function (request, response) {
         }
         response.send(`Password for ${username} is ${user_info.password}`);
        // response.send(`Got ${username}`);
-    }else{
+    } else{
         response.send(`${username} does not exist.`)
     }    // Give a simple login form
     str = `
@@ -104,11 +104,6 @@ app.post("/registration", function (request, response) {
     
 });
 
-
-
-
 app.use(express.urlencoded({ extended: true }));
-
-
 
 app.listen(8080, () => console.log(`listening on port 8080`));

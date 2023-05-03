@@ -97,74 +97,40 @@ app.post("/addToCart", function (request, response, next) {
 
 // retrieve current cart
 app.post("/get_cart", function (request, response, next) {
-response.json(request.session.cart)
-});
+	response.json(request.session.cart)
+	});
 
-// process purchase request (validate quantities, check quantity available) - assisted by Prof Port
-app.post("/purchase", function (request, response, next) {
-
-	//set variable for product_type
-	var product_type = request.body["product_type"]
-	// output the data in the request body (quantities) to the console
+app.post("/update_cart", function (request, response, next) {
 	console.log(request.body);
-	// empty errors object
-	var errors = {};
-	// no quantities
-	var hasQty = false;
-	// has any input, valid or invalid
-	var hasInput = false;
-	// loop through all quantities
-	for (i = 0; i < products[product_type].length; i++) {
-		// set var qty to the value of the quantity i in the request body
-		var qty = request.body[`quantity${i}`];
-		// qty is greater than zero
-		if (qty > 0) {
-			hasQty = true;
-			hasInput = true;
-		}
-		// if nothing entered, then qty is 0
-		if (qty == "") {
-			qty = 0;
-		}
-		// check if quantity is a non neg integer, if so then fill errors object
-		if (findNonNegInt(qty) == false) {
-			errors[`quantity${i}_error`] = findNonNegInt(qty, true).join("<br>");
-			hasInput = true;
-		}
-		// check if quantities are available
-		if (qty > products[product_type][i].quantity_available) {
-			errors[
-				`quantity${i}_available_error`
-			] = `We don't have ${qty} available!`;
-			hasInput = true;
-		}
-	}
+    var updated_cart = request.body;
+	
+	// empty errors
+    var errors = {};
+    
+    //modify inventory from the difference of cart and update
+    if (Object.keys(errors).length == 0) {
+        //modify inventory from the difference of cart and update
+        for (let product_type in products) {
+            for (let i in products[product_type]) {
 
-	// check if at least 1 item was selected (regardless of qty validity), if not then output message
-	if (hasQty == false && hasInput == false) {
-		errors[`noQty`] = `Please select some items to purchase!`;
-	}
+				// if there is no value then move to the next product
+                if (typeof updated_cart[`cart_${product_type}_${i}`] == 'undefined') {
+                    continue;
+				}
 
-	// log contents of the errors object to the console
-	console.log(errors);
+                //get the difference between cart and inventory
+                let change = request.session.cart[product_type][i] - updated_cart[`cart_${product_type}_${i}`];
+                products[product_type][i].quantity_available += change;
+                request.session.cart[product_type][i] = updated_cart[`cart_${product_type}_${i}`];
+				
+            }
+        }
+    }
 
-	// if all quantities are valid, redirect to login page and put quantities, name, email in query string
+    let params = new URLSearchParams();
+    params.append('errors', JSON.stringify(errors));
 
-	if (Object.keys(errors).length === 0) {
-		selected_qty = request.body;
-		response.redirect("./login.html?" + querystring.stringify(selected_qty));
-	}
-	// quantities are not valid, go back to order page and display error message
-	else {
-		// add errors object to request.body to put into the querystring
-		request.body["errorsJSONstring"] = JSON.stringify(errors);
-
-		// back to the order page and putting errors in the querystring
-		//for (key in products){
-		response.redirect(
-			`./products_display.html?` + querystring.stringify(request.body)
-		)
-	};
+    response.redirect(`./cart.html?${params.toString()}`);
 });
 
 // function to find if a number is a non negative integer, and if not, output errors

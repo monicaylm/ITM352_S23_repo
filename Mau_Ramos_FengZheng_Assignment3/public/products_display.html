@@ -116,9 +116,9 @@
 </div>
 <div class="cart_icon">
     <a href="./cart.html">
-      <i class='fas fa-shopping-cart'></i>
+        <i class='fas fa-shopping-cart'></i>
     </a>
-  </div>
+</div>
 
 
 <body>
@@ -132,7 +132,7 @@
                 </script>
 
                 <script>
-                    // loops through products array to display product information, also includes IR 1 - tracking quantity sold and IR 5 - image next to the product name in the invoice and having a description pop up on mouseover
+                    // loops through products array to display product information
 
                     for (i = 0; i < products[product_type].length; i++) {
                         document.write(`
@@ -156,9 +156,6 @@
             </main>
         </div>
 
-        <!-- purchase button -->
-        <!--<input type="submit" class="purchase_button" id="purchase_button" value="Purchase">-->
-
         <!-- copyright -->
         <footer>
             &copy; 2023 Monica's SHINee Album Shop
@@ -166,8 +163,9 @@
 
         <!-- cart microservice assisted by Prof Port -->
         <script>
-            // get users cart data
+            // empty cart variable
             var cart;
+            // get users cart data
             async function getcart() {
                 try {
                     const response = await fetch("./get_cart", {
@@ -187,7 +185,7 @@
 
             async function addToCart(prod_index) {
                 var quantity = document.getElementById(`quantity${prod_index}_id`).value
-                var data = { 'prod_type': product_type, 'prod_index': prod_index, 'prod_quantity': quantity };
+                var data = { 'prod_type': product_type, 'product_index': prod_index, 'prod_quantity': quantity };
                 console.log('adding to cart', data)
                 try {
                     const response = await fetch("./addToCart", {
@@ -203,6 +201,12 @@
 
                     if (Object.keys(errorsObject).length === 0) {
                         getcart();
+                        document.getElementById(`quantity${prod_index}_errors_span`).innerHTML = "";
+                        qtyForm[`quantity${prod_index}`].style.border = "1px solid black";
+                        qtyForm[`quantity${prod_index}`].style.borderRadius = "2px";
+                        qtyForm[`quantity${prod_index}`].value = "";
+
+                        // alert that products have been added to the cart
                         alert(`You have added ${quantity} ${products[product_type][prod_index].name} album(s) to your shopping cart!`);
                     } else {
                         // handle invalid quantity
@@ -210,9 +214,6 @@
 
                             // display specific quantity error by textbox   
                             document.getElementById(`quantity${prod_index}_errors_span`).innerHTML = errorsObject[`quantity${prod_index}_error`];
-
-                            // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (invalid quantity, not a non-neg integer)
-                            document.getElementById('purchase_button').value = 'Invalid quantity!';
                         }
                         // handle qty not available 
                         else if (typeof errorsObject[`quantity${prod_index}_available_error`] != "undefined") {
@@ -220,13 +221,10 @@
                             // display specific quantity error by textbox   
                             document.getElementById(`quantity${prod_index}_errors_span`).innerHTML = errorsObject[`quantity${prod_index}_available_error`];
 
-                            // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (quantity unavailable)    
-                            document.getElementById('purchase_button').value = 'Quantity unavailable!';
-
                             // IR 3: set textbox value to quantity available if requested quantity is greater than available and make textbox red 
                             qtyForm[`quantity${prod_index}`].value = products[product_type][prod_index].quantity_available;
                             qtyForm[`quantity${prod_index}`].style.border = "2px solid red";
-                            qtyForm[`quantity${prod_index}`].style.borderRadius = "5px";
+                            qtyForm[`quantity${prod_index}`].style.borderRadius = "3px";
 
 
                         }

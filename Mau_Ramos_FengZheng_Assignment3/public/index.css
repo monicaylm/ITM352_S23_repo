@@ -6,62 +6,35 @@ Description: CSS stylesheet for index page
  */
 
 
- /* Navbar styling */
-.navbar {
-    display: flex;
-    align-items: left;
-    background-color: rgb(171, 224, 219);
-    color: #fff;
-    padding: 10px;
-    top: 0;
+/* Header styling */
+h1 {
+    align-items: center;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color:rgb(15, 106, 106);
+    font-size: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 100%;
 }
 
-.navbar .button{
-    margin-right: 20px;
-    font-size: 12px;
-    display: block;
-    background-color: rgb(62, 107, 104);
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Montserrat', sans-serif;    
-    font-size: 17px;
-    padding: 10px 20px;
-    width: auto;
-    height: 20px;
-    text-decoration: none;
+#shinee {
     justify-content: center;
     align-items: center;
-}
-
-.navbar .logo {
-    width: 10%;
-    height: 10%;
-    padding-right: 20px;
-}
-
-.navbar .button:hover{
-    background-color: rgb(0, 0, 0);
-}
-
-/* Shop name */
-h1{
-    font-family: 'Palanquin-Dark', sans-serif;
-    font-size: 50px;
-    margin-top: 20px;
-    margin-bottom: -10px;
-    background-color: #c1e6e6;
-    padding-bottom: 1px;
-    padding-top: 1px;
-    color:rgb(55, 104, 99);
-    justify-items: center;
-    height: 110px;
+    margin-top: 10px;
+    margin-bottom: -40px;
+    height: 25%; 
+    width: 25%;
 }
 
 /* click to enter */
 h2{
-    font-family: 'Montserrat', sans serif;
-    font-size: 20px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
     margin-top: 40px;
     color:rgb(40, 103, 100);
 }
@@ -79,6 +52,7 @@ body {
 .image {
     justify-content: center;
     align-items: center;
+    margin-top: 50px;
     height: 20%; 
     width: 20%;
 }

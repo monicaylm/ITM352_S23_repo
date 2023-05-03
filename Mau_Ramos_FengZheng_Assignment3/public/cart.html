@@ -13,7 +13,11 @@
   <title>Shopping Cart</title>
 
   <script src="./products_data.js"></script>
+  <script src="./functions.js"></script>
   <link href="cart.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap"
   <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap"
     rel="stylesheet">
@@ -24,65 +28,76 @@
 
   <script>
 
+    var cart;
+    loadJSON('get_cart', function (response) {
+      // Parsing JSON string into object
+      cart = JSON.parse(response);
+    });
+    /*var this_product_key = ''
+
     var params = (new URL(document.location)).searchParams;
     //search for product key to display on navigation
     if (params.has('product_type')) {
       var product_type = params.get('product_type')
-    }
+    }*/
 
     //Quantities Array
-    const quantities = [];
+    var quantities = [];
 
   </script>
 </head>
 
-<body>
+<!--form to post cart quantity updates-->
+<form id="updateCart" action="./update_cart" method="POST">
+    
+    <h1>SHINee Album Shop</h1>
 
-  <!--Nav bar-->
-  <div class="navbar">
-    <img src="./images/logo.png" class="logo">
-    <script>
-      for (let key in products) {
-        document.write(`<li style="list-style-type: none;"><a href="./products_display.html?product_type=${key}">${key}</a></li>
+    <!--Nav bar-->
+    <div class="navbar">
+      <img src="./images/logo.png" class="logo">
+      <script>
+        for (let key in products) {
+          document.write(`<li style="list-style-type: none;"><a href="./products_display.html?product_type=${key}">${key}</a></li>
           `);
-      }
-    </script>
-    <div class="login">
-      <a onclick="window.location.href = 'login.html'">Login</a>
+        }
+      </script>
+      <div class="login">
+        <a onclick="window.location.href = 'login.html'">Login</a>
+      </div>
     </div>
     <div class="cart_icon">
       <a href="./cart.html">
         <i class='fas fa-shopping-cart'></i>
       </a>
     </div>
-  </div>
 
-  <!------------------------------->
-  <h1>Welcome
-    <script>document.write(name)</script>
-  </h1>
-  <div>
-    <table border="2">
-      <tbody>
+  <body>
+    <!------------------------------->
+    <h2>Shopping Cart
+    </h2>
 
-        <!-- column titles row -->
-        <tr>
-          <th style="text-align: center;" width="11%">Image</th>
-          <th style="text-align: center;" width="26%">Item</th>
-          <th style="text-align: center;" width="11%">Quantity</th>
-          <th style="text-align: center;" width="13%">Price</th>
-          <th style="text-align: center;" width="39%">Extended Price</th>
-        </tr>
-        <script>
-          // generates rows with prices based on quantities
-          subtotal = 0;
-          for (let product_type in cart) {
-            for (i in cart[product_type]) {
-              quantities = cart[product_type][i];
-              if (quantities > 0) { // Setup conditionals
-                extended_price = quantities * products[product_type][i].price // Compute extended price
-                subtotal += extended_price; // Add subtotal back to itself
-                document.write(`
+    <div>
+      <table border="2">
+        <tbody>
+
+          <!-- column titles row -->
+          <tr>
+            <th style="text-align: center;" width="11%">Image</th>
+            <th style="text-align: center;" width="26%">Item</th>
+            <th style="text-align: center;" width="11%">Quantity</th>
+            <th style="text-align: center;" width="13%">Price</th>
+            <th style="text-align: center;" width="39%">Extended Price</th>
+          </tr>
+          <script>
+            // generates rows with prices based on quantities
+            subtotal = 0;
+            for (let product_type in cart) {
+              for (let i = 0; i < cart[product_type].length; i++) {
+                var quantities = cart[product_type][i];
+                if (quantities > 0) { // Setup conditionals
+                  extended_price = quantities * products[product_type][i].price // Compute extended price
+                  subtotal += extended_price; // Add subtotal back to itself
+                  document.write(`
             <tr>
              <td height="70px" width="11%">
               <div class="img-mouseover">
@@ -92,15 +107,15 @@
                   </div>
                 </div></td>
               <td width="26%">${products[product_type][i].name}</td>
-              <td align="center" width="11%">${quantities[i]}<br><font color = "red">${errors.join('<br>')}</td>
+              <td align="center" width="11%"><input type="number" name="cart_${product_type}_${i}" value="${quantities}" min="0" max="${products[product_type][i].quantity_available}"></td>
               <td width="13%">$${products[product_type][i].price}</td>
               <td width="39%">$${(extended_price).toFixed(2)}</td>
             </tr>
             `)
+                }
               }
             }
-          }
-          
+
             // Tax rate
             var tax_rate = 0.04712;
             var tax = tax_rate * subtotal;
@@ -133,27 +148,30 @@
               <td colspan="2" width="54%"><b>$${(total).toFixed(2)}</b></td>
             </tr>
             `)
-        </script>
-      </tbody>
-    </table>
-  </div>
-  <a class="home-button" href="/index.html">Home</a>
+          </script>
+        </tbody>
+      </table>
+      <input type="submit" class="purchase_button" id="purchase_button" value="Update Cart">
+    </div>
+    <a class="home-button" href="/index.html">Home</a>
 
-  <!-- shipping policy -->
-  <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under $80
-    will be charged a flat rate of $10 per order. &#8415;</h3>
-  <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
-</body>
+    <!-- shipping policy -->
+    <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under
+      $80
+      will be charged a flat rate of $10 per order. &#8415;</h3>
+    <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
+  </body>
+</form>
 
 <script>
-    function findNonNegInt(q, returnErrors = false) { //the function returns non-negative integers in the object.
-      errors = []; // assume no errors at first
-      if (Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
-      if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
-      if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+  function findNonNegInt(q, returnErrors = false) { //the function returns non-negative integers in the object.
+    errors = []; // assume no errors at first
+    if (Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
+    if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
+    if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
 
-      return returnErrors ? errors : (errors.length == 0);
-    }
+    return returnErrors ? errors : (errors.length == 0);
+  }
 </script>
 
 </html>

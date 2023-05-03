@@ -2,10 +2,27 @@
 Authors: Monica Mau, Le Yi Feng Zheng, Brandon Ramos
 Assignment 3
 Date: 5/12/2023
-Description: CSS stylesheet for invoice page
+Description: CSS stylesheet for cart page
  */
 
- /* navbar styling */
+
+ /* Header styling */
+h1 {
+    align-items: center;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: rgb(15, 106, 106);
+    color:rgb(200, 246, 249);
+    font-size: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 100%;
+}
+
+/* navbar styling */
 .navbar {
     display: flex;
     position: relative;
@@ -75,7 +92,7 @@ i {
 }
 
 /* thank you for ordering */
- h1 {
+ h2 {
     color: rgb(15, 106, 106);
     font-size: 38px;
     font-family: 'Dosis', sans-serif;
@@ -86,7 +103,7 @@ i {
 
 body {
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Quicksand', sans-serif;
     color: black;
     text-align: center;
     font-size: 15px;
@@ -149,6 +166,28 @@ table td {
 
 .img-mouseover:hover .product-description {
     display: block;
+}
+
+/* Purchase button styling */
+#purchase_button {
+    display: block;
+    background-color: rgb(62, 107, 104);
+    color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;    
+    font-size: 17px;
+    border-width: 1.5px;
+    min-width: 100px;
+    padding: 10px 20px;
+    margin: 0 auto;
+    width: auto;
+  }
+
+#purchase_button:hover{
+    background-color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    color: rgb(62, 107, 104);
 }
 
 /* home button */

@@ -164,7 +164,6 @@ app.post('/update_cart', function (request, response, next) {
 
     response.redirect(`./shopping_cart.html?${params.toString()}`);
 
-
 });
 
 // --------------- login page ---------------------------
