@@ -15,9 +15,11 @@ var selected_qty = {};
 // load file system interface
 var fs = require("fs");
 
-var session = require('express-session');
+var session = require("express-session");
 
-app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
+app.use(
+	session({ secret: "MySecretKey", resave: true, saveUninitialized: true })
+);
 
 // code referenced from lab 13 fileio exercise 1a and 1b, set variable for the json file
 var filename = __dirname + "/user_data.json";
@@ -41,7 +43,7 @@ app.use(express.json());
 // monitor all requests
 app.all("*", function (request, response, next) {
 	console.log(request.method + " to " + request.path);
-	if (request.session.hasOwnProperty('cart') == false) {
+	if (request.session.hasOwnProperty("cart") == false) {
 		request.session.cart = {};
 	}
 	console.log(request.session);
@@ -55,82 +57,91 @@ app.get("/products_data.js", function (request, response, next) {
 	response.send(products_str); // sends response
 });
 
+// add selected quantities to cart, assisted by Prof Port
 app.post("/addToCart", function (request, response, next) {
 	console.log(request.body);
 
 	var errors = {};
 
-	var i = request.body['product_index'];
+	var i = request.body["product_index"];
 
-	var product_type = request.body['prod_type'];
-
-	var qty = request.body['prod_quantity'];
-
-	// validate quantity selected
-	// check if quantity is a non neg integer, if so then fill errors object
-	if (findNonNegInt(qty) == false) {
+	var product_type = request.body["prod_type"];
+	
+	var qty = request.body["prod_quantity"];
+			
+		// validate quantity selected
+		// check if quantity is a non neg integer, if so then fill errors object
+		if (findNonNegInt(qty) == false) {
 		errors[`quantity${i}_error`] = findNonNegInt(qty, true).join("<br>");
 	}
+
 	// check if quantities are available
-	if (qty > products[product_type][i].quantity_available) {
-		errors[
-			`quantity${i}_available_error`
-		] = `We don't have ${qty} available!`;
-	}
-
-	// if quantity is valid, add to session
-	if (Object.keys(errors).length === 0) {
-
-		if (request.session.cart.hasOwnProperty(product_type) == false) {
-			request.session.cart[product_type] = [];
+		if (qty > products[product_type][i].quantity_available) {
+			errors[
+				`quantity${i}_available_error`
+			] = `We don't have ${qty} available!`;
 		}
-		request.session.cart[product_type][i] = qty;
+
+		// if quantity is valid, add to session
+		if (Object.keys(errors).length === 0) {
+			//initialize product type and index to an empty array
+			if (request.session.cart.hasOwnProperty(product_type) == false) {
+				request.session.cart[product_type] = [];
+			}
+			// check if the array at the given index is undefined, if so initialize to zero
+			if (typeof request.session.cart[product_type][i] === "undefined") {
+				request.session.cart[product_type][i] = 0;
+			}
+
+			request.session.cart[product_type][i] += Number(qty);
+		}
+
+		request.session.save(function (err) {
+			// session saved
+		});
+
+		response.json(errors); // sends response
 	}
-
-	request.session.save(function (err) {
-		// session saved
-	})
-
-	response.json(errors); // sends response 
-
-});
+);
 
 // retrieve current cart
 app.post("/get_cart", function (request, response, next) {
-	response.json(request.session.cart)
-	});
+	response.json(request.session.cart);
+});
+
+var updated_cart;
 
 app.post("/update_cart", function (request, response, next) {
 	console.log(request.body);
-    var updated_cart = request.body;
-	
-	// empty errors
-    var errors = {};
-    
-    //modify inventory from the difference of cart and update
-    if (Object.keys(errors).length == 0) {
-        //modify inventory from the difference of cart and update
-        for (let product_type in products) {
-            for (let i in products[product_type]) {
+	updated_cart = request.body;
 
+	// empty errors
+	var errors = {};
+
+	//modify inventory from the difference of cart and update
+	if (Object.keys(errors).length == 0) {
+		//modify inventory from the difference of cart and update
+		for (let product_type in products) {
+			for (let i in products[product_type]) {
 				// if there is no value then move to the next product
-                if (typeof updated_cart[`cart_${product_type}_${i}`] == 'undefined') {
-                    continue;
+				if (typeof updated_cart[`cart_${product_type}_${i}`] == "undefined") {
+					continue;
 				}
 
-                //get the difference between cart and inventory
-                let change = request.session.cart[product_type][i] - updated_cart[`cart_${product_type}_${i}`];
+				request.session.cart[product_type][i] = Number(
+					updated_cart[`cart_${product_type}_${i}`]
+				);
+				// update the available quantity with the difference between the og amount and updated cart
+				/*let change = request.session.cart[product_type][i] - updated_cart[`cart_${product_type}_${i}`];
                 products[product_type][i].quantity_available += change;
-                request.session.cart[product_type][i] = updated_cart[`cart_${product_type}_${i}`];
-				
-            }
-        }
-    }
+                request.session.cart[product_type][i] = updated_cart[`cart_${product_type}_${i}`];*/
+			}
+		}
+	}
 
-    let params = new URLSearchParams();
-    params.append('errors', JSON.stringify(errors));
-
-    response.redirect(`./cart.html?${params.toString()}`);
+	let params = new URLSearchParams();
+	params.append("errors", JSON.stringify(errors));
+	response.redirect(`./cart.html?${params.toString()}`);
 });
 
 // function to find if a number is a non negative integer, and if not, output errors
@@ -146,7 +157,6 @@ function findNonNegInt(q, returnErrors = false) {
 
 // process login, validate username and password
 app.post("/login", function (request, response, next) {
-
 	// output the data in the request body (quantities) to the console
 	console.log(request.body);
 
@@ -305,8 +315,11 @@ app.post("/register", function (request, response, next) {
 	if (totalLength === 0) {
 		for (i = 0; i < products[product_type].length; i++) {
 			// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
-			products[product_type][i].quantity_available -= selected_qty[`quantity${i}`];
-			products[product_type][i].quantity_sold += Number(selected_qty[`quantity${i}`]);
+			products[product_type][i].quantity_available -=
+				selected_qty[`quantity${i}`];
+			products[product_type][i].quantity_sold += Number(
+				selected_qty[`quantity${i}`]
+			);
 		}
 
 		// write updated data to filename (user_data.json)

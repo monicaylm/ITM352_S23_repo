@@ -22,14 +22,6 @@ function loadJSON(service, callback) {
 
 // This function makes a navigation bar from a products_data object
 
-function nav_bar(products_key, products) {
-    // This makes a navigation bar to other product pages
-    for (let products_key in products) {
-        if (products_key == this_product_key) continue;
-        document.write(`<a href='./display_products.html?products_key=${products_key}'>${products_key}<a>&nbsp&nbsp&nbsp;`);
-    }
-}
-
 function navbar(key, products) {
     document.write(`<div id="nav"><ul style="list-style-type: none;">`);
     for(let key in products) {
