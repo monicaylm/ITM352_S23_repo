@@ -57,6 +57,67 @@ app.get("/products_data.js", function (request, response, next) {
 	response.send(products_str); // sends response
 });
 
+// Admin page
+app.get("/admin", function (request, response, next) {
+	// check if session is for Admin, if not ask for admin password
+	if(!request.session.hasOwnProperty('isAdmin')) {
+		str = `
+		<body>
+		Enter the admin password: 
+		<br>
+		<form action="" method="POST">
+		<input type="password" name="password" size="40" placeholder="enter password"><br>
+		<input type="submit" value="Submit" id="submit">
+		</form>
+		</body>
+			`;
+		 
+		response.send(str);
+		return;
+	}
+	// present the admin page
+	str = `
+	<body>
+	What do you want to do: 
+	<br>
+	<input type="button" size="40" value="Manage Users" onclick="location.href='./manageusers'">
+	<br>
+	<input type="button" size="40" value="Manage Products" onclick="location.href='./manageproducts'">
+	</body>
+		`;
+	 
+	response.send(str);
+	return;
+
+});
+
+// check admin login
+app.post("/admin", function (request, response, next) {
+	if(request.body.password == 'adminpass') {
+		request.session.isAdmin = true;
+		response.redirect('./admin');
+	} else {
+		response.send('Sorry, you are not an authorized admin user');
+	}
+});
+
+app.get("/manageusers", authAdmin, function (request, response, next) {
+	response.send('manage users'); // sends response
+});
+
+app.get("/manageproducts", authAdmin, function (request, response, next) {
+	response.send('manage products'); // sends response
+});
+
+function authAdmin(request, response, next) {
+	if(!request.session.hasOwnProperty('isAdmin')) {
+		response.redirect('./admin');
+	} else {
+		next();
+	}
+	
+}
+
 // add selected quantities to cart, assisted by Prof Port
 app.post("/addToCart", function (request, response, next) {
 	console.log(request.body);
