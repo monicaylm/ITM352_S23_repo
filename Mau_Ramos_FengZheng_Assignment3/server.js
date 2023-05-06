@@ -156,7 +156,7 @@ app.post("/addToCart", function (request, response, next) {
 		if (findNonNegInt(qty) == false) {
 		errors[`quantity${i}_error`] = findNonNegInt(qty, true).join("<br>");
 	}
-
+	
 	// check if quantities are available
 		if (qty > products[product_type][i].quantity_available) {
 			errors[
@@ -185,46 +185,6 @@ app.post("/addToCart", function (request, response, next) {
 		response.json(errors); // sends response
 	}
 );
-
-// retrieve current cart
-app.post("/get_cart", function (request, response, next) {
-	response.json(request.session.cart);
-});
-
-var updated_cart;
-
-app.post("/update_cart", function (request, response, next) {
-	console.log(request.body);
-	updated_cart = request.body;
-
-	// empty errors
-	var errors = {};
-
-	//modify inventory from the difference of cart and update
-	if (Object.keys(errors).length == 0) {
-		//modify inventory from the difference of cart and update
-		for (let product_type in products) {
-			for (let i in products[product_type]) {
-				// if there is no value then move to the next product
-				if (typeof updated_cart[`cart_${product_type}_${i}`] == "undefined") {
-					continue;
-				}
-
-				request.session.cart[product_type][i] = Number(
-					updated_cart[`cart_${product_type}_${i}`]
-				);
-				// update the available quantity with the difference between the og amount and updated cart
-				/*let change = request.session.cart[product_type][i] - updated_cart[`cart_${product_type}_${i}`];
-                products[product_type][i].quantity_available += change;
-                request.session.cart[product_type][i] = updated_cart[`cart_${product_type}_${i}`];*/
-			}
-		}
-	}
-
-	let params = new URLSearchParams();
-	params.append("errors", JSON.stringify(errors));
-	response.redirect(`./cart.html?${params.toString()}`);
-});
 
 // function to find if a number is a non negative integer, and if not, output errors
 function findNonNegInt(q, returnErrors = false) {
