@@ -83,6 +83,8 @@ app.get("/admin", function (request, response, next) {
 	<input type="button" size="40" value="Manage Users" onclick="location.href='./manageusers'">
 	<br>
 	<input type="button" size="40" value="Manage Products" onclick="location.href='./manageproducts'">
+	<br>
+	<input type="button" size="40" value="Logout" onclick="location.href='./products_display.html'">
 	</body>
 		`;
 	 
@@ -92,31 +94,50 @@ app.get("/admin", function (request, response, next) {
 });
 
 // check admin login
-app.post("/admin", function (request, response, next) {
+/* app.post("/admin", function (request, response, next) {
 	if(request.body.password == 'adminpass') {
 		request.session.isAdmin = true;
 		response.redirect('./admin');
 	} else {
 		response.send('Sorry, you are not an authorized admin user');
 	}
-});
+}); */
 
-app.get("/manageusers", authAdmin, function (request, response, next) {
+app.get("/manageusers", function (request, response, next) {
+	var admin = request.body['admin'];
+	// check if user is admin = true
+	if(admin != true) {
+		response.send(`You are not an authorized administrator!`);
+	}
 	response.send('manage users'); // sends response
 });
 
-app.get("/manageproducts", authAdmin, function (request, response, next) {
-	response.send('manage products'); // sends response
+app.get("/manageproducts", function (request, response, next) {
+	// received help with writing this code from Michelle Zhang
+	// initialize variable str
+	var str = "<form action = './update_products' method='POST'>";
+	// loop through product type in products
+	for(var prod_type in products) {
+		// loop through index of each product in each product type
+		for(var i in products[prod_type]) {
+			// append a string of HTML to str
+			str +=
+			`${prod_type}[${i}][name]:<input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}"><br>`
+		}
+	}
+	// append a submit button
+	str += '<input type="submit"></form>';
+	response.send(str);
 });
 
-function authAdmin(request, response, next) {
+/* function authAdmin(request, response, next) {
 	if(!request.session.hasOwnProperty('isAdmin')) {
 		response.redirect('./admin');
 	} else {
 		next();
 	}
 	
-}
+} */
 
 // add selected quantities to cart, assisted by Prof Port
 app.post("/addToCart", function (request, response, next) {
@@ -262,7 +283,7 @@ app.post("/login", function (request, response, next) {
 		let params = new URLSearchParams(selected_qty);
 		params.append("username", username);
 		params.append("name", name);
-		response.redirect("./invoice.html?" + params.toString());
+		response.redirect("./products_display.html?" + params.toString());
 	}
 	// login is not valid, go back to login page and display error message
 	else {

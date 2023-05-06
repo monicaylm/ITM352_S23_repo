@@ -1,18 +1,55 @@
 {
-	"dport@hawaii.edu": { "name": "Dan Port", "password": "portspassword" },
-	"kazman@hawaii.edu": { "name": "Rick Kazman", "password": "kazmanpassword" },
-	"itm352@hawaii.edu": { "name": "ITM 352", "password": "grader" },
-	"mylm@hawaii.edu": { "name": "Monica Mau", "password": "monica" },
-	"deeznuts@gmail.com": { "name": "Deez Nuts", "password": "monica" },
-	"ramosb3@hawaii.edu": { "name": "Brandon Ramos", "password": "brandon" },
-	"tinavo@gmail.com": { "name": "Tina Vo", "password": "tinavo" },
+	"dport@hawaii.edu": {
+		"name": "Dan Port",
+		"password": "portspassword"
+	},
+	"kazman@hawaii.edu": {
+		"name": "Rick Kazman",
+		"password": "kazmanpassword"
+	},
+	"itm352@hawaii.edu": {
+		"name": "ITM 352",
+		"password": "grader",
+		"admin": true
+	},
+	"mylm@hawaii.edu": {
+		"name": "Monica Mau",
+		"password": "monica"
+	},
+	"deeznuts@gmail.com": {
+		"name": "Deez Nuts",
+		"password": "monica"
+	},
+	"ramosb3@hawaii.edu": {
+		"name": "Brandon Ramos",
+		"password": "brandon"
+	},
+	"tinavo@gmail.com": {
+		"name": "Tina Vo",
+		"password": "tinavo"
+	},
 	"xiaolongbao@gmail.com": {
 		"name": "xiaolong bao",
 		"password": "xiaolongbao"
 	},
-	"mylm@hawaii.e": { "name": "Deez Nuts", "password": "KHCW7$hRnJ" },
-	"mylm@hawaii.eee": { "name": "Deez Nuts", "password": "Euf2_DoA=x" },
-	"deez@nuts.com": { "name": "Deez Nuts", "password": "deez@nuts1" },
-	"liange@hawaii.edu": { "name": "Evan Liang", "password": "Erx&gt;@z01N6" },
-	"erickhuangj@gmail.com": { "name": "Erick Huang", "password": "R+fqa*8B.Y" }
+	"mylm@hawaii.e": {
+		"name": "Deez Nuts",
+		"password": "KHCW7$hRnJ"
+	},
+	"mylm@hawaii.eee": {
+		"name": "Deez Nuts",
+		"password": "Euf2_DoA=x"
+	},
+	"deez@nuts.com": {
+		"name": "Deez Nuts",
+		"password": "deez@nuts1"
+	},
+	"liange@hawaii.edu": {
+		"name": "Evan Liang",
+		"password": "Erx&gt;@z01N6"
+	},
+	"erickhuangj@gmail.com": {
+		"name": "Erick Huang",
+		"password": "R+fqa*8B.Y"
+	}
 }
