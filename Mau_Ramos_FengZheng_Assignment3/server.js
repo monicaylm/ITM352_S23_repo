@@ -83,6 +83,8 @@ app.get("/admin", function (request, response, next) {
 	<input type="button" size="40" value="Manage Users" onclick="location.href='./manageusers'">
 	<br>
 	<input type="button" size="40" value="Manage Products" onclick="location.href='./manageproducts'">
+	<br>
+	<input type="button" size="40" value="Logout" onclick="location.href='./products_display.html'">
 	</body>
 		`;
 	 
@@ -106,7 +108,16 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 });
 
 app.get("/manageproducts", authAdmin, function (request, response, next) {
-	response.send('manage products'); // sends response
+	// received help with writing this code from Michelle Zhang
+	var str = "<form action = './update_products' method='POST'>";
+	for(var prod_type in products) {
+		for(var i in products[prod_type]) {
+			str +=
+			`${prod_type}[${i}][name]:<input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}"><br>`
+		}
+	}
+	str += '<input type="submit"></form>';
+	response.send(str);
 });
 
 function authAdmin(request, response, next) {
