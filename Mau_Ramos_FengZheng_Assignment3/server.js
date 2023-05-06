@@ -109,13 +109,18 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 
 app.get("/manageproducts", authAdmin, function (request, response, next) {
 	// received help with writing this code from Michelle Zhang
+	// initialize variable str
 	var str = "<form action = './update_products' method='POST'>";
+	// loop through product type in products
 	for(var prod_type in products) {
+		// loop through index of each product in each product type
 		for(var i in products[prod_type]) {
+			// append a string of HTML to str
 			str +=
 			`${prod_type}[${i}][name]:<input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}"><br>`
 		}
 	}
+	// append a submit button
 	str += '<input type="submit"></form>';
 	response.send(str);
 });
