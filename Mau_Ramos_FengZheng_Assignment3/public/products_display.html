@@ -96,7 +96,7 @@
         //function searchInput() {}
 
         // Add to Favorites (not working)
-        var favoriteBtn = document.getElementById(`like${i}btn`);
+        var favoriteBtn = document.getElementById(`favoritebtn`);
         function favorite() {
             if(favoriteBtn.style.color == 'red') {
                 favoriteBtn.style.color = 'grey';
@@ -165,7 +165,7 @@
                         <span class="errors-span" id="quantity${i}_errors_span"></span>
                         </div> <br>
                         <div class="likeBtn">
-                            <Button onclick="favorite()" id="like${i}btn" class="btn"><i class="fas fa-heart"></i></Button>
+                            <Button onclick='favorite()' id="favoritebtn" class="favoritebtn"><i class="fas fa-heart"></i></Button>
                         </div>
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </section>
