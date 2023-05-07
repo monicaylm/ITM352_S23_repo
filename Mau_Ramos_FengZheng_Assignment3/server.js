@@ -3,7 +3,8 @@ Authors: Monica Mau, Le Yi Feng Zheng, Brandon Ramos
 Assignment 3
 Date: 5/12/2023
 Description: server.js file to run server, validates quantities, login information, and registration information 
- */
+Required IRS: 3, 4, 5
+*/
 
 var express = require("express");
 var app = express();

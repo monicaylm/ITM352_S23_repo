@@ -2,6 +2,7 @@
 <!-- Assignment 3 -->
 <!-- Date: 5/12/2023 -->
 <!-- Products Display Page -->
+<!-- Required IRS: 3, 4, 5 -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -112,10 +113,10 @@
         // Add to Favorites button (not working)
         function favorite(prod) {
             var favoriteBtn = document.getElementById(`favoritebtn`);
-            if(favoriteBtn.style.color == 'red') {
-                favoriteBtn.style.color = 'grey';
-            } else {
+            if(favoriteBtn.style.color == 'grey') {
                 favoriteBtn.style.color = 'red';
+            } else {
+                favoriteBtn.style.color = 'grey';
             }
         }
     </script>

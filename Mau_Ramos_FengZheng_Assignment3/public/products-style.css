@@ -276,6 +276,7 @@ main {
 
 .favoritebtn i:hover {
     cursor: pointer;
+    color: red;
 }
 
 /* Purchase button styling */
