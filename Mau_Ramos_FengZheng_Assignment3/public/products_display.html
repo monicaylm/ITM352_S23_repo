@@ -48,50 +48,6 @@
 
             // define variable to represent qty sold
             var sold = JSON.parse(params.get("amountSold"));
-    /*
-            // if errors, go get errors and quantities and display them
-            if (params.has("errorsJSONstring")) {
-                var errorsObject = JSON.parse(params.get("errorsJSONstring"));
-                // check if there are no selections
-                if (typeof errorsObject["noQty"] != "undefined") {
-                    // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (no quantities selected)
-                    document.getElementById('purchase_button').value = errorsObject["noQty"];
-                } else {
-                    // alert if any errors
-                    //alert('Invalid quantities!')
-                    // put quantities back in textboxes 
-                    for (i = 0; i < products[product_type].length; i++) {
-                        qtyForm[`quantity${i}`].value = params.get(`quantity${i}`);
-
-                        // handle invalid quantity
-                        if (typeof errorsObject[`quantity${i}_error`] != "undefined") {
-
-                            // display specific quantity error by textbox   
-                            document.getElementById(`quantity${i}_errors_span`).innerHTML = errorsObject[`quantity${i}_error`];
-
-                            // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (invalid quantity, not a non-neg integer)
-                            document.getElementById('purchase_button').value = 'Invalid quantity!';
-                        }
-                        // handle qty not available 
-                        else if (typeof errorsObject[`quantity${i}_available_error`] != "undefined") {
-
-                            // display specific quantity error by textbox   
-                            document.getElementById(`quantity${i}_errors_span`).innerHTML = errorsObject[`quantity${i}_available_error`];
-
-                            // IR 4: If the purchase is invalid change the purchase button text from “Purchase” to text that indicates why the purchase is invalid (quantity unavailable)    
-                            document.getElementById('purchase_button').value = 'Quantity unavailable!';
-
-                            // IR 3: set textbox value to quantity available if requested quantity is greater than available and make textbox red 
-                            qtyForm[`quantity${i}`].value = products[product_type][i].quantity_available;
-                            qtyForm[`quantity${i}`].style.border = "2px solid red";
-                            qtyForm[`quantity${i}`].style.borderRadius = "5px";
-
-
-                        }
-                    }
-                }
-            }
-        */
         }
 
         // IR3: Search feature that enables users to search album name on the page
