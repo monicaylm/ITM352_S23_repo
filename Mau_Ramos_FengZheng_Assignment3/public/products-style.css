@@ -264,17 +264,17 @@ main {
 }
 
 /* Favorite btn */
-.favoritebtn{
+.favoritebtn {
     background: transparent;
     border: none;
     outline: none;
 }
 
-.favoritebtn i{
+.favoritebtn i {
     color: grey;
 }
 
-.favoritebtn i:hover{
+.favoritebtn i:hover {
     cursor: pointer;
 }
 

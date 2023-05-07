@@ -40,9 +40,7 @@
             if (cart.hasOwnProperty(product_type)) {
                 for (let i in cart[product_type]) {
                     qtyForm[`quantity${i}`].value = cart[product_type][i];
-
                 }
-
             }
 
             // define variable to represent qty sold
@@ -92,12 +90,13 @@
             }
         */
         }
+
         // Search feature 
         //function searchInput() {}
 
-        // Add to Favorites (not working)
-        var favoriteBtn = document.getElementById(`favoritebtn`);
-        function favorite() {
+        // Add to Favorites button (not working)
+        function favorite(prod_index) {
+            var favoriteBtn = document.getElementById(`favoritebtn`);
             if(favoriteBtn.style.color == 'red') {
                 favoriteBtn.style.color = 'grey';
             } else {
@@ -165,7 +164,7 @@
                         <span class="errors-span" id="quantity${i}_errors_span"></span>
                         </div> <br>
                         <div class="likeBtn">
-                            <Button onclick='favorite()' id="favoritebtn" class="favoritebtn"><i class="fas fa-heart"></i></Button>
+                            <Button onclick='favorite(${i})' id="favoritebtn" class="favoritebtn"><i class="fas fa-heart"></i></Button>
                         </div>
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </section>
