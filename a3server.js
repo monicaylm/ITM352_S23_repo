@@ -60,7 +60,7 @@ app.get("/products_data.js", function (request, response, next) {
 // Admin page
 app.get("/admin", function (request, response, next) {
 	// check if session is for Admin, if not ask for admin password
-	if (!request.session.hasOwnProperty("isAdmin")) {
+	if(!request.session.hasOwnProperty('isAdmin')) {
 		str = `
 		<body>
 		Enter the admin password: 
@@ -71,7 +71,7 @@ app.get("/admin", function (request, response, next) {
 		</form>
 		</body>
 			`;
-
+		 
 		response.send(str);
 		return;
 	}
@@ -87,9 +87,10 @@ app.get("/admin", function (request, response, next) {
 	<input type="button" size="40" value="Logout" onclick="location.href='./products_display.html'">
 	</body>
 		`;
-
+	 
 	response.send(str);
 	return;
+
 });
 
 // check admin login
@@ -103,12 +104,12 @@ app.get("/admin", function (request, response, next) {
 }); */
 
 app.get("/manageusers", function (request, response, next) {
-	var admin = request.body["admin"];
+	var admin = request.body['admin'];
 	// check if user is admin = true
-	if (admin != true) {
+	if(admin != true) {
 		response.send(`You are not an authorized administrator!`);
 	}
-	response.send("manage users"); // sends response
+	response.send('manage users'); // sends response
 });
 
 app.get("/manageproducts", function (request, response, next) {
@@ -116,11 +117,12 @@ app.get("/manageproducts", function (request, response, next) {
 	// initialize variable str
 	var str = "<form action = './update_products' method='POST'>";
 	// loop through product type in products
-	for (var prod_type in products) {
+	for(var prod_type in products) {
 		// loop through index of each product in each product type
-		for (var i in products[prod_type]) {
+		for(var i in products[prod_type]) {
 			// append a string of HTML to str
-			str += `${prod_type}[${i}][name]:<input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}"><br>`;
+			str +=
+			`${prod_type}[${i}][name]:<input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}"><br>`
 		}
 	}
 	// append a submit button
@@ -146,76 +148,45 @@ app.post("/addToCart", function (request, response, next) {
 	var i = request.body["product_index"];
 
 	var product_type = request.body["prod_type"];
-
+	
 	var qty = request.body["prod_quantity"];
-
-	//initialize product type and index to an empty array
-	if (request.session.cart.hasOwnProperty(product_type) == false) {
-		request.session.cart[product_type] = [];
-	}
-	// check if the array at the given index is undefined, if so initialize to zero
-	if (typeof request.session.cart[product_type][i] === "undefined") {
-		request.session.cart[product_type][i] = 0;
-	}
-
-	// validate quantity selected
-	// check if quantity is a non neg integer, if so then fill errors object
-	if (findNonNegInt(qty) == false) {
+			
+		// validate quantity selected
+		// check if quantity is a non neg integer, if so then fill errors object
+		if (findNonNegInt(qty) == false) {
 		errors[`quantity${i}_error`] = findNonNegInt(qty, true).join("<br>");
 	}
-
+	
 	// check if quantities are available
-	if (qty + request.session.cart[product_type][i] > products[product_type][i].quantity_available) {
-		errors[`quantity${i}_available_error`] = `We don't have ${qty} available!`;
-	}
-
-	// if quantity is valid, add to session
-	if (Object.keys(errors).length === 0) {
-		request.session.cart[product_type][i] += Number(qty);
-	}
-
-	request.session.save(function (err) {
-		// session saved
-	});
-
-	response.json(errors); // sends response
-});
-
-// retrieve current cart
-app.post("/get_cart", function (request, response, next) {
-	response.json(request.session.cart);
-});
-
-app.post("/update_cart", function (request, response, next) {
-	console.log(request.body);
-	var updated_cart = request.body;
-
-	// empty errors
-	var errors = {};
-
-	//modify inventory from the difference of cart and update
-	if (Object.keys(errors).length == 0) {
-		//modify inventory from the difference of cart and update
-		for (let product_type in products) {
-			for (let i in products[product_type]) {
-				// if there is no value then move to the next product
-				if (typeof updated_cart[`cart_${product_type}_${i}`] == "undefined") {
-					continue;
-				}
-
-				request.session.cart[product_type][i] = Number(updated_cart[`cart_${product_type}_${i}`]);
-				// update the available quantity with the difference between the og amount and updated cart
-				/*let change = request.session.cart[product_type][i] - updated_cart[`cart_${product_type}_${i}`];
-                products[product_type][i].quantity_available += change;
-                request.session.cart[product_type][i] = updated_cart[`cart_${product_type}_${i}`];*/
-			}
+		if (qty > products[product_type][i].quantity_available) {
+			errors[
+				`quantity${i}_available_error`
+			] = `We don't have ${qty} available!`;
 		}
-	}
 
-	let params = new URLSearchParams();
-	params.append("errors", JSON.stringify(errors));
-	response.redirect(`./cart.html?${params.toString()}`);
-});
+		// if quantity is valid, add to session
+		if (Object.keys(errors).length === 0) {
+			//initialize product type and index to an empty array
+			if (request.session.cart.hasOwnProperty(product_type) == false) {
+				request.session.cart[product_type] = [];
+			}
+			// check if the array at the given index is undefined, if so initialize to zero
+			if (typeof request.session.cart[product_type][i] === "undefined") {
+				request.session.cart[product_type][i] = 0;
+			}
+
+			request.session.cart[product_type][i] += Number(qty);
+		}
+
+		request.session.save(function (err) {
+			// session saved
+		});
+
+		response.json(errors); // sends response
+	}
+);
+
+
 
 // function to find if a number is a non negative integer, and if not, output errors
 function findNonNegInt(q, returnErrors = false) {
@@ -270,9 +241,11 @@ app.post("/login", function (request, response, next) {
 			products[product_type][i].quantity_available -= selected_qty[`quantity${i}`];
 			products[product_type][i].quantity_sold += Number(selected_qty[`quantity${i}`]);
 		}*/
-		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
-		response.cookie("name", name, { expire: Date.now() - 60 * 1000 });
-		response.redirect("./products_display.html?product_type=Group");
+
+		let params = new URLSearchParams(selected_qty);
+		params.append("username", username);
+		params.append("name", name);
+		response.redirect("./products_display.html?" + params.toString());
 	}
 	// login is not valid, go back to login page and display error message
 	else {

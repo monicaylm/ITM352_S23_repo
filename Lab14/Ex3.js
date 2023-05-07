@@ -45,7 +45,7 @@ app.get("/use_cookie", function (request, response) {
     var the_name = request.cookies[`user_id`];//get name from the cookie
     response.send(`Welcome to the Use Cookie Page ${the_name}`)
 })
-
+ 
 //
 app.get("/login", function (request, response) {
     // check if last login is in users session

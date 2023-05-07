@@ -9,6 +9,7 @@
 <head>
     <!-- Products Data -->
     <script src="./products_data.js" type="text/javascript"></script>
+    <script src="./functions.js" type="text/javascript"></script>
     <link href="products-style.css" rel="stylesheet">
 
     <!-- Fonts -->
@@ -29,21 +30,21 @@
         if (params.has('product_type')) {
             var product_type = params.get('product_type');
         } else {
-            response.redirect(`./products_display.html?${params.toString()}`);
-            window.stop;
+            alert(`No product key!`);
+            window.stop();
         }
 
         // execute async function when on window load // assisted by prof port
         window.onload = async function () {
             await getcart();
             // put items in cart back into textboxes
-            if (cart.hasOwnProperty(product_type)) {
+            /*if (cart.hasOwnProperty(product_type)) {
                 for (let i in cart[product_type]) {
                     qtyForm[`quantity${i}`].value = cart[product_type][i];
 
                 }
 
-            }
+            }*/
 
             // define variable to represent qty sold
             var sold = JSON.parse(params.get("amountSold"));
@@ -111,7 +112,16 @@
         }
     </script>
     <div class="login">
-        <a onclick="window.location.href = 'login.html'">Login</a>
+        <script>
+            if (getCookie("name") == "") {
+                document.write(`<a href = 'login.html'">Login</a>`);
+            } else {
+                document.write(`<a onclick='
+                document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = "login.html"'>Logout ${getCookie("name")}</a>`);
+            }
+        </script>
     </div>
 </div>
 <div class="cart_icon">
@@ -126,7 +136,7 @@
         <div class="products">
             <main class="container">
                 <script>
-                    // product_key as a hidden input so server can get products quantity
+                    // product_key as a hidden input so server can get products quantity - referenced from Tina Vo
                     document.write(`<input type="hidden" name="product_type" value="${product_type}">`);
                 </script>
 
