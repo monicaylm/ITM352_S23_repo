@@ -120,7 +120,9 @@ app.get("/manageproducts", function (request, response, next) {
 		// loop through index of each product in each product type
 		for (var i in products[prod_type]) {
 			// append a string of HTML to str
-			str += `${prod_type}[${i}][name]:<input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}"><br>`;
+			str +=
+			`${prod_type}[${i}][name]: <input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}">
+			Price: $<input type="text" name="prod_info[${prod_type}][${i}][price]" value="${products[prod_type][i].price}"<br><br>`
 		}
 	}
 	// append a submit button

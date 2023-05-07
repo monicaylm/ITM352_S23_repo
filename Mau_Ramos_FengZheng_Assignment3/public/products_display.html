@@ -41,13 +41,13 @@
             /*if (cart.hasOwnProperty(product_type)) {
                 for (let i in cart[product_type]) {
                     qtyForm[`quantity${i}`].value = cart[product_type][i];
-
                 }
 
             }*/
 
             // define variable to represent qty sold
             var sold = JSON.parse(params.get("amountSold"));
+    /*
             // if errors, go get errors and quantities and display them
             if (params.has("errorsJSONstring")) {
                 var errorsObject = JSON.parse(params.get("errorsJSONstring"));
@@ -90,8 +90,21 @@
                     }
                 }
             }
+        */
         }
 
+        // Search feature 
+        //function searchInput() {}
+
+        // Add to Favorites button (not working)
+        function favorite(prod_index) {
+            var favoriteBtn = document.getElementById(`favoritebtn`);
+            if(favoriteBtn.style.color == 'red') {
+                favoriteBtn.style.color = 'grey';
+            } else {
+                favoriteBtn.style.color = 'red';
+            }
+        }
     </script>
 
     <meta charset="UTF-8">
@@ -102,6 +115,9 @@
 </head>
 
 <h1>SHINee Album Shop</h1>
+<div class="searchBar">
+    <input type="text" id="searchInput" onkeyup="searchInput()" placeholder="Search for album..." title="Type in Album name">
+</div>
 <!--Nav bar-->
 <div class="navbar">
     <img src="./images/logo.png" class="logo">
@@ -111,6 +127,7 @@
             `);
         }
     </script>
+    
     <div class="login">
         <script>
             if (getCookie("name") == "") {
@@ -156,6 +173,9 @@
                         </div>
                         <br>
                         <span class="errors-span" id="quantity${i}_errors_span"></span>
+                        </div> <br>
+                        <div class="likeBtn">
+                            <Button onclick='favorite(${i})' id="favoritebtn" class="favoritebtn"><i class="fas fa-heart"></i></Button>
                         </div>
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </section>
@@ -234,7 +254,6 @@
                             qtyForm[`quantity${prod_index}`].value = products[product_type][prod_index].quantity_available;
                             qtyForm[`quantity${prod_index}`].style.border = "2px solid red";
                             qtyForm[`quantity${prod_index}`].style.borderRadius = "3px";
-
 
                         }
                     }
