@@ -19,31 +19,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
 
     <script>
+      var params = (new URL(document.location)).searchParams;
+      //search for product key to display on navigation
+          //product key concept from assignment 3 example code
+          if (params.has('product_type')) {
+              var product_type = params.get('product_type')
+          }
 
-var params = (new URL(document.location)).searchParams;
-//search for product key to display on navigation
-    //product key concept from assignment 3 example code
-    if (params.has('product_type')) {
-        var product_type = params.get('product_type')
-    }
+      // Greet user (personalize) 
+      window.onload = function () {
+        if (params.has('name')) {
+            alert(`Thank you ${params.get('name')} for your purchase! Please come again soon!`);
+        }
+        else { // Security: must sign in before accessing the invoice (reference Prof.)
+            alert('You must sign in or register an account before making a purchase!');
+            window.location = "./login.html";
+        }
+      }
 
-//Quantities Array
-const quantities = [];
+      //Quantities Array
+      const quantities = [];
 
-for (i = 0; i < products[product_type].length; i++) {
-  if (params.has(`quantity${i}`)) {
-    const quantity = params.get(`quantity${i}`);
-    quantities.push(quantity);
-  }
-}
+      for (i = 0; i < products[product_type].length; i++) {
+        if (params.has(`quantity${i}`)) {
+          const quantity = params.get(`quantity${i}`);
+          quantities.push(quantity);
+        }
+      }
 
-var name = params.get('name');
-var email = params.get('username');
-        
-         // Subtotal
-         var subtotal = 0;
-    
-    
+      var name = params.get('name');
+      var email = params.get('username');
+              
+              // Subtotal
+              var subtotal = 0;
+
     </script>
 </head>
 <body>
@@ -52,7 +61,7 @@ var email = params.get('username');
 <section class="navbar">
   <img src="./images/logo.png" class="logo">
   <a class="button" href="/index.html">Home</a>
-  <a class="button" href="/products_display.html">Products</a>
+  <a class="button" href="/products_display.html?product_type=Group">Products</a>
 </section>
 
   <h1>Thank you <script>document.write(name)</script> for your order!</h1>
