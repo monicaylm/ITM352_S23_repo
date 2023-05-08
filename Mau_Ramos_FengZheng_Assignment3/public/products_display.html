@@ -12,6 +12,7 @@
     <script src="./products_data.js" type="text/javascript"></script>
     <script src="./functions.js" type="text/javascript"></script>
     <link href="products-style.css" rel="stylesheet">
+    <link href="navbar.css" rel="stylesheet">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
@@ -38,13 +39,6 @@
         // execute async function when on window load // assisted by prof port
         window.onload = async function () {
             await getcart();
-            // put items in cart back into textboxes
-            /*if (cart.hasOwnProperty(product_type)) {
-                for (let i in cart[product_type]) {
-                    qtyForm[`quantity${i}`].value = cart[product_type][i];
-                }
-
-            }*/
 
             // define variable to represent qty sold
             var sold = JSON.parse(params.get("amountSold"));
@@ -98,7 +92,8 @@
             `);
         }
     </script>
-    
+
+<!--Login/logout according to cookies, assisted by prof Port-->
     <div class="login">
         <script>
             if (getCookie("name") == "") {
