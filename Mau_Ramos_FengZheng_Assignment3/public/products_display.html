@@ -86,32 +86,10 @@
 </div>
 <!--Nav bar-->
 <div class="navbar">
-    <img src="./images/logo.png" class="logo">
-    <script>
-        for (let key in products) {
-            document.write(`<li style="list-style-type: none;"><a href="./products_display.html?product_type=${key}">${key}</a></li>
-            `);
-        }
-    </script>
 
-<!--Login/logout according to cookies, assisted by prof Port-->
-    <div class="login">
-        <script>
-            if (getCookie("name") == "") {
-                document.write(`<a href = 'login.html'">Login</a>`);
-            } else {
-                document.write(`<a onclick='
-                document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                window.location.href = "login.html"'>Logout ${getCookie("name")}</a>`);
-            }
-        </script>
-    </div>
-</div>
-<div class="cart_icon">
-    <a href="./cart.html">
-        <i class='fas fa-shopping-cart'></i>
-    </a>
+    <script>navBar()</script>
+    <!--Login/logout according to cookies, assisted by prof Port-->
+    <script>loginButton()</script>
 </div>
 
 
@@ -217,8 +195,8 @@
                             // display specific quantity error by textbox   
                             document.getElementById(`quantity${prod_index}_errors_span`).innerHTML = errorsObject[`quantity${prod_index}_available_error`];
 
-                            // IR 3: set textbox value to quantity available if requested quantity is greater than available and make textbox red 
-                            qtyForm[`quantity${prod_index}`].value = products[product_type][prod_index].quantity_available;
+                            // set textbox value to quantity available if requested quantity is greater than available and make textbox red 
+                            qtyForm[`quantity${prod_index}`].value = "";
                             qtyForm[`quantity${prod_index}`].style.border = "2px solid red";
                             qtyForm[`quantity${prod_index}`].style.borderRadius = "3px";
 

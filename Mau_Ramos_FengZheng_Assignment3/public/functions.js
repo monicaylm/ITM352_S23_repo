@@ -5,8 +5,7 @@ Date: 5/12/2023
 Description: js file to hold functions
  */
 
-// functions referenced from Assignment 3 code examples
-// This function asks the server for a "service" and converts the response to text.
+// This function asks the server for a "service" and converts the response to text - referenced from Assignment 3 code examples
 function loadJSON(service, callback) {
 	var xobj = new XMLHttpRequest();
 	xobj.overrideMimeType("application/json");
@@ -21,37 +20,18 @@ function loadJSON(service, callback) {
 }
 
 function navBar() {
-    
-	document.write(`<div class="navbar">
+	document.write(`
     <img src="./images/logo.png" class="logo">
     <script>
         for (let key in products) {
-            document.write('<li style="list-style-type: none;"><a href="./products_display.html?product_type=${key}">${key}</a></li>
-            ');
+            document.write(\`<li style="list-style-type: none;"><a href="./products_display.html?product_type=\${key}">\${key}</a></li>
+            \`);
         }
     </script>
-    <div class="login">
-        <script>
-            if (getCookie("name") == "") {
-                document.write('<a href = 'login.html'">Login</a>');
-            } else {
-                document.write('<a onclick='
-                document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                window.location.href = "login.html"'>Logout ${getCookie(
-									"name"
-								)}</a>');
-            }
-        </script>
-    </div>
-</div>
-<div class="cart_icon">
-    <a href="./cart.html">
-        <i class='fas fa-shopping-cart'></i>
-    </a>
-</div>`);
+`);
 }
 
+// function to get cookies - referenced from w3 schools
 function getCookie(cname) {
 	let name = cname + "=";
 	let decodedCookie = decodeURIComponent(document.cookie);
@@ -66,4 +46,38 @@ function getCookie(cname) {
 		}
 	}
 	return "";
+}
+
+function loginButton() { // assisted by Prof Port & ChatGPT
+	var cart;
+    loadJSON('get_cart', function (response) {
+      // Parsing JSON string into object
+      cart = JSON.parse(response);
+    });
+
+    var cart_qty = 0;
+    for (let product_type in cart) {
+        for (let i = 0; i < cart[product_type].length; i++) {
+            cart_qty += Number(cart[product_type][i]);
+        }
+    };
+
+    document.write(`
+        <div class="login">
+            <script>
+                if (getCookie("name") == "") {
+                    document.write(\`<a href = 'login.html'">Login</a>\`);
+                } else {
+                    document.write(\`<a onclick='
+                    document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    href = "/logout"'>Logout \${getCookie("name")}</a>\`);
+                }
+            </script>
+            <a href="./cart.html">
+                <i class='fas fa-shopping-cart'></i>
+                (${cart_qty})
+            </a>
+        </div>
+    `);
 }

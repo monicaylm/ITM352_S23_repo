@@ -64,6 +64,7 @@ li a:active,
 
 .cart_icon {
     position: absolute;
+    right: 0px;
 }
 
 i {

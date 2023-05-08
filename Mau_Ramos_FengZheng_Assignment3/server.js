@@ -18,6 +18,10 @@ var fs = require("fs");
 
 var session = require("express-session");
 
+// cookie parser
+var cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 app.use(
 	session({ secret: "MySecretKey", resave: true, saveUninitialized: true })
 );
@@ -121,9 +125,8 @@ app.get("/manageproducts", function (request, response, next) {
 		// loop through index of each product in each product type
 		for (var i in products[prod_type]) {
 			// append a string of HTML to str
-			str +=
-			`${prod_type}[${i}][name]: <input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}">
-			Price: $<input type="text" name="prod_info[${prod_type}][${i}][price]" value="${products[prod_type][i].price}"<br><br>`
+			str += `${prod_type}[${i}][name]: <input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}">
+			Price: $<input type="text" name="prod_info[${prod_type}][${i}][price]" value="${products[prod_type][i].price}"<br><br>`;
 		}
 	}
 	// append a submit button
@@ -139,6 +142,17 @@ app.get("/manageproducts", function (request, response, next) {
 	}
 	
 } */
+
+/*app.get("/cart", function (request, response, next) {
+	for (let product_type in products) {
+		for (let i in products[product_type]) {
+			if (request.session.cart[product_type][i] == 'undefined'){
+				message = `<script>alert('Cart is empty! Please select some items to purchase.'); location.href="./products_display.html?product_type=Group";</script>`;
+				response.send(message);
+			}
+		}
+	};
+});*/
 
 // add selected quantities to cart, assisted by Prof Port
 app.post("/addToCart", function (request, response, next) {
@@ -156,24 +170,27 @@ app.post("/addToCart", function (request, response, next) {
 	if (request.session.cart.hasOwnProperty(product_type) == false) {
 		request.session.cart[product_type] = [];
 	}
-	// check if the array at the given index is undefined, if so initialize to zero
+	// check if the array at the given index is undefined, if so initialize to null
 	if (typeof request.session.cart[product_type][i] === "undefined") {
-		request.session.cart[product_type][i] = 0;
+		request.session.cart[product_type][i] = null;
 	}
 
-	// validate quantity selected
-	// check if quantity is a non neg integer, if so then fill errors object
+	// check if quantity is a non neg integer or blank, if so then output errors
 	if (findNonNegInt(qty) == false) {
 		errors[`quantity${i}_error`] = findNonNegInt(qty, true).join("<br>");
+	} else if (qty == 0) {
+		errors[`quantity${i}_error`] = `Please select some quantities!`;
 	}
 
 	// check if quantities are available
-	if (qty + request.session.cart[product_type][i] > products[product_type][i].quantity_available) {
+	if (
+		Number(qty) + request.session.cart[product_type][i] >
+		products[product_type][i].quantity_available
+	) {
 		errors[`quantity${i}_available_error`] = `We don't have ${qty} available!`;
-	}
 
-	// if quantity is valid, add to session
-	if (Object.keys(errors).length === 0) {
+		// if quantity is valid, add to session
+	} else if (Object.keys(errors).length === 0) {
 		request.session.cart[product_type][i] += Number(qty);
 	}
 
@@ -190,13 +207,12 @@ app.post("/get_cart", function (request, response, next) {
 });
 
 app.post("/update_cart", function (request, response, next) {
-	console.log(request.body);
+	// set updated_cart variable to the contents of the request body
 	var updated_cart = request.body;
 
 	// empty errors
 	var errors = {};
 
-	//modify inventory from the difference of cart and update
 	if (Object.keys(errors).length == 0) {
 		//modify inventory from the difference of cart and update
 		for (let product_type in products) {
@@ -206,18 +222,22 @@ app.post("/update_cart", function (request, response, next) {
 					continue;
 				}
 
-				request.session.cart[product_type][i] = Number(updated_cart[`cart_${product_type}_${i}`]);
-				// update the available quantity with the difference between the og amount and updated cart
-				/*let change = request.session.cart[product_type][i] - updated_cart[`cart_${product_type}_${i}`];
-                products[product_type][i].quantity_available += change;
-                request.session.cart[product_type][i] = updated_cart[`cart_${product_type}_${i}`];*/
+				// if quantity is 0, set to null
+				if (updated_cart[`cart_${product_type}_${i}`] === 0) {
+					request.session.cart[product_type][i] = null;
+				}
+				request.session.cart[product_type][i] = Number(
+					updated_cart[`cart_${product_type}_${i}`]
+				);
 			}
 		}
+	} else {
+		let params = new URLSearchParams();
+		params.append("errors", JSON.stringify(errors));
+		response.redirect(`./cart.html?${params.toString()}`);
 	}
 
-	let params = new URLSearchParams();
-	params.append("errors", JSON.stringify(errors));
-	response.redirect(`./cart.html?${params.toString()}`);
+	response.redirect(`./cart.html?`);
 });
 
 // function to find if a number is a non negative integer, and if not, output errors
@@ -266,30 +286,33 @@ app.post("/login", function (request, response, next) {
 		var name = user_data[username].name;
 	}
 
-	// if all login is valid, redirect to invoice and put quantities, name, email in query string
+	// if all login is valid, redirect to product display page and set cookies for username and name
 	if (Object.keys(errors).length === 0) {
-		/*for (i = 0; i < products[product_type].length; i++) {
-			// tracking the quantity available by subtracting purchased quantities
-			products[product_type][i].quantity_available -= selected_qty[`quantity${i}`];
-			products[product_type][i].quantity_sold += Number(selected_qty[`quantity${i}`]);
-		}*/
 		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
 		response.cookie("name", name, { expire: Date.now() - 60 * 1000 });
-		response.redirect("./products_display.html?product_type=Group");
+		message = `<script>alert('${name} has successfully logged in!'); location.href="./products_display.html?product_type=Group";</script>`;
+		response.send(message);
 	}
 	// login is not valid, go back to login page and display error message
 	else {
 		// add errors object to request.body to put into the querystring
 		//request.body["errorsJSONstring"] = JSON.stringify(errors);
 		let params = new URLSearchParams();
-		params.append("username", username);
-		params.append("name", name);
 		params.append("errorsJSONstring", JSON.stringify(errors));
 		response.redirect("./login.html?" + params.toString());
 
 		// back to the order page and putting errors in the querystring
 		//response.redirect("./login.html?" + querystring.stringify(errors));
 	}
+});
+
+// logout referenced and modified from Tina Vo, destroys session and clears cookies, return to index page
+app.get("/logout", function (request, response, next) {
+	message = `<script>alert('You have successfully logged out!'); location.href="./index.html";</script>`;
+	response.clearCookie("userid");
+	response.clearCookie("name");
+	response.send(message);
+	request.session.destroy();
 });
 
 // referenced from assignment 2 code examples on class website
@@ -387,13 +410,12 @@ app.post("/register", function (request, response, next) {
 	}
 
 	if (totalLength === 0) {
-		for (i = 0; i < products[product_type].length; i++) {
-			// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
-			products[product_type][i].quantity_available -=
-				selected_qty[`quantity${i}`];
-			products[product_type][i].quantity_sold += Number(
-				selected_qty[`quantity${i}`]
-			);
+		for (let product_type in products) {
+			for (let i in products[product_type]) {
+				// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
+				products[product_type][i].quantity_available -=
+					selected_qty[`quantity${i}`];
+			}
 		}
 
 		// write updated data to filename (user_data.json)
@@ -402,10 +424,9 @@ app.post("/register", function (request, response, next) {
 		user_data[username].password = request.body.password;
 		fs.writeFileSync(filename, JSON.stringify(user_data));
 
-		let params = new URLSearchParams(selected_qty);
-		params.append("username", username);
-		params.append("name", name);
-		response.redirect("./invoice.html?" + params.toString());
+		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
+		response.cookie("name", name, { expire: Date.now() - 60 * 1000 });
+		response.redirect("./products_display.html?product_type=Group");
 
 		return;
 		// if there are errors, put them in the jsonstring and return to the registration page
@@ -415,6 +436,25 @@ app.post("/register", function (request, response, next) {
 		params.append("name", name);
 		params.append("errorsJSONstring", JSON.stringify(errors));
 		response.redirect("./registration.html?" + params.toString());
+	}
+});
+
+// checkout, to invoice
+app.post("/checkout", function (request, response, next) {
+
+	// if user is not logged in, display alert and redirect to login page
+	if (typeof request.cookies["userid"] === "undefined") {
+		var message = `<script>alert('You must sign in or register an account before making a purchase!'); location.href="./login.html"</script>`;
+		response.send(message);
+	} else {
+		response.redirect("./invoice.html");
+		for (let product_type in products) {
+			for (let i in products[product_type]) {
+				// remove selected quantities from quantity available
+				products[product_type][i].quantity_available -= request.session.cart[product_type][i];
+			}
+		}
+		request.session.destroy();
 	}
 });
 
