@@ -85,7 +85,7 @@ app.get("/admin", function (request, response, next) {
 	<br>
 	<input type="button" size="40" value="Manage Products" onclick="location.href='./manageproducts'">
 	<br>
-	<input type="button" size="40" value="Logout" onclick="location.href='./products_display.html'">
+	<input type="button" size="40" value="Logout" onclick="location.href='./products_display.html?product_type=Group'">
 	</body>
 		`;
 
