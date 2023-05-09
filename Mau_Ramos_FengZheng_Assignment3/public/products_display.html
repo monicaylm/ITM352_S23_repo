@@ -60,8 +60,8 @@
                 }
             }
         }
-        
-        // Add to Favorites button (not working)
+
+        // IR4: Add to Favorites button (not working)
         function favorite(prod) {
             var favoriteBtn = document.getElementById(`favoritebtn`);
             if(favoriteBtn.style.color == 'grey') {
@@ -112,16 +112,17 @@
                         <img src ="./images/${products[product_type][i].image}">
                         <div class="details">
                         <p>&dollar;${products[product_type][i].price}</p>
+                        <div class="likeBtn">
+                            <p onclick='favorite(${i})' id="favoritebtn" class="favoritebtn"><i class="fas fa-heart"></i></p>
+                        </div>
                         <h3>In stock: ${products[product_type][i].quantity_available}<br>&#9671;<br>Sold: ${products[product_type][i].quantity_sold}</h3>
                         <div class="qty">
                         <label id="quantity${i}_label">Quantity:</label><input type="text" id="quantity${i}_id" placeholder="0" name="quantity${i}">
                         </div>
                         <br>
                         <span class="errors-span" id="quantity${i}_errors_span"></span>
-                        </div> <br>
-                        <div class="likeBtn">
-                            <Button onclick='favorite(${i})' id="favoritebtn" class="favoritebtn"><i class="fas fa-heart"></i></Button>
                         </div>
+                        
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </section>
                      `)

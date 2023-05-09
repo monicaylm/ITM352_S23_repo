@@ -195,6 +195,11 @@ main {
 }
 
 /* Favorite btn */
+.likeBtn {
+    position: absolute;
+    left: 65%;
+}
+
 .favoritebtn {
     background: transparent;
     border: none;
