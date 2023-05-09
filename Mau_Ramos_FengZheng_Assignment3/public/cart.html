@@ -15,13 +15,14 @@
   <script src="./products_data.js"></script>
   <script src="./functions.js"></script>
   <link href="cart.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap"
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap"
+  <link href="navbar.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap" <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap"
     rel="stylesheet">
-    <link
+  <link
     href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap"
     rel="stylesheet">
   <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
@@ -33,13 +34,23 @@
       // Parsing JSON string into object
       cart = JSON.parse(response);
     });
-    /*var this_product_key = ''
 
-    var params = (new URL(document.location)).searchParams;
-    //search for product key to display on navigation
-    if (params.has('product_type')) {
-      var product_type = params.get('product_type')
-    }*/
+    // if cart is empty, display alert and redirect to products display - assisted by ChatGPT
+    window.onload = function () {
+      var allNull = true;
+      for (let product_type in cart) {
+        for (let i = 0; i < cart[product_type].length; i++) {
+          if (cart[product_type][i] !== null && cart[product_type][i] !== 0) {
+            allNull = false;
+            break;
+          }
+        }
+      }
+      if (allNull) {
+        alert('Cart is empty! Please select some items to purchase.');
+        window.location.href = "./products_display.html?product_type=Group";
+      }
+    }
 
     //Quantities Array
     var quantities = [];
@@ -49,27 +60,17 @@
 
 <!--form to post cart quantity updates-->
 <form id="updateCart" action="./update_cart" method="POST">
-    
-    <h1>SHINee Album Shop</h1>
 
-    <!--Nav bar-->
-    <div class="navbar">
-      <img src="./images/logo.png" class="logo">
-      <script>
-        for (let key in products) {
-          document.write(`<li style="list-style-type: none;"><a href="./products_display.html?product_type=${key}">${key}</a></li>
-          `);
-        }
-      </script>
-      <div class="login">
-        <a onclick="window.location.href = 'login.html'">Login</a>
-      </div>
-    </div>
-    <div class="cart_icon">
-      <a href="./cart.html">
-        <i class='fas fa-shopping-cart'></i>
-      </a>
-    </div>
+  <h1>SHINee Album Shop</h1>
+
+  <!--Nav bar-->
+  <div class="navbar">
+
+    <script>navBar()</script>
+    <!--Login/logout according to cookies, assisted by prof Port-->
+    <script>loginButton()</script>
+
+  </div>
 
   <body>
     <!------------------------------->
@@ -154,15 +155,21 @@
       <br>
       <input type="submit" class="purchase_button" id="purchase_button" value="Update Cart">
     </div>
-    <a class="home-button" href="/index.html">Home</a>
-
-    <!-- shipping policy -->
-    <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under
-      $80
-      will be charged a flat rate of $10 per order. &#8415;</h3>
-    <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
-  </body>
 </form>
+
+<form id="checkout" action="./checkout" method="POST">
+  <input type="submit" class="checkout_button" id="checkout_button" value="Checkout">
+</form>
+
+<a class="home-button" href="/index.html">Home</a>
+
+
+<!-- shipping policy -->
+<h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under
+  $80
+  will be charged a flat rate of $10 per order. &#8415;</h3>
+<footer>&copy; 2023 Monica's SHINee Album Shop</footer>
+</body>
 
 <script>
   function findNonNegInt(q, returnErrors = false) { //the function returns non-negative integers in the object.

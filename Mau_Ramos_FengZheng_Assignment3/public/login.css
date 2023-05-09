@@ -5,18 +5,20 @@ Date: 5/12/2023
 Description: CSS stylesheet for login page
  */
 
-/* Shop name */
-h1{
-    font-family: 'Palanquin-Dark', sans-serif;
+/* Header styling */
+h1 {
+    align-items: center;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 70px;
+    background-color: rgb(15, 106, 106);
+    color:rgb(200, 246, 249);
     font-size: 50px;
-    margin-top: 20px;
-    margin-bottom: -10px;
-    background-color: #c1e6e6;
-    padding-bottom: 1px;
-    padding-top: 1px;
-    color:rgb(55, 104, 99);
-    justify-items: center;
-    height: 110px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 100%;
 }
 
 h2 {
@@ -171,4 +173,33 @@ table td {
     background-color: #ffffff;
     border-color: rgb(62, 107, 104);
     color: rgb(62, 107, 104);
+}
+
+a{
+    display: block;
+    background-color: rgb(62, 107, 104);
+    color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;    
+    font-size: 17px;
+    border-width: 1.5px;
+    padding: 10px 20px;
+    margin: 0 auto;
+    width: 60px;
+}
+
+li a:link,
+li a:visited,
+#home_button a:link,
+#home_button a:visited {
+  color: rgb(15, 106, 106);
+  text-decoration: none
+}
+
+li a:hover,
+li a:active, 
+#home_button a:hover, 
+#home_button a:active {
+    color: rgb(0, 0, 0);
 }
