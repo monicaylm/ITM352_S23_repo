@@ -122,6 +122,12 @@ li a:active,
     top: 102px;
 }
 
+.admin {
+    position: absolute;
+    right: 200px;
+    top: 115px;
+}
+
 i {
     font-size: 30px;
     color: rgb(15, 106, 106);
