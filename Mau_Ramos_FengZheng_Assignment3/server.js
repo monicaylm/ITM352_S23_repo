@@ -677,8 +677,8 @@ app.post("/checkout", function (request, response, next) {
   <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
 `;
 
-// parts referenced from assignment 3 code example 
-// set up mail server https://mailtrap.io/blog/nodemailer-gmail/
+// referenced from assignment 3 code example 
+// set up mail server
         // create a transporter variable for nodemailer
         var transporter = nodemailer.createTransport({
             host: "mail.hawaii.edu",
