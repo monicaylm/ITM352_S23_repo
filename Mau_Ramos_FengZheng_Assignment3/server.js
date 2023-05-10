@@ -125,9 +125,7 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
             Password: <input type="text" name="user_data[${user_email}][password]" value="${
 			user_data[user_email].password
 		}">
-            Admin: <input type="text" name="user_data[${user_email}][admin]" value="${
-			user_data[user_email].admin ? user_data[user_email].admin : false
-		}">
+            Admin: <input type="checkbox" name="user_data[${user_email}][admin]" ${user_data[user_email].admin ? 'checked' : ''}>
             Delete account?: <input type="checkbox" name="delete[${user_email}]">
             <br><br>
             `;
@@ -140,11 +138,12 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 	  Email: <input type="text" name="new_user_email">
       Name: <input type="text" name="new_user_name">
       Password: <input type="text" name="new_user_password">
-      Admin: <input type="text" name="new_user_admin">
+      Admin: <input type="checkbox" name="new_user_admin">
       <br><br>`;
 
 	// append a submit button
 	str += '<input type="submit"></form>';
+	str += '<input type="button" size="40" value="Return to Admin" onclick="location.href=\'/admin\'">'
 	response.send(str);
 });
 
@@ -168,7 +167,7 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 		const new_user_data = {
 			name: request.body.new_user_name,
 			password: request.body.new_user_password,
-			admin: request.body.new_user_admin || false,
+			admin: request.body.new_user_admin == "",
 		};
 		user_data[new_email] = new_user_data;
 	}
@@ -268,7 +267,7 @@ function authAdmin(request, response, next) {
 		return;
 	}
 	// check if user logged in is an admin, if not, send message
-	if (user_data[request.cookies.userid].admin == false) {
+	if (user_data[request.cookies.userid].admin == '') {
 		response.send("You are not an authorized administrator!");
 		return;
 	}
@@ -279,12 +278,12 @@ app.post("/isAdmin", authAdmin, function (request, response, next) {
 	// check if user is logged in, else, send to login
 	if (typeof request.cookies.userid != "undefined") {
 		// check if user logged in is an admin, if not, send message
-		if (user_data[request.cookies.userid].admin == true) {
-			response.json({ is_admin: true });
+		if (user_data[request.cookies.userid].admin == 'on') {
+			response.json({ is_admin: 'on' });
 			return;
 		}
 	} else {
-		response.json({ is_admin: false });
+		response.json({ is_admin: '' });
 	}
 });
 
