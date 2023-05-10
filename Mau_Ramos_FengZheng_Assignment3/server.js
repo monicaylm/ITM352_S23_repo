@@ -125,7 +125,9 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
             Password: <input type="text" name="user_data[${user_email}][password]" value="${
 			user_data[user_email].password
 		}">
-            Admin: <input type="checkbox" name="user_data[${user_email}][admin]" ${user_data[user_email].admin ? 'checked' : ''}>
+            Admin: <input type="text" name="user_data[${user_email}][admin]" value="${
+				user_data[user_email].admin ? user_data[user_email].admin : false
+			}">
             Delete account?: <input type="checkbox" name="delete[${user_email}]">
             <br><br>
             `;
@@ -138,7 +140,7 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 	  Email: <input type="text" name="new_user_email">
       Name: <input type="text" name="new_user_name">
       Password: <input type="text" name="new_user_password">
-      Admin: <input type="checkbox" name="new_user_admin">
+      Admin: <input type="textbox" name="new_user_admin">
       <br><br>`;
 
 	// append a submit button
@@ -167,7 +169,7 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 		const new_user_data = {
 			name: request.body.new_user_name,
 			password: request.body.new_user_password,
-			admin: request.body.new_user_admin == "",
+			admin: request.body.new_user_admin || false,
 		};
 		user_data[new_email] = new_user_data;
 	}
@@ -267,7 +269,7 @@ function authAdmin(request, response, next) {
 		return;
 	}
 	// check if user logged in is an admin, if not, send message
-	if (user_data[request.cookies.userid].admin == '') {
+	if (user_data[request.cookies.userid].admin == false) {
 		response.send("You are not an authorized administrator!");
 		return;
 	}
@@ -278,12 +280,12 @@ app.post("/isAdmin", authAdmin, function (request, response, next) {
 	// check if user is logged in, else, send to login
 	if (typeof request.cookies.userid != "undefined") {
 		// check if user logged in is an admin, if not, send message
-		if (user_data[request.cookies.userid].admin == 'on') {
-			response.json({ is_admin: 'on' });
+		if (user_data[request.cookies.userid].admin == true) {
+			response.json({ is_admin: true });
 			return;
 		}
 	} else {
-		response.json({ is_admin: '' });
+		response.json({ is_admin: false });
 	}
 });
 
@@ -554,6 +556,7 @@ app.post("/register", function (request, response, next) {
 		user_data[username] = {};
 		user_data[username].name = request.body.name;
 		user_data[username].password = encrypt(request.body.password);
+		user_data[username].admin = false;
 		fs.writeFileSync(user_data_filename, JSON.stringify(user_data));
 
 		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
