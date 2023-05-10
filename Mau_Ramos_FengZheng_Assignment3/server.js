@@ -105,7 +105,10 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 
 	// append an empty row for users to add a new account
 	str +=
-		`Email: <input type="text" name="new_user_email">
+		`
+	  Register a new user:
+	  <br><br>
+	  Email: <input type="text" name="new_user_email">
       Name: <input type="text" name="new_user_name">
       Password: <input type="text" name="new_user_password">
       Admin: <input type="text" name="new_user_admin">
