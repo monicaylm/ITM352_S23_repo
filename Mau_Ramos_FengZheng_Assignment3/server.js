@@ -14,10 +14,9 @@ var url = require("url");
 
 // load file system interface
 var fs = require("fs");
-var nodemailer = require('nodemailer');
+var nodemailer = require("nodemailer");
 
 var session = require("express-session");
-
 
 // cookie parser
 var cookieParser = require("cookie-parser");
@@ -28,26 +27,26 @@ app.use(cookieParser());
 // this allows you to put anything in here, you have to choose a string to server as the "key" to encrypt and decrypt
 let secrateKey = "secrateKey";
 //Requires crypto library
-const crypto = require('crypto');
+const crypto = require("crypto");
 
 // function to encrypt the text
 function encrypt(text) {
-   encryptalgo = crypto.createCipher('aes192', secrateKey);
-   let encrypted = encryptalgo.update(text, 'utf8', 'hex');
-   encrypted += encryptalgo.final('hex');
-   return encrypted;
+	encryptalgo = crypto.createCipher("aes192", secrateKey);
+	let encrypted = encryptalgo.update(text, "utf8", "hex");
+	encrypted += encryptalgo.final("hex");
+	return encrypted;
 }
 
 // function to decrypt text
 function decrypt(encrypted) {
-   decryptalgo = crypto.createDecipher('aes192', secrateKey);
-   let decrypted = decryptalgo.update(encrypted, 'hex', 'utf8');
-   decrypted += decryptalgo.final('utf8');
-   return decrypted;
+	decryptalgo = crypto.createDecipher("aes192", secrateKey);
+	let decrypted = decryptalgo.update(encrypted, "hex", "utf8");
+	decrypted += decryptalgo.final("utf8");
+	return decrypted;
 }
 
 // checks to see encrypted version of password in the terminal
-console.log(encrypt('brandon'));
+console.log(encrypt("brandon"));
 
 app.use(
 	session({ secret: "MySecretKey", resave: true, saveUninitialized: true })
@@ -125,9 +124,15 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
             Password: <input type="text" name="user_data[${user_email}][password]" value="${
 			user_data[user_email].password
 		}">
+<<<<<<< Updated upstream
             Admin: <input type="text" name="user_data[${user_email}][admin]" value="${
 				user_data[user_email].admin ? user_data[user_email].admin : false
 			}">
+=======
+            Admin: <input type="checkbox" name="user_data[${user_email}][admin]" ${
+			user_data[user_email].admin ? "checked" : ""
+		}>
+>>>>>>> Stashed changes
             Delete account?: <input type="checkbox" name="delete[${user_email}]">
             <br><br>
             `;
@@ -145,7 +150,8 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 
 	// append a submit button
 	str += '<input type="submit"></form>';
-	str += '<input type="button" size="40" value="Return to Admin" onclick="location.href=\'/admin\'">'
+	str +=
+		'<input type="button" size="40" value="Return to Admin" onclick="location.href=\'/admin\'">';
 	response.send(str);
 });
 
@@ -269,7 +275,11 @@ function authAdmin(request, response, next) {
 		return;
 	}
 	// check if user logged in is an admin, if not, send message
+<<<<<<< Updated upstream
 	if (user_data[request.cookies.userid].admin == false) {
+=======
+	if (user_data[request.cookies.userid].admin == "") {
+>>>>>>> Stashed changes
 		response.send("You are not an authorized administrator!");
 		return;
 	}
@@ -280,12 +290,21 @@ app.post("/isAdmin", authAdmin, function (request, response, next) {
 	// check if user is logged in, else, send to login
 	if (typeof request.cookies.userid != "undefined") {
 		// check if user logged in is an admin, if not, send message
+<<<<<<< Updated upstream
 		if (user_data[request.cookies.userid].admin == true) {
 			response.json({ is_admin: true });
 			return;
 		}
 	} else {
 		response.json({ is_admin: false });
+=======
+		if (user_data[request.cookies.userid].admin == "on") {
+			response.json({ is_admin: "on" });
+			return;
+		}
+	} else {
+		response.json({ is_admin: "" });
+>>>>>>> Stashed changes
 	}
 });
 
@@ -547,9 +566,9 @@ app.post("/register", function (request, response, next) {
 		for (let product_type in products) {
 			for (let i in products[product_type]) {
 				// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
-				 //products[product_type][i].quantity_available -=
-					//selected_qty[`quantity${i}`];
-			} 
+				//products[product_type][i].quantity_available -=
+				//selected_qty[`quantity${i}`];
+			}
 		}
 
 		// write updated data to user_data_filename (user_data.json)
@@ -586,7 +605,6 @@ app.post("/checkout", function (request, response, next) {
 
 		// go to invoice if user cookies match
 	} else {
-
 		var name = request.cookies["name"];
 		var userid = request.cookies["userid"];
 
@@ -627,7 +645,9 @@ app.post("/checkout", function (request, response, next) {
 	<tr>
 		<td height="70px" width="11%">
 	 	<div class="img-mouseover">
-	   		<img src="./images/${products[product_type][i].image}" height="50px" width="50px">
+	   		<img src="./images/${
+					products[product_type][i].image
+				}" height="50px" width="50px">
 	   	</div></td>
 	 	<td width="26%">${products[product_type][i].name}</td>
 	 	<td align="center" width="11%">${quantities}</td>
@@ -680,59 +700,57 @@ app.post("/checkout", function (request, response, next) {
   <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
 `;
 
-// referenced from assignment 3 code example 
-// set up mail server
-        // create a transporter variable for nodemailer
-        var transporter = nodemailer.createTransport({
-            host: "mail.hawaii.edu",
-    		port: 25,
-    		secure: false, // use TLS
-    		tls: {
-      			// do not fail on invalid certs
-      			rejectUnauthorized: false
-    		}
-        });
+		// parts referenced from assignment 3 code example
+		// set up mail server https://mailtrap.io/blog/nodemailer-gmail/
+		// create a transporter variable for nodemailer
+		var transporter = nodemailer.createTransport({
+			host: "mail.hawaii.edu",
+			port: 25,
+			secure: false, // use TLS
+			tls: {
+				// do not fail on invalid certs
+				rejectUnauthorized: false,
+			},
+		});
 
 		var user_email = userid;
-        // email format -> sends the invoice
-        var mailOptions = {
-            from: "mylm@hawaii.edu", //sender
-            to: user_email, //receiver 
-            subject: 'Thank you for your order!', // subject heading
-            html: str //html body (invoice) 
-        };
+		// email format -> sends the invoice
+		var mailOptions = {
+			from: "mylm@hawaii.edu", //sender
+			to: user_email, //receiver
+			subject: "Thank you for your order!", // subject heading
+			html: str, //html body (invoice)
+		};
 
-        // send email if successful, if not, alert an error message
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-
-                email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent');</script>`;
-                response.send(str + email_msg);
-
-            } else {
-                console.log('Email sent to: ' + info.response);
-                email_msg = `<script>alert('Your invoice was mailed to ${userid}');</script>`;
-                response.send(str + email_msg);
-            }
-        });
-    };
+		// send email if successful, if not, alert an error message
+		transporter.sendMail(mailOptions, function (error, info) {
+			if (error) {
+				email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent');</script>`;
+				response.send(str + email_msg);
+			} else {
+				console.log("Email sent to: " + info.response);
+				email_msg = `<script>alert('Your invoice was mailed to ${userid}');</script>`;
+				response.send(str + email_msg);
+			}
+		});
+	}
 
 	for (let product_type in request.session.cart) {
 		for (i in request.session.cart[product_type]) {
 			if (request.session.cart[product_type][i] != null) {
-			// remove selected quantities from quantity available
+				// remove selected quantities from quantity available
 
-			products[product_type][i].quantity_available -=
-				request.session.cart[product_type][i];
-			products[product_type][i].quantity_sold +=
-				request.session.cart[product_type][i];
+				products[product_type][i].quantity_available -=
+					request.session.cart[product_type][i];
+				products[product_type][i].quantity_sold +=
+					request.session.cart[product_type][i];
 			}
 		}
-	};
+	}
 
-		response.clearCookie("userid");
-		response.clearCookie("name");
-		request.session.destroy();
+	response.clearCookie("userid");
+	response.clearCookie("name");
+	request.session.destroy();
 });
 
 // route all other GET requests to files in public
