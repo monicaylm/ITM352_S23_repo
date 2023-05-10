@@ -306,7 +306,7 @@ app.post("/addToCart", function (request, response, next) {
 	}
 	// check if the array at the given index is undefined, if so initialize to null
 	if (typeof request.session.cart[product_type][i] === "undefined") {
-		request.session.cart[product_type][i] = null;
+		request.session.cart[product_type][i] = 0;
 	}
 
 	// check if quantity is blank or a non neg integer, if so then output errors
@@ -584,18 +584,6 @@ app.post("/checkout", function (request, response, next) {
 
 		// go to invoice if user cookies match
 	} else {
-		/*for (let product_type in products) {
-			for (i in products[product_type]) {
-				if (request.session.cart[product_type][i] > 0) {}
-				// remove selected quantities from quantity available
-
-				products[product_type][i].quantity_available -=
-					request.session.cart[product_type][i];
-				products[product_type][i].quantity_sold +=
-					request.session.cart[product_type][i];
-			
-			}
-		};*/
 
 		var name = request.cookies["name"];
 		var userid = request.cookies["userid"];
@@ -686,7 +674,7 @@ app.post("/checkout", function (request, response, next) {
       </tbody>
     </table>
   </div>
-  <a class="home-button" href="/index.html">Home</a>
+  <a class="home-button" href="/index.html"><i class="fa fa-home"></i> Home</li></a>
   <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
 `;
 
@@ -726,6 +714,20 @@ app.post("/checkout", function (request, response, next) {
             }
         });
     };
+
+	for (let product_type in request.session.cart) {
+		for (i in request.session.cart[product_type]) {
+			if (request.session.cart[product_type][i] != null) {
+			// remove selected quantities from quantity available
+
+			products[product_type][i].quantity_available -=
+				request.session.cart[product_type][i];
+			products[product_type][i].quantity_sold +=
+				request.session.cart[product_type][i];
+			}
+		}
+	};
+
 		response.clearCookie("userid");
 		response.clearCookie("name");
 		request.session.destroy();

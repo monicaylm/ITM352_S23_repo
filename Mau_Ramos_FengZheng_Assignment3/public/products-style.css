@@ -78,7 +78,19 @@ main {
     align-items: center;
 }
 
-.item:hover{
+.glow {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 175px;
+    font-size: medium;
+    height: 410px;
+    border-radius: 10px;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.glow:hover{
     box-shadow: 0 0 15px 0 rgba(255, 255, 255, 0.581);
     background-color: rgb(214, 243, 238);
     border: 1px solid rgb(255, 255, 255)

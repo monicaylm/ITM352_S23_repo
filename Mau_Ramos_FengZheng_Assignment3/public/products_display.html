@@ -92,27 +92,27 @@
         title="Type in Album name"><i class="fa fa-search"></i>
     </div>
 
+    <script>
+        // received help from Professor Port
+        // this displays the admin button only if a user is logged in and their "admin" = true
+        loadJSON('isAdmin', function (response) {
+            // Parsing JSON string into object
+            obj = JSON.parse(response);
+            console.log(obj);
+    
+            if (obj.is_admin == true) {
+                document.write(`
+                <div class="admin">
+                 <a href="./admin">ADMIN</a>
+                 </div>
+                 `);
+            }
+        }); 
+    </script>
+
     <!--Login/logout according to cookies, assisted by prof Port-->
     <script>loginButton()</script>
 </div>
-
-<script>
-    // received help from Professor Port
-    // this displays the admin button only if a user is logged in and their "admin" = true
-    loadJSON('isAdmin', function (response) {
-        // Parsing JSON string into object
-        obj = JSON.parse(response);
-        console.log(obj);
-
-        if (obj.is_admin == true) {
-            document.write(`
-            <div class="admin">
-             <a href="./admin">ADMIN</a>
-             </div>
-             `);
-        }
-    }); 
-</script>
 
 <body>
     <form id="qtyForm">
@@ -129,6 +129,7 @@
                     for (i = 0; i < products[product_type].length; i++) {
                         document.write(`
                         <section class="item">
+                        <section class="glow">
                         <h2>${products[product_type][i].name}</h2>
                         <img src ="./images/${products[product_type][i].image}">
                         <div class="details">
@@ -143,7 +144,7 @@
                         <br>
                         <span class="errors-span" id="quantity${i}_errors_span"></span>
                         </div>
-                        
+                        </section>
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </section>
                      `)
