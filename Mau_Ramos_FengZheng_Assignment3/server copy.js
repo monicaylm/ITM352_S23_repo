@@ -22,32 +22,6 @@ var session = require("express-session");
 var cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
-// encryption and decryption
-// this code is referenced from stackoverflow: https://stackoverflow.com/questions/51280576/trying-to-add-data-in-unsupported-state-at-cipher-update and Professor Port for clarification
-// this allows you to put anything in here, you have to choose a string to server as the "key" to encrypt and decrypt
-let secrateKey = "secrateKey";
-//Requires crypto library
-const crypto = require('crypto');
-
-// function to encrypt the text
-function encrypt(text) {
-   encryptalgo = crypto.createCipher('aes192', secrateKey);
-   let encrypted = encryptalgo.update(text, 'utf8', 'hex');
-   encrypted += encryptalgo.final('hex');
-   return encrypted;
-}
-
-// function to decrypt text
-function decrypt(encrypted) {
-   decryptalgo = crypto.createDecipher('aes192', secrateKey);
-   let decrypted = decryptalgo.update(encrypted, 'hex', 'utf8');
-   decrypted += decryptalgo.final('utf8');
-   return decrypted;
-}
-
-// checks to see encrypted version of password in the terminal
-console.log(encrypt('grader'));
-
 app.use(
 	session({ secret: "MySecretKey", resave: true, saveUninitialized: true })
 );
@@ -133,7 +107,8 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 	}
 
 	// append an empty row for users to add a new account
-	str += `
+	str +=
+		`
 	  Register a new user:
 	  <br><br>
 	  Email: <input type="text" name="new_user_email">
@@ -394,7 +369,7 @@ app.post("/login", function (request, response, next) {
 
 	// set values for username and password, formats username as lowercase
 	var username = request.body["username"].toLowerCase();
-	var encryptedPassword = encrypt(request.body.password);
+	var password = request.body["password"];
 
 	// check if username field is blank
 	if (username == "") {
@@ -409,11 +384,11 @@ app.post("/login", function (request, response, next) {
 		errors[`username_error`] = `${username} is not a registered email!`;
 
 		// check if password is blank
-	} else if (user_data[username].password == "") {
+	} else if (password == "") {
 		errors[`password_error`] = `Enter your password!`;
 
 		// check to see if user's password matches password saved, entered
-	} else if (user_data[username].password !== encryptedPassword) {
+	} else if (password !== user_data[username].password) {
 		errors[`password_error`] = `Password is incorrect!`;
 	} else {
 		var name = user_data[username].name;
@@ -449,6 +424,7 @@ app.get("/logout", function (request, response, next) {
 });
 
 // referenced from assignment 2 code examples on class website
+
 // post registration page, referenced from assignment 2 workshop code
 app.post("/register", function (request, response, next) {
 	// set variables as the input field values in the request body
@@ -545,15 +521,15 @@ app.post("/register", function (request, response, next) {
 		for (let product_type in products) {
 			for (let i in products[product_type]) {
 				// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
-				 //products[product_type][i].quantity_available -=
-					//selected_qty[`quantity${i}`];
-			} 
+				products[product_type][i].quantity_available -=
+					selected_qty[`quantity${i}`];
+			}
 		}
 
 		// write updated data to user_data_filename (user_data.json)
 		user_data[username] = {};
 		user_data[username].name = request.body.name;
-		user_data[username].password = encrypt(request.body.password);
+		user_data[username].password = request.body.password;
 		fs.writeFileSync(user_data_filename, JSON.stringify(user_data));
 
 		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
@@ -573,6 +549,7 @@ app.post("/register", function (request, response, next) {
 
 // checkout, to invoice
 app.post("/checkout", function (request, response, next) {
+	
 	// if user is not logged in, display alert and redirect to login page
 	if (
 		typeof request.cookies["userid"] === "undefined" ||
@@ -580,10 +557,11 @@ app.post("/checkout", function (request, response, next) {
 	) {
 		var message = `<script>alert('You must sign in or register an account before making a purchase!'); location.href="./login.html"</script>`;
 		response.send(message);
-
-		// go to invoice if user cookies match
-	} else {
-		/*for (let product_type in products) {
+	
+	// go to invoice
+	} else if (request.cookies["userid"]) {
+		
+		for (let product_type in products) {
 			for (i in products[product_type]) {
 				// remove selected quantities from quantity available
 
@@ -592,104 +570,8 @@ app.post("/checkout", function (request, response, next) {
 				products[product_type][i].quantity_sold +=
 					request.session.cart[product_type][i];
 			}
-		}*/
-		var name = request.cookies["name"];
-		var userid = request.cookies["userid"];
-
-		str = `<link href="invoice.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
-	
-	<h2>Thank you ${name} for your purchase! Your invoice has been emailed to ${userid}.</h2>
-	
-	<div>
-      <table border="2">
-        <tbody>
-            <th style="text-align: center;" width="11%">Image</th>
-            <th style="text-align: center;" width="26%">Item</th>
-            <th style="text-align: center;" width="11%">Quantity</th>
-            <th style="text-align: center;" width="13%">Price</th>
-            <th style="text-align: center;" width="39%">Extended Price</th>
-          </tr>`;
-
-		var cart = request.session.cart;
-
-		// Subtotal
-		var subtotal = 0;
-
-		// generates rows with prices based on quantities
-		subtotal = 0;
-		for (let product_type in cart) {
-			for (let i = 0; i < cart[product_type].length; i++) {
-				var quantities = cart[product_type][i];
-				if (quantities > 0) {
-					// Setup conditionals
-					extended_price = quantities * products[product_type][i].price; // Compute extended price
-					subtotal += extended_price; // Add subtotal back to itself
-
-					str += `
-	<tr>
-		<td height="70px" width="11%">
-	 	<div class="img-mouseover">
-	   		<img src="./images/${products[product_type][i].image}" height="50px" width="50px">
-	   		<div class="product-description">
-				${products[product_type][i].description}
-			</div>
-	   	</div></td>
-	 	<td width="26%">${products[product_type][i].name}</td>
-	 	<td align="center" width="11%">${quantities}</td>
-	 	<td width="13%">$${products[product_type][i].price}</td>
-	 	<td width="39%">$${extended_price.toFixed(2)}</td>
-   	</tr>
-          `;
-				}
-			}
 		}
-
-		// Tax rate
-		var tax_rate = 0.04712;
-		var tax = tax_rate * subtotal;
-
-		// Compute shipping
-		if (subtotal <= 80) {
-			shipping = 10;
-		} else {
-			shipping = 0;
-		}
-
-		// Grand total
-		var total = subtotal + tax + shipping;
-
-		str += `
-          <tr>
-            <td colspan="5" width="100%">&nbsp;</td>
-          </tr>
-          <tr>
-            <td style="text-align: right;" colspan="3" width="67%">Subtotal</td>
-            <td colspan="2" width="54%">$${subtotal.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td style="text-align: right;" colspan="3" width="67%">Tax @ 4.71%</span></td>
-            <td colspan="2" width="54%">$${tax.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td style="text-align: right;" colspan="3" width="67%">Shipping</span></td>
-            <td colspan="2" width="54%">$${shipping}</td>
-          </tr>
-          <tr>
-            <td style="text-align: right;" colspan="3" width="67%"><b>Total</b></td>
-            <td colspan="2" width="54%"><b>$${total.toFixed(2)}</b></td>
-          </tr>
-      </tbody>
-    </table>
-  </div>
-  <a class="home-button" href="/index.html">Home</a>
-  <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under $80 will be charged a flat rate of $10 per order. &#8415;</h3>
-  <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
-`;
-		response.send(str);
+	
 		response.clearCookie("userid");
 		response.clearCookie("name");
 		request.session.destroy();

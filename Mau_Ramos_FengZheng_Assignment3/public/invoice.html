@@ -22,17 +22,6 @@
     <script>
 
       // Greet user (personalize) 
-      /*window.onload = function () {
-        if (params.has('name')) {
-            alert(`Thank you ${params.get('name')} for your purchase! Please come again soon!`);
-        }
-        else { // Security: must sign in before accessing the invoice (reference Prof.)
-            alert('You must sign in or register an account before making a purchase!');
-            window.location = "./login.html";
-        }
-      }*/
-
-      // Greet user (personalize) 
       window.onload = function () {
         if (getCookie("name") !== "") {
             alert(`Your order has been placed successfully!`);
