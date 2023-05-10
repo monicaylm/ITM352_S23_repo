@@ -70,5 +70,35 @@ li a:active,
 i {
     font-size: 30px;
     color: rgb(15, 106, 106);
+}
 
+/* CSS for admin button */
+.admin {
+    display: inline-block;
+    font-size: 15px;
+    color: rgb(15, 106, 106);
+    border: none;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+    padding: 10px 20px;
+    width: auto;
+    height: 21px;
+    text-decoration: none;
+    cursor: pointer;
+    right: 0px;
+}
+
+li a:link,
+li a:visited,
+.admin a:link,
+.admin a:visited {
+  color: rgb(15, 106, 106);
+  text-decoration: none
+}
+
+li a:hover,
+li a:active, 
+.admin a:hover, 
+.admin a:active {
+    color: rgb(0, 0, 0);
 }
