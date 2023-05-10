@@ -66,7 +66,6 @@ app.get("/products_data.js", function (request, response, next) {
 
 // Admin page
 app.get("/admin", authAdmin, function (request, response, next) {
-
 	// present the admin page
 	str = `
     <body>
@@ -82,7 +81,6 @@ app.get("/admin", authAdmin, function (request, response, next) {
 
 	response.send(str);
 	return;
-
 });
 
 app.get("/manageusers", authAdmin, function (request, response, next) {
@@ -93,14 +91,19 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 	// loop through product type in products
 	for (var user_email in user_data) {
 		// append a string of HTML to str
-		str +=
-			`Email: <input type="text" name="update[${user_email}]" value="${user_email}">
-            Name: <input type="text" name="user_data[${user_email}][name]" value="${user_data[user_email].name}">
-            Password: <input type="text" name="user_data[${user_email}][password]" value="${user_data[user_email].password}">
-            Admin: <input type="text" name="user_data[${user_email}][admin]" value="${user_data[user_email].admin ? user_data[user_email].admin : false}">
+		str += `Email: <input type="text" name="update[${user_email}]" value="${user_email}">
+            Name: <input type="text" name="user_data[${user_email}][name]" value="${
+			user_data[user_email].name
+		}">
+            Password: <input type="text" name="user_data[${user_email}][password]" value="${
+			user_data[user_email].password
+		}">
+            Admin: <input type="text" name="user_data[${user_email}][admin]" value="${
+			user_data[user_email].admin ? user_data[user_email].admin : false
+		}">
             Delete account?: <input type="checkbox" name="delete[${user_email}]">
             <br><br>
-            `
+            `;
 	}
 
 	// append an empty row for users to add a new account
@@ -139,7 +142,7 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 		const new_user_data = {
 			name: request.body.new_user_name,
 			password: request.body.new_user_password,
-			admin: request.body.new_user_admin || false
+			admin: request.body.new_user_admin || false,
 		};
 		user_data[new_email] = new_user_data;
 	}
@@ -158,19 +161,17 @@ app.get("/manageproducts", authAdmin, function (request, response, next) {
 		// loop through index of each product in each product type
 		for (var i in products[prod_type]) {
 			// append a string of HTML to str
-			str +=
-				`
+			str += `
                 ${prod_type}[${i}][name]: <input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}">
                 Price: $<input type="text" name="prod_info[${prod_type}][${i}][price]" value="${products[prod_type][i].price}">
             Inventory: <input type="text" name="prod_info[${prod_type}][${i}][quantity_available]" value="${products[prod_type][i].quantity_available}">
             Description: <input type="text" name="prod_info[${prod_type}][${i}][description]" value="${products[prod_type][i].description}">
             Delete Inventory?: <input type="checkbox" name="delete[${prod_type}][${i}]">
-            <br><br>`
+            <br><br>`;
 		}
 	}
 	// add an empty row for new product
-	str +=
-		`New product:
+	str += `New product:
            <br>
            Product type: <input type="text" name="new_prod_type">
            Product name: <input type="text" name="new_prod_name">
@@ -188,7 +189,15 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 	console.log(JSON.stringify(request.body));
 
 	// the following is taken from ChatGPT
-	const { prod_info, delete: toDelete, new_prod_type, new_prod_name, new_prod_price, new_prod_inventory, new_prod_description } = request.body;
+	const {
+		prod_info,
+		delete: toDelete,
+		new_prod_type,
+		new_prod_name,
+		new_prod_price,
+		new_prod_inventory,
+		new_prod_description,
+	} = request.body;
 
 	// remove products that were selected for deletion
 	for (const prod_type in toDelete) {
@@ -202,7 +211,13 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 
 	// this was taken from ChatGPT
 	// add new product
-	if (new_prod_type && new_prod_name && new_prod_price && new_prod_inventory && new_prod_description) {
+	if (
+		new_prod_type &&
+		new_prod_name &&
+		new_prod_price &&
+		new_prod_inventory &&
+		new_prod_description
+	) {
 		if (!products[new_prod_type]) {
 			products[new_prod_type] = [];
 		}
@@ -210,7 +225,7 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 			name: new_prod_name,
 			price: new_prod_price,
 			quantity_available: new_prod_inventory,
-			description: new_prod_description
+			description: new_prod_description,
 		});
 	}
 
@@ -222,13 +237,13 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 function authAdmin(request, response, next) {
 	console.log(request.cookies);
 	// check if user is logged in, else, send to login
-	if (typeof request.cookies.userid == 'undefined') {
-		response.redirect('./login.html');
+	if (typeof request.cookies.userid == "undefined") {
+		response.redirect("./login.html");
 		return;
 	}
 	// check if user logged in is an admin, if not, send message
 	if (user_data[request.cookies.userid].admin == false) {
-		response.send('You are not an authorized administrator!');
+		response.send("You are not an authorized administrator!");
 		return;
 	}
 	next();
@@ -236,15 +251,14 @@ function authAdmin(request, response, next) {
 
 app.post("/isAdmin", authAdmin, function (request, response, next) {
 	// check if user is logged in, else, send to login
-	if (typeof request.cookies.userid != 'undefined') {
-
+	if (typeof request.cookies.userid != "undefined") {
 		// check if user logged in is an admin, if not, send message
 		if (user_data[request.cookies.userid].admin == true) {
-			response.json({'is_admin':true});
+			response.json({ is_admin: true });
 			return;
 		}
 	} else {
-		response.json({'is_admin':false});
+		response.json({ is_admin: false });
 	}
 });
 
@@ -535,23 +549,25 @@ app.post("/register", function (request, response, next) {
 
 // checkout, to invoice
 app.post("/checkout", function (request, response, next) {
-
 	// if user is not logged in, display alert and redirect to login page
-	if (typeof request.cookies["userid"] === "undefined" || request.cookies["userid"] == '') {
+	if (
+		typeof request.cookies["userid"] === "undefined" ||
+		request.cookies["userid"] == ""
+	) {
 		var message = `<script>alert('You must sign in or register an account before making a purchase!'); location.href="./login.html"</script>`;
 		response.send(message);
 	} else if (request.cookies["userid"]) {
 		for (let product_type in products) {
 			for (i in products[product_type]) {
 				// remove selected quantities from quantity available
-				
+
 				products[product_type][i].quantity_available -=
 					request.session.cart[product_type][i];
-				products[product_type][i].quantity_sold += request.session.cart[product_type][i];
-				
+				products[product_type][i].quantity_sold +=
+					request.session.cart[product_type][i];
 			}
 		}
-		
+
 		response.redirect("./invoice.html?");
 		response.clearCookie("userid");
 		response.clearCookie("name");
