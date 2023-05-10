@@ -395,7 +395,7 @@ app.post("/login", function (request, response, next) {
 
 	// set values for username and password, formats username as lowercase
 	var username = request.body["username"].toLowerCase();
-	var password = request.body["password"];
+	var encryptedPassword = encrypt(request.body.password);
 
 	// check if username field is blank
 	if (username == "") {
@@ -410,11 +410,11 @@ app.post("/login", function (request, response, next) {
 		errors[`username_error`] = `${username} is not a registered email!`;
 
 		// check if password is blank
-	} else if (password == "") {
+	} else if (user_data[username].password == "") {
 		errors[`password_error`] = `Enter your password!`;
 
 		// check to see if user's password matches password saved, entered
-	} else if (password !== user_data[username].password) {
+	} else if (user_data[username].password !== encryptedPassword) {
 		errors[`password_error`] = `Password is incorrect!`;
 	} else {
 		var name = user_data[username].name;
@@ -450,7 +450,6 @@ app.get("/logout", function (request, response, next) {
 });
 
 // referenced from assignment 2 code examples on class website
-
 // post registration page, referenced from assignment 2 workshop code
 app.post("/register", function (request, response, next) {
 	// set variables as the input field values in the request body
@@ -555,7 +554,7 @@ app.post("/register", function (request, response, next) {
 		// write updated data to user_data_filename (user_data.json)
 		user_data[username] = {};
 		user_data[username].name = request.body.name;
-		user_data[username].password = request.body.password;
+		user_data[username].password = encrypt(request.body.password);
 		fs.writeFileSync(user_data_filename, JSON.stringify(user_data));
 
 		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
