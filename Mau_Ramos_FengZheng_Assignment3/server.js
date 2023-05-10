@@ -27,18 +27,20 @@ app.use(
 );
 
 // code referenced from lab 13 fileio exercise 1a and 1b, set variable for the json file
-var filename = __dirname + "/user_data.json";
+var user_data_filename = __dirname + "/user_data.json";
 
-if (fs.existsSync(filename)) {
+var products_filename = __dirname + "/products.json";
+
+if (fs.existsSync(user_data_filename)) {
 	// read in user data （check that exists)
-	var user_data_obj_JSON = fs.readFileSync(filename, "utf-8");
+	var user_data_obj_JSON = fs.readFileSync(user_data_filename, "utf-8");
 
 	// convert user data JSON to object
 	var user_data = JSON.parse(user_data_obj_JSON);
 
-	// if filename not found
+	// if user_data_filename not found
 } else {
-	console.log(`Hey, I couldn't find ${filename}!`);
+	console.log(`Hey, I couldn't find ${user_data_filename}!`);
 }
 
 // middleware, code based on lab 12 ex. 2c
@@ -63,86 +65,189 @@ app.get("/products_data.js", function (request, response, next) {
 });
 
 // Admin page
-app.get("/admin", function (request, response, next) {
-	// check if session is for Admin, if not ask for admin password
-	if (!request.session.hasOwnProperty("isAdmin")) {
-		str = `
-		<body>
-		Enter the admin password: 
-		<br>
-		<form action="" method="POST">
-		<input type="password" name="password" size="40" placeholder="enter password"><br>
-		<input type="submit" value="Submit" id="submit">
-		</form>
-		</body>
-			`;
+app.get("/admin", authAdmin, function (request, response, next) {
 
-		response.send(str);
-		return;
-	}
 	// present the admin page
 	str = `
-	<body>
-	What do you want to do: 
-	<br>
-	<input type="button" size="40" value="Manage Users" onclick="location.href='./manageusers'">
-	<br>
-	<input type="button" size="40" value="Manage Products" onclick="location.href='./manageproducts'">
-	<br>
-	<input type="button" size="40" value="Logout" onclick="location.href='./products_display.html?product_type=Group'">
-	</body>
-		`;
+    <body>
+    What do you want to do:
+    <br>
+    <input type="button" size="40" value="Manage Users" onclick="location.href='./manageusers'">
+    <br>
+    <input type="button" size="40" value="Manage Products" onclick="location.href='./manageproducts'">
+    <br>
+    <input type="button" size="40" value="Return to Main Page" onclick="location.href='./products_display.html?product_type=Group'">
+    </body>
+        `;
 
 	response.send(str);
 	return;
+
 });
 
-// check admin login
-/* app.post("/admin", function (request, response, next) {
-	if(request.body.password == 'adminpass') {
-		request.session.isAdmin = true;
-		response.redirect('./admin');
-	} else {
-		response.send('Sorry, you are not an authorized admin user');
-	}
-}); */
-
-app.get("/manageusers", function (request, response, next) {
-	var admin = request.body["admin"];
-	// check if user is admin = true
-	if (admin != true) {
-		response.send(`You are not an authorized administrator!`);
-	}
-	response.send("manage users"); // sends response
-});
-
-app.get("/manageproducts", function (request, response, next) {
+app.get("/manageusers", authAdmin, function (request, response, next) {
 	// received help with writing this code from Michelle Zhang
 	// initialize variable str
-	var str = "<form action = './update_products' method='POST'>";
+	var str = "<form action = './updateusers' method='POST'>";
+
 	// loop through product type in products
-	for (var prod_type in products) {
-		// loop through index of each product in each product type
-		for (var i in products[prod_type]) {
-			// append a string of HTML to str
-			str += `${prod_type}[${i}][name]: <input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}">
-			Price: $<input type="text" name="prod_info[${prod_type}][${i}][price]" value="${products[prod_type][i].price}"<br><br>`;
-		}
+	for (var user_email in user_data) {
+		// append a string of HTML to str
+		str +=
+			`Email: <input type="text" name="update[${user_email}]" value="${user_email}">
+            Name: <input type="text" name="user_data[${user_email}][name]" value="${user_data[user_email].name}">
+            Password: <input type="text" name="user_data[${user_email}][password]" value="${user_data[user_email].password}">
+            Admin: <input type="text" name="user_data[${user_email}][admin]" value="${user_data[user_email].admin ? user_data[user_email].admin : false}">
+            Delete account?: <input type="checkbox" name="delete[${user_email}]">
+            <br><br>
+            `
 	}
+
+	// append an empty row for users to add a new account
+	str +=
+		`Email: <input type="text" name="new_user_email">
+      Name: <input type="text" name="new_user_name">
+      Password: <input type="text" name="new_user_password">
+      Admin: <input type="text" name="new_user_admin">
+      <br><br>`;
+
 	// append a submit button
 	str += '<input type="submit"></form>';
 	response.send(str);
 });
 
-/* function authAdmin(request, response, next) {
-	if(!request.session.hasOwnProperty('isAdmin')) {
-		response.redirect('./admin');
-	} else {
-		next();
+app.post("/updateusers", authAdmin, function (request, response, next) {
+	user_data = request.body.user_data;
+	// look for updated email addresses
+	for (let user_email in request.body.update) {
+		if (user_email != request.body.update[user_email]) {
+			user_data[request.body.update[user_email]] = user_data[user_email];
+			delete user_data[user_email];
+		}
 	}
-	
-} */
+	// look for accounts to delete
+	for (let user_email in request.body.delete) {
+		delete user_data[user_email];
+	}
+	// add new user if email exists in request body
+	// this code is adapted from ChatGPT
+	if (request.body.new_user_email) {
+		const new_email = request.body.new_user_email;
+		const new_user_data = {
+			name: request.body.new_user_name,
+			password: request.body.new_user_password,
+			admin: request.body.new_user_admin || false
+		};
+		user_data[new_email] = new_user_data;
+	}
 
+<<<<<<< Updated upstream
+=======
+	// write updated data to user_data_filename (user_data.json)
+	fs.writeFileSync(user_data_filename, JSON.stringify(user_data));
+	response.redirect("./manageusers");
+});
+
+app.get("/manageproducts", authAdmin, function (request, response, next) {
+	// received help with writing this code from Michelle Zhang
+	// initialize variable str
+	var str = "<form action = './updateproducts' method='POST'>";
+	// loop through product type in products
+	for (var prod_type in products) {
+		// loop through index of each product in each product type
+		for (var i in products[prod_type]) {
+			// append a string of HTML to str
+			str +=
+				`
+                ${prod_type}[${i}][name]: <input type="text" name="prod_info[${prod_type}][${i}][name]" value="${products[prod_type][i].name}">
+                Price: $<input type="text" name="prod_info[${prod_type}][${i}][price]" value="${products[prod_type][i].price}">
+            Inventory: <input type="text" name="prod_info[${prod_type}][${i}][quantity_available]" value="${products[prod_type][i].quantity_available}">
+            Description: <input type="text" name="prod_info[${prod_type}][${i}][description]" value="${products[prod_type][i].description}">
+            Delete Inventory?: <input type="checkbox" name="delete[${prod_type}][${i}]">
+            <br><br>`
+		}
+	}
+	// add an empty row for new product
+	str +=
+		`New product:
+           <br>
+           Product type: <input type="text" name="new_prod_type">
+           Product name: <input type="text" name="new_prod_name">
+           Price: $<input type="text" name="new_prod_price">
+           Inventory: <input type="text" name="new_prod_inventory">
+           Description: <input type="text" name="new_prod_description">
+           <br><br>`;
+
+	// append a submit button
+	str += '<input type="submit"></form>';
+	response.send(str);
+});
+
+app.post("/updateproducts", authAdmin, function (request, response, next) {
+	console.log(JSON.stringify(request.body));
+
+	// the following is taken from ChatGPT
+	const { prod_info, delete: toDelete, new_prod_type, new_prod_name, new_prod_price, new_prod_inventory, new_prod_description } = request.body;
+
+	// remove products that were selected for deletion
+	for (const prod_type in toDelete) {
+		for (const i in toDelete[prod_type]) {
+			const index = Number(i);
+			if (toDelete[prod_type][index]) {
+				products[prod_type].splice(index, 1);
+			}
+		}
+	}
+
+	// this was taken from ChatGPT
+	// add new product
+	if (new_prod_type && new_prod_name && new_prod_price && new_prod_inventory && new_prod_description) {
+		if (!products[new_prod_type]) {
+			products[new_prod_type] = [];
+		}
+		products[new_prod_type].push({
+			name: new_prod_name,
+			price: new_prod_price,
+			quantity_available: new_prod_inventory,
+			description: new_prod_description
+		});
+	}
+
+	// write updated data to products.json
+	fs.writeFileSync(products_filename, JSON.stringify(products));
+	response.redirect("./manageproducts");
+});
+
+function authAdmin(request, response, next) {
+	console.log(request.cookies);
+	// check if user is logged in, else, send to login
+	if (typeof request.cookies.userid == 'undefined') {
+		response.redirect('./login.html');
+		return;
+	}
+	// check if user logged in is an admin, if not, send message
+	if (user_data[request.cookies.userid].admin == false) {
+		response.send('You are not an authorized administrator!');
+		return;
+	}
+	next();
+}
+
+app.post("/isAdmin", authAdmin, function (request, response, next) {
+	// check if user is logged in, else, send to login
+	if (typeof request.cookies.userid != 'undefined') {
+
+		// check if user logged in is an admin, if not, send message
+		if (user_data[request.cookies.userid].admin == true) {
+			response.json({'is_admin':true});
+			return;
+		}
+	} else {
+		response.json({'is_admin':false});
+	}
+});
+
+>>>>>>> Stashed changes
 // add selected quantities to cart, assisted by Prof Port
 app.post("/addToCart", function (request, response, next) {
 	console.log(request.body);
@@ -407,11 +512,11 @@ app.post("/register", function (request, response, next) {
 			}
 		}
 
-		// write updated data to filename (user_data.json)
+		// write updated data to user_data_filename (user_data.json)
 		user_data[username] = {};
 		user_data[username].name = request.body.name;
 		user_data[username].password = request.body.password;
-		fs.writeFileSync(filename, JSON.stringify(user_data));
+		fs.writeFileSync(user_data_filename, JSON.stringify(user_data));
 
 		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
 		response.cookie("name", name, { expire: Date.now() - 60 * 1000 });
