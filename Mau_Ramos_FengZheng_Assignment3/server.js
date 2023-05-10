@@ -47,7 +47,7 @@ function decrypt(encrypted) {
 }
 
 // checks to see encrypted version of password in the terminal
-console.log(encrypt('monica'));
+console.log(encrypt('brandon'));
 
 app.use(
 	session({ secret: "MySecretKey", resave: true, saveUninitialized: true })
