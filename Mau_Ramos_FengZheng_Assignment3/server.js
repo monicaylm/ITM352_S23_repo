@@ -22,6 +22,32 @@ var session = require("express-session");
 var cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
+// encryption and decryption
+// this code is referenced from stackoverflow: https://stackoverflow.com/questions/51280576/trying-to-add-data-in-unsupported-state-at-cipher-update and Professor Port for clarification
+// this allows you to put anything in here, you have to choose a string to server as the "key" to encrypt and decrypt
+let secrateKey = "secrateKey";
+//Requires crypto library
+const crypto = require('crypto');
+
+// function to encrypt the text
+function encrypt(text) {
+   encryptalgo = crypto.createCipher('aes192', secrateKey);
+   let encrypted = encryptalgo.update(text, 'utf8', 'hex');
+   encrypted += encryptalgo.final('hex');
+   return encrypted;
+}
+
+// function to decrypt text
+function decrypt(encrypted) {
+   decryptalgo = crypto.createDecipher('aes192', secrateKey);
+   let decrypted = decryptalgo.update(encrypted, 'hex', 'utf8');
+   decrypted += decryptalgo.final('utf8');
+   return decrypted;
+}
+
+// checks to see encrypted version of password in the terminal
+console.log(encrypt('grader'));
+
 app.use(
 	session({ secret: "MySecretKey", resave: true, saveUninitialized: true })
 );
