@@ -107,7 +107,8 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 	}
 
 	// append an empty row for users to add a new account
-	str += `
+	str +=
+		`
 	  Register a new user:
 	  <br><br>
 	  Email: <input type="text" name="new_user_email">
@@ -548,6 +549,7 @@ app.post("/register", function (request, response, next) {
 
 // checkout, to invoice
 app.post("/checkout", function (request, response, next) {
+	
 	// if user is not logged in, display alert and redirect to login page
 	if (
 		typeof request.cookies["userid"] === "undefined" ||
@@ -555,10 +557,11 @@ app.post("/checkout", function (request, response, next) {
 	) {
 		var message = `<script>alert('You must sign in or register an account before making a purchase!'); location.href="./login.html"</script>`;
 		response.send(message);
-
-		// go to invoice if user cookies match
-	} else {
-		/*for (let product_type in products) {
+	
+	// go to invoice
+	} else if (request.cookies["userid"]) {
+		
+		for (let product_type in products) {
 			for (i in products[product_type]) {
 				// remove selected quantities from quantity available
 
@@ -567,104 +570,8 @@ app.post("/checkout", function (request, response, next) {
 				products[product_type][i].quantity_sold +=
 					request.session.cart[product_type][i];
 			}
-		}*/
-		var name = request.cookies["name"];
-		var userid = request.cookies["userid"];
-
-		str = `<link href="invoice.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
-	
-	<h2>Thank you ${name} for your purchase! Your invoice has been emailed to ${userid}.</h2>
-	
-	<div>
-      <table border="2">
-        <tbody>
-            <th style="text-align: center;" width="11%">Image</th>
-            <th style="text-align: center;" width="26%">Item</th>
-            <th style="text-align: center;" width="11%">Quantity</th>
-            <th style="text-align: center;" width="13%">Price</th>
-            <th style="text-align: center;" width="39%">Extended Price</th>
-          </tr>`;
-
-		var cart = request.session.cart;
-
-		// Subtotal
-		var subtotal = 0;
-
-		// generates rows with prices based on quantities
-		subtotal = 0;
-		for (let product_type in cart) {
-			for (let i = 0; i < cart[product_type].length; i++) {
-				var quantities = cart[product_type][i];
-				if (quantities > 0) {
-					// Setup conditionals
-					extended_price = quantities * products[product_type][i].price; // Compute extended price
-					subtotal += extended_price; // Add subtotal back to itself
-
-					str += `
-	<tr>
-		<td height="70px" width="11%">
-	 	<div class="img-mouseover">
-	   		<img src="./images/${products[product_type][i].image}" height="50px" width="50px">
-	   		<div class="product-description">
-				${products[product_type][i].description}
-			</div>
-	   	</div></td>
-	 	<td width="26%">${products[product_type][i].name}</td>
-	 	<td align="center" width="11%">${quantities}</td>
-	 	<td width="13%">$${products[product_type][i].price}</td>
-	 	<td width="39%">$${extended_price.toFixed(2)}</td>
-   	</tr>
-          `;
-				}
-			}
 		}
-
-		// Tax rate
-		var tax_rate = 0.04712;
-		var tax = tax_rate * subtotal;
-
-		// Compute shipping
-		if (subtotal <= 80) {
-			shipping = 10;
-		} else {
-			shipping = 0;
-		}
-
-		// Grand total
-		var total = subtotal + tax + shipping;
-
-		str += `
-          <tr>
-            <td colspan="5" width="100%">&nbsp;</td>
-          </tr>
-          <tr>
-            <td style="text-align: right;" colspan="3" width="67%">Subtotal</td>
-            <td colspan="2" width="54%">$${subtotal.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td style="text-align: right;" colspan="3" width="67%">Tax @ 4.71%</span></td>
-            <td colspan="2" width="54%">$${tax.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td style="text-align: right;" colspan="3" width="67%">Shipping</span></td>
-            <td colspan="2" width="54%">$${shipping}</td>
-          </tr>
-          <tr>
-            <td style="text-align: right;" colspan="3" width="67%"><b>Total</b></td>
-            <td colspan="2" width="54%"><b>$${total.toFixed(2)}</b></td>
-          </tr>
-      </tbody>
-    </table>
-  </div>
-  <a class="home-button" href="/index.html">Home</a>
-  <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under $80 will be charged a flat rate of $10 per order. &#8415;</h3>
-  <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
-`;
-		response.send(str);
+	
 		response.clearCookie("userid");
 		response.clearCookie("name");
 		request.session.destroy();
