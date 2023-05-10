@@ -11,12 +11,13 @@ var app = express();
 var products = require(__dirname + "/products.json");
 var querystring = require("querystring");
 var url = require("url");
-//var selected_qty = {};
 
 // load file system interface
 var fs = require("fs");
+var nodemailer = require('nodemailer');
 
 var session = require("express-session");
+
 
 // cookie parser
 var cookieParser = require("cookie-parser");
@@ -634,9 +635,6 @@ app.post("/checkout", function (request, response, next) {
 		<td height="70px" width="11%">
 	 	<div class="img-mouseover">
 	   		<img src="./images/${products[product_type][i].image}" height="50px" width="50px">
-	   		<div class="product-description">
-				${products[product_type][i].description}
-			</div>
 	   	</div></td>
 	 	<td width="26%">${products[product_type][i].name}</td>
 	 	<td align="center" width="11%">${quantities}</td>
@@ -686,14 +684,49 @@ app.post("/checkout", function (request, response, next) {
     </table>
   </div>
   <a class="home-button" href="/index.html">Home</a>
-  <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under $80 will be charged a flat rate of $10 per order. &#8415;</h3>
   <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
 `;
+
+// parts referenced from assignment 3 code example 
+// set up mail server https://mailtrap.io/blog/nodemailer-gmail/
+        // create a transporter variable for nodemailer
+        var transporter = nodemailer.createTransport({
+            host: "mail.hawaii.edu",
+    		port: 25,
+    		secure: false, // use TLS
+    		tls: {
+      			// do not fail on invalid certs
+      			rejectUnauthorized: false
+    		}
+        });
+
+		var user_email = userid;
+        // email format -> sends the invoice
+        var mailOptions = {
+            from: "mylm@hawaii.edu", //sender
+            to: user_email, //receiver 
+            subject: 'Thank you for your order!', // subject heading
+            html: str //html body (invoice) 
+        };
+
+        // send email if successful, if not, alert an error message
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+
+                email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent');</script>`;
+                response.send(str + email_msg);
+
+            } else {
+                console.log('Email sent to: ' + info.response);
+                email_msg = `<script>alert('Your invoice was mailed to ${userid}');</script>`;
+                response.send(str + email_msg);
+            }
+        });
 		response.send(str);
 		response.clearCookie("userid");
 		response.clearCookie("name");
 		request.session.destroy();
-	}
+    };
 });
 
 // route all other GET requests to files in public
