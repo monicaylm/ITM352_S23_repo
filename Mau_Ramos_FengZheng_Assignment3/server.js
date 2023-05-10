@@ -535,25 +535,26 @@ app.post("/register", function (request, response, next) {
 
 // checkout, to invoice
 app.post("/checkout", function (request, response, next) {
+
 	// if user is not logged in, display alert and redirect to login page
 	if (typeof request.cookies["userid"] === "undefined" || request.cookies["userid"] == '') {
 		var message = `<script>alert('You must sign in or register an account before making a purchase!'); location.href="./login.html"</script>`;
 		response.send(message);
-		// if userid cookie exists
 	} else if (request.cookies["userid"]) {
 		for (let product_type in products) {
 			for (i in products[product_type]) {
 				// remove selected quantities from quantity available
-				if (request.session.cart[product_type][i] !== 'undefined') {
-					continue;
-				} else {
+				
 				products[product_type][i].quantity_available -=
 					request.session.cart[product_type][i];
 				products[product_type][i].quantity_sold += request.session.cart[product_type][i];
-				}
+				
 			}
 		}
+		
 		response.redirect("./invoice.html?");
+		response.clearCookie("userid");
+		response.clearCookie("name");
 		request.session.destroy();
 	}
 });
