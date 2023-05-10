@@ -100,7 +100,7 @@ table td {
 }
 
 /* Purchase button styling */
-#purchase_button {
+.purchase_button {
     display: block;
     background-color: rgb(62, 107, 104);
     color: #ffffff;
@@ -111,11 +111,12 @@ table td {
     border-width: 1.5px;
     min-width: 100px;
     padding: 10px 20px;
+    margin-bottom: 15px;
     margin: 0 auto;
     width: auto;
   }
 
-#purchase_button:hover{
+.purchase_button:hover{
     background-color: #ffffff;
     border-color: rgb(62, 107, 104);
     color: rgb(62, 107, 104);
