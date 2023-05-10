@@ -141,8 +141,6 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 		user_data[new_email] = new_user_data;
 	}
 
-<<<<<<< Updated upstream
-=======
 	// write updated data to user_data_filename (user_data.json)
 	fs.writeFileSync(user_data_filename, JSON.stringify(user_data));
 	response.redirect("./manageusers");
@@ -247,7 +245,6 @@ app.post("/isAdmin", authAdmin, function (request, response, next) {
 	}
 });
 
->>>>>>> Stashed changes
 // add selected quantities to cart, assisted by Prof Port
 app.post("/addToCart", function (request, response, next) {
 	console.log(request.body);
