@@ -72,6 +72,10 @@ i {
     color: rgb(15, 106, 106);
 }
 
+i:hover {
+    color: rgb(0, 0, 0);
+}
+
 /* CSS for admin button */
 .admin {
     display: inline-block;
