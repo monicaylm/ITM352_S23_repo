@@ -23,6 +23,7 @@
 
     <!-- Shopping Cart Icon Source -->
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script>
         // get querystring data
@@ -135,7 +136,7 @@
                         </div>
                         <h3>In stock: ${products[product_type][i].quantity_available}<br>&#9671;<br>Sold: ${products[product_type][i].quantity_sold}</h3>
                         <div class="qty">
-                        <label id="quantity${i}_label">Quantity:</label><input type="text" id="quantity${i}_id" placeholder="0" name="quantity${i}">
+                        <label id="quantity${i}_label">Quantity:</label><input type="number" id="quantity${i}_id" placeholder="0" name="quantity${i}">
                         </div>
                         <br>
                         <span class="errors-span" id="quantity${i}_errors_span"></span>

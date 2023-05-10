@@ -11,7 +11,7 @@ var app = express();
 var products = require(__dirname + "/products.json");
 var querystring = require("querystring");
 var url = require("url");
-var selected_qty = {};
+//var selected_qty = {};
 
 // load file system interface
 var fs = require("fs");
@@ -143,17 +143,6 @@ app.get("/manageproducts", function (request, response, next) {
 	
 } */
 
-/*app.get("/cart", function (request, response, next) {
-	for (let product_type in products) {
-		for (let i in products[product_type]) {
-			if (request.session.cart[product_type][i] == 'undefined'){
-				message = `<script>alert('Cart is empty! Please select some items to purchase.'); location.href="./products_display.html?product_type=Group";</script>`;
-				response.send(message);
-			}
-		}
-	};
-});*/
-
 // add selected quantities to cart, assisted by Prof Port
 app.post("/addToCart", function (request, response, next) {
 	console.log(request.body);
@@ -175,11 +164,11 @@ app.post("/addToCart", function (request, response, next) {
 		request.session.cart[product_type][i] = null;
 	}
 
-	// check if quantity is a non neg integer or blank, if so then output errors
-	if (findNonNegInt(qty) == false) {
+	// check if quantity is blank or a non neg integer, if so then output errors
+	if (qty == 0 || qty == "") {
+		errors[`quantity${i}_error`] = `Please select a quantity!`;
+	} else if (findNonNegInt(qty) == false) {
 		errors[`quantity${i}_error`] = findNonNegInt(qty, true).join("<br>");
-	} else if (qty == 0) {
-		errors[`quantity${i}_error`] = `Please select some quantities!`;
 	}
 
 	// check if quantities are available
@@ -441,19 +430,25 @@ app.post("/register", function (request, response, next) {
 
 // checkout, to invoice
 app.post("/checkout", function (request, response, next) {
-
 	// if user is not logged in, display alert and redirect to login page
-	if (typeof request.cookies["userid"] === "undefined") {
+	if (typeof request.cookies["userid"] === "undefined" || request.cookies["userid"] == '') {
 		var message = `<script>alert('You must sign in or register an account before making a purchase!'); location.href="./login.html"</script>`;
 		response.send(message);
-	} else {
-		response.redirect("./invoice.html");
+		// if userid cookie exists
+	} else if (request.cookies["userid"]) {
 		for (let product_type in products) {
-			for (let i in products[product_type]) {
+			for (i in products[product_type]) {
 				// remove selected quantities from quantity available
-				products[product_type][i].quantity_available -= request.session.cart[product_type][i];
+				if (request.session.cart[product_type][i] !== 'undefined') {
+					continue;
+				} else {
+				products[product_type][i].quantity_available -=
+					request.session.cart[product_type][i];
+				products[product_type][i].quantity_sold += request.session.cart[product_type][i];
+				}
 			}
 		}
+		response.redirect("./invoice.html?");
 		request.session.destroy();
 	}
 });

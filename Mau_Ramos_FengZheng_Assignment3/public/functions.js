@@ -66,16 +66,16 @@ function loginButton() { // assisted by Prof Port & ChatGPT
         <div class="login">
             <script>
                 if (getCookie("name") == "") {
-                    document.write(\`<a href = 'login.html'">Login</a>\`);
+                    document.write(\`<a href = 'login.html'"><i class="fa fa-user-o" aria-hidden="true"></i> Login  </a>\`);
                 } else {
                     document.write(\`<a onclick='
                     document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    href = "/logout"'>Logout \${getCookie("name")}</a>\`);
+                    href = "/logout"'><i class="fa fa-sign-out" aria-hidden="true"></i> Logout \${getCookie("name")}   </a>\`);
                 }
             </script>
             <a href="./cart.html">
-                <i class='fas fa-shopping-cart'></i>
+                  <i class='fas fa-shopping-cart'></i>
                 (${cart_qty})
             </a>
         </div>
