@@ -546,9 +546,9 @@ app.post("/register", function (request, response, next) {
 		for (let product_type in products) {
 			for (let i in products[product_type]) {
 				// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
-				products[product_type][i].quantity_available -=
-					selected_qty[`quantity${i}`];
-			}
+				 //products[product_type][i].quantity_available -=
+					//selected_qty[`quantity${i}`];
+			} 
 		}
 
 		// write updated data to user_data_filename (user_data.json)

@@ -58,5 +58,10 @@
         "name": "testing test",
         "password": "abc123@123",
         "admin": false
+    },
+    "one@gmail.com": {
+        "name": "testing one",
+        "password": "a3f85aba6b9618aa2edaa4ec1a4017c1",
+        "admin": false
     }
 }
