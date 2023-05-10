@@ -21,7 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap"
         rel="stylesheet">
 
-    <!-- Shopping Cart Icon Source -->
+    <!-- Icon Source -->
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -81,15 +81,17 @@
 </head>
 
 <h1>SHINee Album Shop</h1>
-<!-- IR3: Search Feature -->
-<div class="searchBar">
-    <input type="text" id="searchInput" onkeyup="searchInput()" placeholder="Search for album..."
-        title="Type in Album name">
-</div>
 <!--Nav bar-->
 <div class="navbar">
 
     <script>navBar()</script>
+
+    <!-- IR3: Search Feature -->
+    <div class="searchBar">
+        <input type="text" id="searchInput" onkeyup="searchInput()" placeholder="Search albums"
+        title="Type in Album name"><i class="fa fa-search"></i>
+    </div>
+
     <!--Login/logout according to cookies, assisted by prof Port-->
     <script>loginButton()</script>
 </div>

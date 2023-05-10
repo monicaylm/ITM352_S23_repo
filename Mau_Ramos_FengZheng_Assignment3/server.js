@@ -586,14 +586,17 @@ app.post("/checkout", function (request, response, next) {
 	} else {
 		/*for (let product_type in products) {
 			for (i in products[product_type]) {
+				if (request.session.cart[product_type][i] > 0) {}
 				// remove selected quantities from quantity available
 
 				products[product_type][i].quantity_available -=
 					request.session.cart[product_type][i];
 				products[product_type][i].quantity_sold +=
 					request.session.cart[product_type][i];
+			
 			}
-		}*/
+		};*/
+
 		var name = request.cookies["name"];
 		var userid = request.cookies["userid"];
 
@@ -603,7 +606,7 @@ app.post("/checkout", function (request, response, next) {
     <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
 	
-	<h2>Thank you ${name} for your purchase! Your invoice has been emailed to ${userid}.</h2>
+	<h2>Thank you ${name} for your purchase!</h2>
 	
 	<div>
       <table border="2">
@@ -722,11 +725,10 @@ app.post("/checkout", function (request, response, next) {
                 response.send(str + email_msg);
             }
         });
-		response.send(str);
+    };
 		response.clearCookie("userid");
 		response.clearCookie("name");
 		request.session.destroy();
-    };
 });
 
 // route all other GET requests to files in public

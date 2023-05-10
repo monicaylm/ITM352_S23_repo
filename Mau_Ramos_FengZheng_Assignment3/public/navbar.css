@@ -25,6 +25,32 @@ Description: CSS stylesheet for navbar
     padding-right: 20px;
 }
 
+/* Styling for search bar */
+.searchBar {
+    position: relative;
+}
+
+.searchBar ::placeholder {
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 12px;
+    
+}
+
+.searchBar i.fa {
+    position: absolute;
+    top: 40%;
+    left: 10px;
+    transform: translateY(-50%);
+  }
+
+#searchInput {
+    background-size: 25px;
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 2px solid rgb(15, 106, 106); /* Add a border */
+    border-radius: 8px;
+    margin-bottom: 12px; /* Add some space below the input */
+  }
+
 li, .login {
     display: inline-block;
     margin-right: 20px;
