@@ -53,7 +53,7 @@
             for (i = 0; i < sections.length; i++) {
                 h = sections[i].getElementsByTagName("h2")[0];
                 textvalue = h.textContent || h.innerText;
-                if(textvalue.toUpperCase().indexOf(input) > -1) {
+                if (textvalue.toUpperCase().indexOf(input) > -1) {
                     sections[i].style.display = "";
                 } else {
                     sections[i].style.display = "none";
@@ -64,7 +64,7 @@
         // IR4: Add to Favorites button (not working)
         function favorite(prod) {
             var favoriteBtn = document.getElementById(`favoritebtn`);
-            if(favoriteBtn.style.color == 'grey') {
+            if (favoriteBtn.style.color == 'grey') {
                 favoriteBtn.style.color = 'red';
             } else {
                 favoriteBtn.style.color = 'grey';
@@ -82,7 +82,8 @@
 <h1>SHINee Album Shop</h1>
 <!-- IR3: Search Feature -->
 <div class="searchBar">
-    <input type="text" id="searchInput" onkeyup="searchInput()" placeholder="Search for album..." title="Type in Album name">
+    <input type="text" id="searchInput" onkeyup="searchInput()" placeholder="Search for album..."
+        title="Type in Album name">
 </div>
 <!--Nav bar-->
 <div class="navbar">
@@ -91,11 +92,24 @@
     <!--Login/logout according to cookies, assisted by prof Port-->
     <script>loginButton()</script>
 </div>
-<div class="admin" id="adminBtn">
-    <a href="./admin">ADMIN
-    </a>
-</div>
 
+<script>
+    // received help from Professor Port
+    // this displays the admin button only if a user is logged in and their "admin" = true
+    loadJSON('isAdmin', function (response) {
+        // Parsing JSON string into object
+        obj = JSON.parse(response);
+        console.log(obj);
+
+        if (obj.is_admin == true) {
+            document.write(`
+            <div class="admin">
+             <a href="./admin">ADMIN</a>
+             </div>
+             `);
+        }
+    }); 
+</script>
 
 <body>
     <form id="qtyForm">
