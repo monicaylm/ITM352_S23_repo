@@ -632,7 +632,6 @@ app.post("/purchase", function (request, response, next) {
             <th style="text-align: center;" width="30%">Item</th>
             <th style="text-align: center;" width="14%">Quantity</th>
             <th style="text-align: center;" width="17%">Price</th>
-			<th style="text-align: center;" width="39%">Rating</th>
           </tr>`;
 
 	var cart = request.session.cart;
@@ -655,9 +654,6 @@ app.post("/purchase", function (request, response, next) {
 	 	<td align="center" width="30%">${products[product_type][i].name}</td>
 	 	<td align="center" width="14%">${quantities}</td>
 	 	<td align="center" width="17%">$${products[product_type][i].price}</td>
-		<td align="center" width="13%"><div class="ratings_${products[product_type][i]}_${i}">
-			<input type="radio" name="rating" id="star">
-		</div></td>
    	</tr>
           `;
 			}
