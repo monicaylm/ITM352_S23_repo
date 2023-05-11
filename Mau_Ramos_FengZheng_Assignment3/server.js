@@ -581,7 +581,9 @@ app.post("/register", function (request, response, next) {
 });
 
 // checkout, to invoice
-app.post("/checkout", function (request, response, next) {
+app.post("/checkout", function (request, response, next) { 
+	// IR5: Rate products for purchase 
+
 	// if user is not logged in, display alert and redirect to login page
 	if (
 		typeof request.cookies["userid"] === "undefined" ||
@@ -617,6 +619,7 @@ app.get("/purchase", function (request, response, next) {
             <th style="text-align: center;" width="14%">Quantity</th>
             <th style="text-align: center;" width="17%">Price</th>
             <th style="text-align: center;" width="39%">Extended Price</th>
+			<th style="text-align: center;" width="13%">Rating</th>
           </tr>`;
 
 		var cart = request.session.cart;
@@ -640,6 +643,13 @@ app.get("/purchase", function (request, response, next) {
 	 	<td align="center" width="14%">${quantities}</td>
 	 	<td width="17%">$${products[product_type][i].price}</td>
 	 	<td width="39%">$${extended_price.toFixed(2)}</td>
+		<td width="13%"><div class="ratings_${products[product_type][i]}_${i}">
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+		</div></td>
    	</tr>
           `;
 				}

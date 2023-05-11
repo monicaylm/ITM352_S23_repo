@@ -204,6 +204,23 @@ main {
     color: red;
 }
 
+.star-rating {
+    margin-top: 10px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.star-rating p {
+    padding: 0;
+    margin: 0;
+    color: grey;
+    font-size: 25px;
+}
+
+.star-rating p.active {
+    color: #d8b74b;
+}
+
 /* Purchase button styling */
 #purchase_button {
     display: block;
