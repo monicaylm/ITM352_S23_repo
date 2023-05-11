@@ -151,6 +151,9 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 
 app.post("/updateusers", authAdmin, function (request, response, next) {
 	user_data = request.body.user_data;
+
+	const new_user_admin = request.body.new_user_admin === true;
+
 	// look for updated email addresses
 	for (let user_email in request.body.update) {
 		if (user_email != request.body.update[user_email]) {
@@ -169,7 +172,7 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 		const new_user_data = {
 			name: request.body.new_user_name,
 			password: request.body.new_user_password,
-			admin: request.body.new_user_admin || false,
+			admin: new_user_admin,
 		};
 		user_data[new_email] = new_user_data;
 	}
