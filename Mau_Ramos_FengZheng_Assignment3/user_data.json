@@ -22,7 +22,7 @@
     "somar@gmail.com": {
         "name": "nodnarb somar",
         "password": "a02126a22a9013af1347021f07007932",
-        "admin": true
+        "admin": false
     },
     "brandon@gmail.com": {
         "name": "brandon ramo",
@@ -32,6 +32,11 @@
     "kailin@gmail.com": {
         "name": "Kai Lin",
         "password": "5fc3acd622421a86cbbe2ec59614cfbe",
+        "admin": false
+    },
+    "jmrio@hawaii.edu": {
+        "name": "Joshua Rio",
+        "password": "a3f85aba6b9618aa2edaa4ec1a4017c1",
         "admin": false
     }
 }

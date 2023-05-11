@@ -46,7 +46,7 @@ function decrypt(encrypted) {
 }
 
 // checks to see encrypted version of password in the terminal
-console.log(encrypt("brandon"));
+console.log(encrypt("abc123@123"));
 
 app.use(
 	session({ secret: "MySecretKey", resave: true, saveUninitialized: true })
@@ -124,15 +124,9 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
             Password: <input type="text" name="user_data[${user_email}][password]" value="${
 			user_data[user_email].password
 		}">
-<<<<<<< Updated upstream
             Admin: <input type="text" name="user_data[${user_email}][admin]" value="${
 				user_data[user_email].admin ? user_data[user_email].admin : false
 			}">
-=======
-            Admin: <input type="checkbox" name="user_data[${user_email}][admin]" ${
-			user_data[user_email].admin ? "checked" : ""
-		}>
->>>>>>> Stashed changes
             Delete account?: <input type="checkbox" name="delete[${user_email}]">
             <br><br>
             `;
