@@ -598,11 +598,11 @@ app.post("/checkout", function (request, response, next) {
 	}
 });
 
-app.get("/purchase", function (request, response, next) {
+app.post("/purchase", function (request, response, next) {
 		
 
 	var name = request.cookies["name"];
-		var userid = request.cookies["userid"];
+	var userid = request.cookies["userid"];
 
 		str = `<link href="invoice.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
@@ -613,13 +613,12 @@ app.get("/purchase", function (request, response, next) {
 	<h2>Thank you ${name} for your purchase!</h2>
 	
 	<div>
-      <table border="2">
+      <table border="2" width="90%">
         <tbody>
             <th style="text-align: center;" width="30%">Item</th>
             <th style="text-align: center;" width="14%">Quantity</th>
             <th style="text-align: center;" width="17%">Price</th>
-            <th style="text-align: center;" width="39%">Extended Price</th>
-			<th style="text-align: center;" width="13%">Rating</th>
+			<th style="text-align: center;" width="39%">Rating</th>
           </tr>`;
 
 		var cart = request.session.cart;
@@ -639,11 +638,11 @@ app.get("/purchase", function (request, response, next) {
 
 					str += `
 	<tr>
-	 	<td width="30%">${products[product_type][i].name}</td>
+	 	<td align="center" width="30%">${products[product_type][i].name}</td>
 	 	<td align="center" width="14%">${quantities}</td>
-	 	<td width="17%">$${products[product_type][i].price}</td>
-	 	<td width="39%">$${extended_price.toFixed(2)}</td>
-		<td width="13%"><div class="ratings_${products[product_type][i]}_${i}">
+	 	<td align="center" width="17%">$${products[product_type][i].price}</td>
+	 	<td align="center" width="39%">$${extended_price.toFixed(2)}</td>
+		<td align="center" width="13%"><div class="ratings_${products[product_type][i]}_${i}">
 			<i class="fas fa-star"></i>
 			<i class="fas fa-star"></i>
 			<i class="fas fa-star"></i>
@@ -722,11 +721,11 @@ app.get("/purchase", function (request, response, next) {
 		transporter.sendMail(mailOptions, function (error, info) {
 			if (error) {
 				email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent');</script>`;
-				//response.send(str + email_msg);
+				response.send(str + email_msg);
 			} else {
 				console.log("Email sent to: " + info.response);
 				email_msg = `<script>alert('Your invoice was mailed to ${userid}');</script>`;
-				//response.send(str + email_msg);
+				response.send(str + email_msg);
 			}
 		});
 

@@ -52,7 +52,7 @@
 
 <body>
   <!-------------- invoice personalization ----------------->
-  <h2>Thank you <script>document.write(`${getCookie("name")}`);</script> for your purchase!</h2>
+  <h2>Hi <script>document.write(`${getCookie("name")}`);</script>! Please view your order below.</h2>
 
   <div>
     <table border="2">
@@ -131,7 +131,9 @@
     </table>
   </div>
   <h2>Please confirm your items to place your order and send your invoice to <script>document.write(`${getCookie("userid")}`)</script>.</h2>
-  <input type="button" class="home-button" window.location.href="/purchase" value="Confirm purchase">
+  <form id="purchase" action="./purchase" method="POST">
+    <input type="submit" class="purchase-button" value="Confirm purchase">
+  </form>
 
   <!-- shipping policy -->
   <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under
@@ -139,7 +141,6 @@
     will be charged a flat rate of $10 per order. &#8415;</h3>
   <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
 </body>
-</form>
 
 <script>
 function findNonNegInt(q, returnErrors = false) { //the function returns non-negative integers in the object.

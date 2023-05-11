@@ -123,6 +123,29 @@ table td {
     display: block;
 }
 
+/* Purchase button styling */
+.purchase-button {
+    display: block;
+    background-color: rgb(62, 107, 104);
+    color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;    
+    font-size: 17px;
+    border-width: 1.5px;
+    min-width: 100px;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    margin: 0 auto;
+    width: auto;
+  }
+
+.purchase-button:hover{
+    background-color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    color: rgb(62, 107, 104);
+}
+
 /* home button */
 .home-button{
     margin-right: 20px;
