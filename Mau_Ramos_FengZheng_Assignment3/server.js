@@ -69,18 +69,6 @@ if (fs.existsSync(user_data_filename)) {
 	console.log(`Hey, I couldn't find ${user_data_filename}!`);
 }
 
-if (fs.existsSync(products_filename)) {
-	// read in user data （check that exists)
-	var product_data_obj_JSON = fs.readFileSync(products_filename, "utf-8");
-
-	// convert user data JSON to object
-	var products_data = JSON.parse(product_data_obj_JSON);
-
-	// if products_data_filename not found
-} else {
-	console.log(`Hey, I couldn't find ${products_filename}!`);
-}
-
 // middleware, code based on lab 12 ex. 2c
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
