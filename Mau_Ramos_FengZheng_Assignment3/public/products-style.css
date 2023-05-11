@@ -186,11 +186,15 @@ main {
 /* Favorite btn */
 .likeBtn {
     position: absolute;
-    left: 65%;
+    display: flex;
+    justify-content: center; /* centers horizontally */
+    align-items: center;
+    margin-top: -250px;
+    margin-left: 35px;
 }
 
-.favoritebtn {
-    background: transparent;
+.favoriteBtn {
+    background-color: transparent;
     border: none;
     outline: none;
 }
@@ -202,8 +206,17 @@ main {
 
 .favoritebtn i:hover {
     cursor: pointer;
-    color: red;
-}
+  }
+  
+  .favoriteBtn i {
+    font-size: 1.5em;
+    text-align: center;
+    color: #ccc;
+  }
+  
+  .favoriteBtn i.far {
+    color: #fff;
+  }
 
 .star-rating {
     margin-top: 5px;
