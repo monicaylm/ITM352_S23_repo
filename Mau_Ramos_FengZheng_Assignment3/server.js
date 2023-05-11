@@ -580,7 +580,6 @@ app.post("/register", function (request, response, next) {
 
 // checkout, to invoice
 app.post("/checkout", function (request, response, next) {
-	// IR5: Rate products for purchase
 
 	// if user is not logged in, display alert and redirect to login page
 	if (
@@ -596,7 +595,7 @@ app.post("/checkout", function (request, response, next) {
 	}
 });
 
-// serivce to sdd rating for product
+//IR5: Rate products for purchase (serivce to add rating for product)
 app.post("/rateProduct", function (request, response, next) {
 	console.log(request.body);
 
