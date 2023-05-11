@@ -197,6 +197,7 @@ main {
 
 .favoritebtn i {
     color: grey;
+    font-size: 28px;
 }
 
 .favoritebtn i:hover {
@@ -205,9 +206,16 @@ main {
 }
 
 .star-rating {
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 0;
     box-sizing: border-box;
+}
+
+.review {
+    font-family: 'Comfortaa', sans-serif;    
+    font-size: 20px;
+    font-weight: lighter;
+    color: black;
 }
 
 .star-rating p {

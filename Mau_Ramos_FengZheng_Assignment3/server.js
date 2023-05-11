@@ -595,9 +595,25 @@ app.post("/checkout", function (request, response, next) {
 	}
 });
 
+// serivce to sdd rating for product
+app.post("/rateProduct", function (request, response, next) {
+	console.log(request.body);
+
+	// Have product rating --> calculate avg
+	if(typeof products[request.body.prod_type][request.body.product_index]["Rating"] == "undefined"){
+		products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":1, "Avg":Number(request.body.prod_rating)};
+	} else {
+		var n = products[request.body.prod_type][request.body.product_index]["Rating"]["Num Ratings"];
+		products[request.body.prod_type][request.body.product_index]["Rating"]["Num Ratings"] = ++n;
+		products[request.body.prod_type][request.body.product_index]["Rating"]["Avg"] += Number(request.body.prod_rating)/n;
+	}
+
+	console.log(products);
+	response.json({});
+});
+
 app.post("/purchase", function (request, response, next) {
 		
-
 	var name = request.cookies["name"];
 	var userid = request.cookies["userid"];
 
@@ -638,13 +654,8 @@ app.post("/purchase", function (request, response, next) {
 	 	<td align="center" width="30%">${products[product_type][i].name}</td>
 	 	<td align="center" width="14%">${quantities}</td>
 	 	<td align="center" width="17%">$${products[product_type][i].price}</td>
-	 	<td align="center" width="39%">$${extended_price.toFixed(2)}</td>
 		<td align="center" width="13%"><div class="ratings_${products[product_type][i]}_${i}">
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
+			<input type="radio" name="rating" id="star">
 		</div></td>
    	</tr>
           `;
