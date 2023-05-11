@@ -426,8 +426,8 @@ app.post("/login", function (request, response, next) {
 
 	// if all login is valid, redirect to product display page and set cookies for username and name
 	if (Object.keys(errors).length === 0) {
-		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
-		response.cookie("name", name, { expire: Date.now() - 60 * 1000 });
+		response.cookie("userid", username, { expire: Date.now() - 15 * 1000 });
+		response.cookie("name", name, { expire: Date.now() - 15 * 1000 });
 		message = `<script>alert('${name} has successfully logged in!'); location.href="./products_display.html?product_type=Group";</script>`;
 		response.send(message);
 	}
@@ -436,6 +436,7 @@ app.post("/login", function (request, response, next) {
 		// add errors object to request.body to put into the querystring
 		//request.body["errorsJSONstring"] = JSON.stringify(errors);
 		let params = new URLSearchParams();
+		params.append("username", username);
 		params.append("errorsJSONstring", JSON.stringify(errors));
 		response.redirect("./login.html?" + params.toString());
 
