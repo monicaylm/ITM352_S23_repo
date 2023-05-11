@@ -63,14 +63,27 @@
         }
 
         // IR4: Add to Favorites button (not working)
-        function favorite(prod) {
-            var favoriteBtn = document.getElementById(`favoritebtn`);
-            if (favoriteBtn.style.color == 'grey') {
-                favoriteBtn.style.color = 'red';
-            } else {
-                favoriteBtn.style.color = 'grey';
-            }
-        }
+        /*function favorite(event) {
+             var favoriteBtn = document.getElementById('favoriteBtn');
+             if (favoriteBtn.style.color == 'grey') {
+                 favoriteBtn.style.color = 'red';
+             } else {
+                 favoriteBtn.style.color = 'grey';
+             }
+         };*/
+         function favorite(i) {
+                        console.log("Item favorited!");
+                        var favBtn = document.getElementById(`favoriteBtn${i}`);
+                        console.log(favBtn.style.color); // should print the current color of the button
+                        if (favBtn.style.color == "red") {
+                            favBtn.style.color = "gray";
+                        } else {
+                            favBtn.style.color = "red";
+                        }
+                        console.log(favBtn.style.color); // should print the new color of the button
+                    }
+
+
     </script>
 
     <meta charset="UTF-8">
@@ -89,7 +102,7 @@
     <!-- IR3: Search Feature -->
     <div class="searchBar">
         <input type="text" id="searchInput" onkeyup="searchInput()" placeholder="Search albums"
-        title="Type in Album name"><i class="fa fa-search"></i>
+            title="Type in Album name"><i class="fa fa-search"></i>
     </div>
 
     <script>
@@ -99,7 +112,7 @@
             // Parsing JSON string into object
             obj = JSON.parse(response);
             console.log(obj);
-    
+
             if (obj.is_admin == true) {
                 document.write(`
                 <div class="admin">
@@ -134,9 +147,6 @@
                         <img src ="./images/${products[product_type][i].image}">
                         <div class="details">
                         <p>&dollar;${products[product_type][i].price}</p>
-                        <div class="likeBtn">
-                            <p onclick='favorite(${i})' id="favoritebtn" class="favoritebtn"><i class="fas fa-heart"></i></p>
-                        </div>
                         <h3>In stock: ${products[product_type][i].quantity_available}<br>&#9671;<br>Sold: ${products[product_type][i].quantity_sold}</h3>
                         <div class="qty">
                         <label id="quantity${i}_label">Quantity:</label><input type="number" id="quantity${i}_id" placeholder="0" name="quantity${i}">
@@ -153,9 +163,18 @@
                         </div>
                         </section>
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
+                        </form>
+                        <form id="favorite" action="./favorite" method="POST">
+                            <input type="hidden" name="product_id" value="${products[product_type][i]}">
+                            <div class="likeBtn">
+                                <button type="submit" id="favoriteBtn${i}" name="favoriteBtn" class="favoriteBtn"><i class="fas fa-heart"></i></button>
+                            </div>
+                        </form>
                         </section>
                      `)
                     }
+
+                    
                 </script>
             </main>
         </div> <br>
@@ -238,7 +257,9 @@
                 }
             }
         </script>
+        <script>
+
+        </script>
 </body>
-</form>
 
 </html>

@@ -69,6 +69,18 @@ if (fs.existsSync(user_data_filename)) {
 	console.log(`Hey, I couldn't find ${user_data_filename}!`);
 }
 
+if (fs.existsSync(products_filename)) {
+	// read in user data （check that exists)
+	var product_data_obj_JSON = fs.readFileSync(products_filename, "utf-8");
+
+	// convert user data JSON to object
+	var products_data = JSON.parse(product_data_obj_JSON);
+
+	// if products_data_filename not found
+} else {
+	console.log(`Hey, I couldn't find ${products_filename}!`);
+}
+
 // middleware, code based on lab 12 ex. 2c
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -88,6 +100,47 @@ app.get("/products_data.js", function (request, response, next) {
 	response.type(".js"); // send response as javascript
 	var products_str = `var products = ${JSON.stringify(products)}`; // sets var products_str, converts JSON products array into string
 	response.send(products_str); // sends response
+});
+
+// IR 4: Add to favorites
+app.post("/favorite", function (request, response, next) {
+	var product_id = request.body.product_id;
+
+	if (request.session.favorites) {
+		var favorites = request.session.favorites;
+	} else {
+		var favorites = {};
+	}
+
+	console.log("Favorite button clicked");
+
+	if (request.body.favoriteBtn) {
+		// add product to favorites
+		favorites[product_id] = true;
+	} else {
+		// remove product from favorites
+		delete favorites[product_id];
+	}
+
+	// store updated favorites in session
+	request.session.favorites = favorites;
+
+	/*if (request.body.favoriteBtn) {
+		for (let product_type in products_data) {
+			for (let i = 0; i < products_data[product_type].length; i++) {
+				var favorite = false;
+				if (products_data[product_type][i].id == product_id) {
+					favorite.push([product_type][i]);
+					products_data[product_type][i][favorite] = true;
+				} else if (favorite == true) {
+					favorite.pop([product_type][i]);
+					products_data[product_type][i][favorite] = false;
+				}
+			}
+		}
+	}*/
+	// stay on the same page
+	response.redirect(request.headers.referer);
 });
 
 // Admin page
