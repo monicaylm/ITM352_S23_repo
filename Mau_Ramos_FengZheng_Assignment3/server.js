@@ -125,8 +125,8 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 			user_data[user_email].password
 		}">
             Admin: <input type="text" name="user_data[${user_email}][admin]" value="${
-				user_data[user_email].admin ? user_data[user_email].admin : false
-			}">
+			user_data[user_email].admin ? user_data[user_email].admin : false
+		}">
             Delete account?: <input type="checkbox" name="delete[${user_email}]">
             <br><br>
             `;
@@ -578,8 +578,8 @@ app.post("/register", function (request, response, next) {
 });
 
 // checkout, to invoice
-app.post("/checkout", function (request, response, next) { 
-	// IR5: Rate products for purchase 
+app.post("/checkout", function (request, response, next) {
+	// IR5: Rate products for purchase
 
 	// if user is not logged in, display alert and redirect to login page
 	if (
@@ -591,23 +591,22 @@ app.post("/checkout", function (request, response, next) {
 
 		// go to invoice if user cookies match
 	} else {
-		response.redirect('/invoice.html')
+		response.redirect("/invoice.html");
 	}
 });
 
 app.post("/purchase", function (request, response, next) {
-		
-
 	var name = request.cookies["name"];
 	var userid = request.cookies["userid"];
 
-		str = `<link href="invoice.css" rel="stylesheet">
+	str = `<link href="invoice.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
 	
-	<h2>Thank you ${name} for your purchase!</h2>
+	<h1>SHINee Album Shop</h1>
+	<h2>Thank you ${name} for your purchase! Please see your invoice below.</h2>
 	
 	<div>
       <table border="2" width="90%">
@@ -618,28 +617,30 @@ app.post("/purchase", function (request, response, next) {
 			<th style="text-align: center;" width="39%">Rating</th>
           </tr>`;
 
-		var cart = request.session.cart;
+	var cart = request.session.cart;
 
-		// Subtotal
-		var subtotal = 0;
+	// Subtotal
+	var subtotal = 0;
 
-		// generates rows with prices based on quantities
-		subtotal = 0;
-		for (let product_type in cart) {
-			for (let i = 0; i < cart[product_type].length; i++) {
-				var quantities = cart[product_type][i];
-				if (quantities > 0) {
-					// Setup conditionals
-					extended_price = quantities * products[product_type][i].price; // Compute extended price
-					subtotal += extended_price; // Add subtotal back to itself
+	// generates rows with prices based on quantities
+	subtotal = 0;
+	for (let product_type in cart) {
+		for (let i = 0; i < cart[product_type].length; i++) {
+			var quantities = cart[product_type][i];
+			if (quantities > 0) {
+				// Setup conditionals
+				extended_price = quantities * products[product_type][i].price; // Compute extended price
+				subtotal += extended_price; // Add subtotal back to itself
 
-					str += `
+				str += `
 	<tr>
 	 	<td align="center" width="30%">${products[product_type][i].name}</td>
 	 	<td align="center" width="14%">${quantities}</td>
 	 	<td align="center" width="17%">$${products[product_type][i].price}</td>
 	 	<td align="center" width="39%">$${extended_price.toFixed(2)}</td>
-		<td align="center" width="13%"><div class="ratings_${products[product_type][i]}_${i}">
+		<td align="center" width="13%"><div class="ratings_${
+			products[product_type][i]
+		}_${i}">
 			<i class="fas fa-star"></i>
 			<i class="fas fa-star"></i>
 			<i class="fas fa-star"></i>
@@ -648,25 +649,25 @@ app.post("/purchase", function (request, response, next) {
 		</div></td>
    	</tr>
           `;
-				}
 			}
 		}
+	}
 
-		// Tax rate
-		var tax_rate = 0.04712;
-		var tax = tax_rate * subtotal;
+	// Tax rate
+	var tax_rate = 0.04712;
+	var tax = tax_rate * subtotal;
 
-		// Compute shipping
-		if (subtotal <= 80) {
-			shipping = 10;
-		} else {
-			shipping = 0;
-		}
+	// Compute shipping
+	if (subtotal <= 80) {
+		shipping = 10;
+	} else {
+		shipping = 0;
+	}
 
-		// Grand total
-		var total = subtotal + tax + shipping;
+	// Grand total
+	var total = subtotal + tax + shipping;
 
-		str += `
+	str += `
           <tr>
             <td colspan="5" width="100%">&nbsp;</td>
           </tr>
@@ -693,38 +694,39 @@ app.post("/purchase", function (request, response, next) {
   <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
 `;
 
-		// parts referenced from assignment 3 code example
-		// create a transporter variable for nodemailer
-		var transporter = nodemailer.createTransport({
-			host: "mail.hawaii.edu",
-			port: 25,
-			secure: false, // use TLS
-			tls: {
-				// do not fail on invalid certs
-				rejectUnauthorized: false,
-			},
-		});
+	// parts referenced from assignment 3 code example
+	// create a transporter variable for nodemailer
+	var transporter = nodemailer.createTransport({
+		host: "mail.hawaii.edu",
+		port: 25,
+		secure: false, // use TLS
+		tls: {
+			// do not fail on invalid certs
+			rejectUnauthorized: false,
+		},
+	});
 
-		var user_email = userid;
-		// email format -> sends the invoice
-		var mailOptions = {
-			from: "mylm@hawaii.edu", //sender
-			to: user_email, //receiver
-			subject: "Thank you for your order!", // subject heading
-			html: str, //html body (invoice)
-		};
+	var user_email = userid;
+	// email format -> sends the invoice
+	var mailOptions = {
+		from: "mylm@hawaii.edu", //sender
+		to: user_email, //receiver
+		subject: "Thank you for your order!", // subject heading
+		html: str, //html body (invoice)
+	};
 
-		// send email if successful, if not, alert an error message
-		transporter.sendMail(mailOptions, function (error, info) {
-			if (error) {
-				email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent');</script>`;
-				response.send(str + email_msg);
-			} else {
-				console.log("Email sent to: " + info.response);
-				email_msg = `<script>alert('Your invoice was mailed to ${userid}');</script>`;
-				response.send(str + email_msg);
-			}
-		});
+	// send email if successful, if not, alert an error message
+	transporter.sendMail(mailOptions, function (error, info) {
+		if (error) {
+			email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent'); location.href="/products_display.html?product_type=Group"</script>`;
+			response.send(email_msg);
+			return; // terminate the function after sending the error response
+		} else {
+			console.log("Email sent to: " + info.response);
+			email_msg = `<script>alert('Your invoice was mailed to ${userid}');</script>`;
+			response.send(str + email_msg);
+		}
+	});
 
 	for (let product_type in request.session.cart) {
 		for (i in request.session.cart[product_type]) {
@@ -737,7 +739,7 @@ app.post("/purchase", function (request, response, next) {
 					request.session.cart[product_type][i];
 			}
 		}
-	};
+	}
 
 	response.clearCookie("userid");
 	response.clearCookie("name");

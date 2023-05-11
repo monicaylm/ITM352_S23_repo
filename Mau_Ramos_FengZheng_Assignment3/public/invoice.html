@@ -14,19 +14,16 @@
     <script src="./products_data.js"></script>
     <script src="./functions.js" type="text/javascript"></script>
     <link href="invoice.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap"
+    rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
 
     <script>
-
-      // Greet user (personalize) 
-      /*window.onload = function () {
-        if (getCookie("name") !== "") {
-            alert(`Your order has been placed successfully!`);
-        }
-      }*/
 
       var cart;
       loadJSON('get_cart', function (response) {
@@ -36,13 +33,6 @@
     
       //Quantities Array
       var quantities = [];
-
-      /*for (i = 0; i < products[product_type].length; i++) {
-        if (params.has(`quantity${i}`)) {
-          const quantity = params.get(`quantity${i}`);
-          quantities.push(quantity);
-        }
-      }*/
               
               // Subtotal
               var subtotal = 0;
@@ -50,9 +40,11 @@
     </script>
 </head>
 
+<h1>SHINee Album Shop</h1>
+
 <body>
   <!-------------- invoice personalization ----------------->
-  <h2>Hi <script>document.write(`${getCookie("name")}`);</script>! Please view your order below.</h2>
+  <h2>Hi <script>document.write(`${getCookie("name")}`);</script>! Please view your order details below.</h2>
 
   <div>
     <table border="2">
@@ -60,11 +52,11 @@
 
         <!-- column titles row -->
         <tr>
-          <th style="text-align: center;" width="11%">Image</th>
-          <th style="text-align: center;" width="26%">Item</th>
-          <th style="text-align: center;" width="11%">Quantity</th>
-          <th style="text-align: center;" width="13%">Price</th>
-          <th style="text-align: center;" width="39%">Extended Price</th>
+          <th style="text-align: center;" width="12%">Image</th>
+          <th style="text-align: center;" width="28%">Item</th>
+          <th style="text-align: center;" width="13%">Quantity</th>
+          <th style="text-align: center;" width="17%">Price</th>
+          <th style="text-align: center;" width="30%">Extended Price</th>
         </tr>
         <script>
           // generates rows with prices based on quantities
@@ -130,9 +122,9 @@
       </tbody>
     </table>
   </div>
-  <h2>Please confirm your items to place your order and send your invoice to <script>document.write(`${getCookie("userid")}`)</script>.</h2>
+  <h2>Please confirm your items to place your order. Your invoice will be sent to <script>document.write(`${getCookie("userid")}`)</script>.</h2>
   <form id="purchase" action="./purchase" method="POST">
-    <input type="submit" class="purchase-button" value="Confirm purchase">
+    <input type="submit" class="purchase-button" value="Place Order">
   </form>
 
   <!-- shipping policy -->
