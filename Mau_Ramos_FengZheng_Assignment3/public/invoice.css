@@ -188,6 +188,25 @@ h3 {
     bottom: 25px;
 }
 
+.star-rating {
+    margin-top: 5px;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+.star-rating i{
+    padding: 0;
+    margin: 0;
+    color: grey;
+    font-size: 25px;
+    
+}
+
+.star-rating {
+    color: #d8b74b;
+}
+
 /* copyright */
 footer {
     font-size: 15px;

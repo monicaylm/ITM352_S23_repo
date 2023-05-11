@@ -25,6 +25,35 @@
 
     <script>
 
+      // Greet user (personalize) 
+      /*window.onload = function () {
+        if (getCookie("name") !== "") {
+            alert(`Your order has been placed successfully!`);
+        }
+      }*/
+
+
+      async function rate(pType, pIndex, pRating) {
+        console.log(pType, pIndex, pRating);
+          var data = { 'prod_type': pType, 'product_index': pIndex, 'prod_rating': pRating };
+          try {
+              const response = await fetch("./rateProduct", {
+                  method: "POST", // or 'PUT'
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+              });
+
+              const errorsObject = await response.json();
+              console.log("Success:", errorsObject);
+
+              }
+            catch (error) {
+              console.error("Error:", error);
+          }
+      };
+
       var cart;
       loadJSON('get_cart', function (response) {
         // Parsing JSON string into object
@@ -52,11 +81,12 @@
 
         <!-- column titles row -->
         <tr>
-          <th style="text-align: center;" width="12%">Image</th>
-          <th style="text-align: center;" width="28%">Item</th>
-          <th style="text-align: center;" width="13%">Quantity</th>
-          <th style="text-align: center;" width="17%">Price</th>
-          <th style="text-align: center;" width="30%">Extended Price</th>
+          <th style="text-align: center;" width="11%">Image</th>
+          <th style="text-align: center;" width="26%">Item</th>
+          <th style="text-align: center;" width="11%">Quantity</th>
+          <th style="text-align: center;" width="13%">Price</th>
+          <th style="text-align: center;" width="39%">Extended Price</th>
+          <th style="text-align: center;" width="76%">Rating</th>
         </tr>
         <script>
           // generates rows with prices based on quantities
@@ -80,6 +110,25 @@
             <td align="center" width="11%">${cart[product_type][i]}</td>
             <td width="13%">$${products[product_type][i].price}</td>
             <td width="39%">$${(extended_price).toFixed(2)}</td>
+            <td width="76%">
+            <span class="star-rating" id="rating${product_type + i}">
+              <input type="radio" name="rating${product_type + i}" value="5">
+              <label for="star5" class="full"></label>
+
+              <input type="radio" name="rating${product_type + i}" value="4">
+              <label for="star4" class="full"></label>
+
+              <input type="radio" name="rating${product_type + i}" value="3">
+              <label for="star3" class="full"></label>
+
+              <input type="radio" name="rating${product_type + i}" value="2">
+              <label for="star2" class="full"></label>
+
+              <input type="radio" name="rating${product_type + i}" value="1">
+              <label for="star1" class="full"></label>
+            </span>
+            <button id="rateBtn${product_type + i}" onclick="rate('${product_type}',${i}, ${'rating'+ product_type + i}.querySelector('input[name=rating${product_type + i}]:checked').value)">Rate</button>
+            </td>
           </tr>
           `)
               }

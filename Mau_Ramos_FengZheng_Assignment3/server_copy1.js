@@ -69,18 +69,6 @@ if (fs.existsSync(user_data_filename)) {
 	console.log(`Hey, I couldn't find ${user_data_filename}!`);
 }
 
-if (fs.existsSync(products_filename)) {
-	// read in user data （check that exists)
-	var product_data_obj_JSON = fs.readFileSync(products_filename, "utf-8");
-
-	// convert user data JSON to object
-	var products_data = JSON.parse(product_data_obj_JSON);
-
-	// if products_data_filename not found
-} else {
-	console.log(`Hey, I couldn't find ${products_filename}!`);
-}
-
 // middleware, code based on lab 12 ex. 2c
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -100,47 +88,6 @@ app.get("/products_data.js", function (request, response, next) {
 	response.type(".js"); // send response as javascript
 	var products_str = `var products = ${JSON.stringify(products)}`; // sets var products_str, converts JSON products array into string
 	response.send(products_str); // sends response
-});
-
-// IR 4: Add to favorites
-app.post("/favorite", function (request, response, next) {
-	var product_id = request.body.product_id;
-
-	if (request.session.favorites) {
-		var favorites = request.session.favorites;
-	} else {
-		var favorites = {};
-	}
-
-	console.log("Favorite button clicked");
-
-	if (request.body.favoriteBtn) {
-		// add product to favorites
-		favorites[product_id] = true;
-	} else {
-		// remove product from favorites
-		delete favorites[product_id];
-	}
-
-	// store updated favorites in session
-	request.session.favorites = favorites;
-
-	/*if (request.body.favoriteBtn) {
-		for (let product_type in products_data) {
-			for (let i = 0; i < products_data[product_type].length; i++) {
-				var favorite = false;
-				if (products_data[product_type][i].id == product_id) {
-					favorite.push([product_type][i]);
-					products_data[product_type][i][favorite] = true;
-				} else if (favorite == true) {
-					favorite.pop([product_type][i]);
-					products_data[product_type][i][favorite] = false;
-				}
-			}
-		}
-	}*/
-	// stay on the same page
-	response.redirect(request.headers.referer);
 });
 
 // Admin page
@@ -189,7 +136,7 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 	  Email: <input type="text" name="new_user_email">
       Name: <input type="text" name="new_user_name">
       Password: <input type="text" name="new_user_password">
-      Admin: <input type="checkbox" name="new_user_admin">
+      Admin: <input type="textbox" name="new_user_admin">
       <br><br>`;
 
 	// append a submit button
@@ -201,6 +148,8 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 
 app.post("/updateusers", authAdmin, function (request, response, next) {
 	user_data = request.body.user_data;
+
+	//const new_user_admin = request.body.new_user_admin === true;
 
 	// look for updated email addresses
 	for (let user_email in request.body.update) {
@@ -227,7 +176,11 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 
 		const new_email = request.body.new_user_email;
 
-		var admincheckbox = true || '';
+		var admincheckbox = false;
+
+		if (typeof request.body.user_data[new_email].admin != 'undefined') {
+			admincheckbox = true;
+		}
 
 		const new_user_data = {
 			name: request.body.new_user_name,
@@ -239,7 +192,7 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 	}
 
 	// write updated data to user_data_filename (user_data.json)
-	fs.writeFileSync(user_data_filename, JSON.stringify(user_data));
+	fs.writeFileSync(user_data_filename, JSON.stringify(user_data, null, 2));
 	response.redirect("./manageusers");
 });
 
@@ -339,6 +292,57 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 	response.redirect("./manageproducts");
 });
 
+/* app.post("/updateproducts", authAdmin, function (request, response, next) {
+	console.log(JSON.stringify(request.body));
+
+	let products = JSON.parse(fs.readFileSync(products_filename));
+
+	const {
+		prod_info,
+		delete: toDelete,
+		new_prod_type,
+		new_prod_name,
+		new_prod_price,
+		new_prod_inventory,
+		new_prod_description,
+	} = request.body;
+
+	// remove products that were selected for deletion
+	for (const prod_type in toDelete) {
+		for (const i in toDelete[prod_type]) {
+			const index = Number(i);
+			if (toDelete[prod_type][index]) {
+				products[prod_type].splice(index, 1);
+			}
+		}
+	}
+
+	// add new product
+	if (
+		new_prod_type &&
+		new_prod_name &&
+		new_prod_price &&
+		new_prod_inventory &&
+		new_prod_description
+	) {
+		if (!products[new_prod_type]) {
+			products[new_prod_type] = [];
+		}
+		products[new_prod_type].push({
+			name: new_prod_name,
+			price: new_prod_price,
+			quantity_available: new_prod_inventory,
+			description: new_prod_description,
+		});
+	}
+
+	// write updated data to products.json
+	fs.writeFileSync(products_filename, JSON.stringify(products));
+
+	console.log('Products file updated successfully.');
+	response.redirect("./manageproducts");
+}); */
+
 function authAdmin(request, response, next) {
 	console.log(request.cookies);
 	// check if user is logged in, else, send to login
@@ -347,7 +351,7 @@ function authAdmin(request, response, next) {
 		return;
 	}
 	// check if user logged in is an admin, if not, send message
-	if (!user_data[request.cookies.userid].admin) {
+	if (user_data[request.cookies.userid].admin == false) {
 		response.send("You are not an authorized administrator!");
 		return;
 	}
@@ -363,7 +367,7 @@ app.post("/isAdmin", authAdmin, function (request, response, next) {
 			return;
 		}
 	} else {
-		response.json({ is_admin: ''});
+		response.json({ is_admin: false });
 	}
 });
 
@@ -501,8 +505,8 @@ app.post("/login", function (request, response, next) {
 
 	// if all login is valid, redirect to product display page and set cookies for username and name
 	if (Object.keys(errors).length === 0) {
-		response.cookie("userid", username, { expire: Date.now() - 15 * 1000 });
-		response.cookie("name", name, { expire: Date.now() - 15 * 1000 });
+		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
+		response.cookie("name", name, { expire: Date.now() - 60 * 1000 });
 		message = `<script>alert('${name} has successfully logged in!'); location.href="./products_display.html?product_type=Group";</script>`;
 		response.send(message);
 	}
@@ -511,7 +515,6 @@ app.post("/login", function (request, response, next) {
 		// add errors object to request.body to put into the querystring
 		//request.body["errorsJSONstring"] = JSON.stringify(errors);
 		let params = new URLSearchParams();
-		params.append("username", username);
 		params.append("errorsJSONstring", JSON.stringify(errors));
 		response.redirect("./login.html?" + params.toString());
 
@@ -667,29 +670,13 @@ app.post("/checkout", function (request, response, next) {
 
 		// go to invoice if user cookies match
 	} else {
-		response.redirect("/invoice.html");
+		response.redirect('/invoice.html')
 	}
 });
 
-//IR5: Rate products for purchase (serivce to add rating for product)
-app.post("/rateProduct", function (request, response, next) {
-	console.log(request.body);
+app.get("/purchase", function (request, response, next) {
 
-	// Have product rating --> calculate avg
-	if(typeof products[request.body.prod_type][request.body.product_index]["Rating"] == "undefined"){
-		products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":1, "Avg":Number(request.body.prod_rating)};
-	} else {
-		var n = products[request.body.prod_type][request.body.product_index]["Rating"]["Num Ratings"];
-		products[request.body.prod_type][request.body.product_index]["Rating"]["Num Ratings"] = ++n;
-		products[request.body.prod_type][request.body.product_index]["Rating"]["Avg"] += Number(request.body.prod_rating)/n;
-	}
 
-	console.log(products);
-	response.json({});
-});
-
-app.post("/purchase", function (request, response, next) {
-		
 	var name = request.cookies["name"];
 	var userid = request.cookies["userid"];
 
@@ -699,16 +686,16 @@ app.post("/purchase", function (request, response, next) {
     <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
 	
-	<h1>SHINee Album Shop</h1>
-	<h2>Thank you ${name} for your purchase! Please see your invoice below.</h2>
+	<h2>Thank you ${name} for your purchase!</h2>
 	
 	<div>
-      <table border="2" width="90%">
+      <table border="2">
         <tbody>
             <th style="text-align: center;" width="30%">Item</th>
             <th style="text-align: center;" width="14%">Quantity</th>
             <th style="text-align: center;" width="17%">Price</th>
-			<th style="text-align: center;" width="39%">Rating</th>
+            <th style="text-align: center;" width="39%">Extended Price</th>
+			<th style="text-align: center;" width="13%">Rating</th>
           </tr>`;
 
 	var cart = request.session.cart;
@@ -728,11 +715,16 @@ app.post("/purchase", function (request, response, next) {
 
 				str += `
 	<tr>
-	 	<td align="center" width="30%">${products[product_type][i].name}</td>
+	 	<td width="30%">${products[product_type][i].name}</td>
 	 	<td align="center" width="14%">${quantities}</td>
-	 	<td align="center" width="17%">$${products[product_type][i].price}</td>
-		<td align="center" width="13%"><div class="ratings_${products[product_type][i]}_${i}">
-			<input type="radio" name="rating" id="star">
+	 	<td width="17%">$${products[product_type][i].price}</td>
+	 	<td width="39%">$${extended_price.toFixed(2)}</td>
+		<td width="13%"><div class="ratings_${products[product_type][i]}_${i}">
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
 		</div></td>
    	</tr>
           `;
@@ -805,13 +797,12 @@ app.post("/purchase", function (request, response, next) {
 	// send email if successful, if not, alert an error message
 	transporter.sendMail(mailOptions, function (error, info) {
 		if (error) {
-			email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent'); location.href="/products_display.html?product_type=Group"</script>`;
-			response.send(email_msg);
-			return; // terminate the function after sending the error response
+			email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent');</script>`;
+			//response.send(str + email_msg);
 		} else {
 			console.log("Email sent to: " + info.response);
 			email_msg = `<script>alert('Your invoice was mailed to ${userid}');</script>`;
-			response.send(str + email_msg);
+			//response.send(str + email_msg);
 		}
 	});
 
@@ -826,7 +817,7 @@ app.post("/purchase", function (request, response, next) {
 					request.session.cart[product_type][i];
 			}
 		}
-	}
+	};
 
 	response.clearCookie("userid");
 	response.clearCookie("name");
