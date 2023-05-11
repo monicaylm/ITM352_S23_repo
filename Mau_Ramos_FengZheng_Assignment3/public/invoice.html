@@ -14,9 +14,13 @@
     <script src="./products_data.js"></script>
     <script src="./functions.js" type="text/javascript"></script>
     <link href="invoice.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap"
+    rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
 
     <script>
@@ -28,6 +32,28 @@
         }
       }*/
 
+
+      async function rate(pType, pIndex, pRating) {
+        console.log(pType, pIndex, pRating);
+          var data = { 'prod_type': pType, 'product_index': pIndex, 'prod_rating': pRating };
+          try {
+              const response = await fetch("./rateProduct", {
+                  method: "POST", // or 'PUT'
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+              });
+
+              const errorsObject = await response.json();
+              console.log("Success:", errorsObject);
+
+              }
+            catch (error) {
+              console.error("Error:", error);
+          }
+      };
+
       var cart;
       loadJSON('get_cart', function (response) {
         // Parsing JSON string into object
@@ -36,13 +62,6 @@
     
       //Quantities Array
       var quantities = [];
-
-      /*for (i = 0; i < products[product_type].length; i++) {
-        if (params.has(`quantity${i}`)) {
-          const quantity = params.get(`quantity${i}`);
-          quantities.push(quantity);
-        }
-      }*/
               
               // Subtotal
               var subtotal = 0;
@@ -50,9 +69,11 @@
     </script>
 </head>
 
+<h1>SHINee Album Shop</h1>
+
 <body>
   <!-------------- invoice personalization ----------------->
-  <h2>Thank you <script>document.write(`${getCookie("name")}`);</script> for your purchase!</h2>
+  <h2>Hi <script>document.write(`${getCookie("name")}`);</script>! Please view your order details below.</h2>
 
   <div>
     <table border="2">
@@ -65,6 +86,7 @@
           <th style="text-align: center;" width="11%">Quantity</th>
           <th style="text-align: center;" width="13%">Price</th>
           <th style="text-align: center;" width="39%">Extended Price</th>
+          <th style="text-align: center;" width="76%">Rating</th>
         </tr>
         <script>
           // generates rows with prices based on quantities
@@ -88,6 +110,25 @@
             <td align="center" width="11%">${cart[product_type][i]}</td>
             <td width="13%">$${products[product_type][i].price}</td>
             <td width="39%">$${(extended_price).toFixed(2)}</td>
+            <td width="76%">
+            <span class="star-rating" id="rating${product_type + i}">
+              <input type="radio" name="rating${product_type + i}" value="5">
+              <label for="star5" class="full"></label>
+
+              <input type="radio" name="rating${product_type + i}" value="4">
+              <label for="star4" class="full"></label>
+
+              <input type="radio" name="rating${product_type + i}" value="3">
+              <label for="star3" class="full"></label>
+
+              <input type="radio" name="rating${product_type + i}" value="2">
+              <label for="star2" class="full"></label>
+
+              <input type="radio" name="rating${product_type + i}" value="1">
+              <label for="star1" class="full"></label>
+            </span>
+            <button id="rateBtn${product_type + i}" onclick="rate('${product_type}',${i}, ${'rating'+ product_type + i}.querySelector('input[name=rating${product_type + i}]:checked').value)">Rate</button>
+            </td>
           </tr>
           `)
               }
@@ -130,8 +171,10 @@
       </tbody>
     </table>
   </div>
-  <h2>Please confirm your items to place your order and send your invoice to <script>document.write(`${getCookie("userid")}`)</script>.</h2>
-  <input type="button" class="home-button" window.location.href="/purchase" value="Confirm purchase">
+  <h2>Please confirm your items to place your order. Your invoice will be sent to <script>document.write(`${getCookie("userid")}`)</script>.</h2>
+  <form id="purchase" action="./purchase" method="POST">
+    <input type="submit" class="purchase-button" value="Place Order">
+  </form>
 
   <!-- shipping policy -->
   <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under
@@ -139,7 +182,6 @@
     will be charged a flat rate of $10 per order. &#8415;</h3>
   <footer>&copy; 2023 Monica's SHINee Album Shop</footer>
 </body>
-</form>
 
 <script>
 function findNonNegInt(q, returnErrors = false) { //the function returns non-negative integers in the object.

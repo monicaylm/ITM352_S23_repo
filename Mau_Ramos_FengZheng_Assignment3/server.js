@@ -505,8 +505,8 @@ app.post("/login", function (request, response, next) {
 
 	// if all login is valid, redirect to product display page and set cookies for username and name
 	if (Object.keys(errors).length === 0) {
-		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
-		response.cookie("name", name, { expire: Date.now() - 60 * 1000 });
+		response.cookie("userid", username, { expire: Date.now() - 15 * 1000 });
+		response.cookie("name", name, { expire: Date.now() - 15 * 1000 });
 		message = `<script>alert('${name} has successfully logged in!'); location.href="./products_display.html?product_type=Group";</script>`;
 		response.send(message);
 	}
@@ -515,6 +515,7 @@ app.post("/login", function (request, response, next) {
 		// add errors object to request.body to put into the querystring
 		//request.body["errorsJSONstring"] = JSON.stringify(errors);
 		let params = new URLSearchParams();
+		params.append("username", username);
 		params.append("errorsJSONstring", JSON.stringify(errors));
 		response.redirect("./login.html?" + params.toString());
 
@@ -670,13 +671,29 @@ app.post("/checkout", function (request, response, next) {
 
 		// go to invoice if user cookies match
 	} else {
-		response.redirect('/invoice.html')
+		response.redirect("/invoice.html");
 	}
 });
 
-app.get("/purchase", function (request, response, next) {
+//IR5: Rate products for purchase (serivce to add rating for product)
+app.post("/rateProduct", function (request, response, next) {
+	console.log(request.body);
 
+	// Have product rating --> calculate avg
+	if(typeof products[request.body.prod_type][request.body.product_index]["Rating"] == "undefined"){
+		products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":1, "Avg":Number(request.body.prod_rating)};
+	} else {
+		var n = products[request.body.prod_type][request.body.product_index]["Rating"]["Num Ratings"];
+		products[request.body.prod_type][request.body.product_index]["Rating"]["Num Ratings"] = ++n;
+		products[request.body.prod_type][request.body.product_index]["Rating"]["Avg"] += Number(request.body.prod_rating)/n;
+	}
 
+	console.log(products);
+	response.json({});
+});
+
+app.post("/purchase", function (request, response, next) {
+		
 	var name = request.cookies["name"];
 	var userid = request.cookies["userid"];
 
@@ -686,16 +703,16 @@ app.get("/purchase", function (request, response, next) {
     <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap" rel="stylesheet">
 	
-	<h2>Thank you ${name} for your purchase!</h2>
+	<h1>SHINee Album Shop</h1>
+	<h2>Thank you ${name} for your purchase! Please see your invoice below.</h2>
 	
 	<div>
-      <table border="2">
+      <table border="2" width="90%">
         <tbody>
             <th style="text-align: center;" width="30%">Item</th>
             <th style="text-align: center;" width="14%">Quantity</th>
             <th style="text-align: center;" width="17%">Price</th>
-            <th style="text-align: center;" width="39%">Extended Price</th>
-			<th style="text-align: center;" width="13%">Rating</th>
+			<th style="text-align: center;" width="39%">Rating</th>
           </tr>`;
 
 	var cart = request.session.cart;
@@ -715,16 +732,11 @@ app.get("/purchase", function (request, response, next) {
 
 				str += `
 	<tr>
-	 	<td width="30%">${products[product_type][i].name}</td>
+	 	<td align="center" width="30%">${products[product_type][i].name}</td>
 	 	<td align="center" width="14%">${quantities}</td>
-	 	<td width="17%">$${products[product_type][i].price}</td>
-	 	<td width="39%">$${extended_price.toFixed(2)}</td>
-		<td width="13%"><div class="ratings_${products[product_type][i]}_${i}">
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
+	 	<td align="center" width="17%">$${products[product_type][i].price}</td>
+		<td align="center" width="13%"><div class="ratings_${products[product_type][i]}_${i}">
+			<input type="radio" name="rating" id="star">
 		</div></td>
    	</tr>
           `;
@@ -797,12 +809,13 @@ app.get("/purchase", function (request, response, next) {
 	// send email if successful, if not, alert an error message
 	transporter.sendMail(mailOptions, function (error, info) {
 		if (error) {
-			email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent');</script>`;
-			//response.send(str + email_msg);
+			email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent'); location.href="/products_display.html?product_type=Group"</script>`;
+			response.send(email_msg);
+			return; // terminate the function after sending the error response
 		} else {
 			console.log("Email sent to: " + info.response);
 			email_msg = `<script>alert('Your invoice was mailed to ${userid}');</script>`;
-			//response.send(str + email_msg);
+			response.send(str + email_msg);
 		}
 	});
 
@@ -817,7 +830,7 @@ app.get("/purchase", function (request, response, next) {
 					request.session.cart[product_type][i];
 			}
 		}
-	};
+	}
 
 	response.clearCookie("userid");
 	response.clearCookie("name");

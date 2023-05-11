@@ -5,6 +5,22 @@ Date: 5/12/2023
 Description: CSS stylesheet for invoice page
  */
 
+ /* Header styling */
+h1 {
+    align-items: center;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: rgb(15, 106, 106);
+    color:rgb(200, 246, 249);
+    font-size: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 100%;
+}
+
  /* navbar styling */
 .navbar {
     display: flex;
@@ -44,16 +60,6 @@ Description: CSS stylesheet for invoice page
 
 .navbar .button:hover{
     background-color: rgb(0, 0, 0);
-}
-
-/* thank you for ordering */
- h1 {
-    color: rgb(15, 106, 106);
-    font-size: 38px;
-    font-family: 'Dosis', sans-serif;
-    text-shadow: 1px 1px 1px rgb(255, 255, 255);
-    margin-bottom: 15px;
-    margin-top: 25px;
 }
 
 body {
@@ -123,6 +129,29 @@ table td {
     display: block;
 }
 
+/* Purchase button styling */
+.purchase-button {
+    display: block;
+    background-color: rgb(62, 107, 104);
+    color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;    
+    font-size: 17px;
+    border-width: 1.5px;
+    min-width: 100px;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    margin: 0 auto;
+    width: auto;
+  }
+
+.purchase-button:hover{
+    background-color: #ffffff;
+    border-color: rgb(62, 107, 104);
+    color: rgb(62, 107, 104);
+}
+
 /* home button */
 .home-button{
     margin-right: 20px;
@@ -157,6 +186,25 @@ h3 {
     left: 0;
     right: 0;
     bottom: 25px;
+}
+
+.star-rating {
+    margin-top: 5px;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+.star-rating i{
+    padding: 0;
+    margin: 0;
+    color: grey;
+    font-size: 25px;
+    
+}
+
+.star-rating {
+    color: #d8b74b;
 }
 
 /* copyright */
