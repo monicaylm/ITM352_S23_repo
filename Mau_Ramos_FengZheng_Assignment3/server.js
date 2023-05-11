@@ -275,11 +275,7 @@ function authAdmin(request, response, next) {
 		return;
 	}
 	// check if user logged in is an admin, if not, send message
-<<<<<<< Updated upstream
 	if (user_data[request.cookies.userid].admin == false) {
-=======
-	if (user_data[request.cookies.userid].admin == "") {
->>>>>>> Stashed changes
 		response.send("You are not an authorized administrator!");
 		return;
 	}
@@ -290,21 +286,12 @@ app.post("/isAdmin", authAdmin, function (request, response, next) {
 	// check if user is logged in, else, send to login
 	if (typeof request.cookies.userid != "undefined") {
 		// check if user logged in is an admin, if not, send message
-<<<<<<< Updated upstream
 		if (user_data[request.cookies.userid].admin == true) {
 			response.json({ is_admin: true });
 			return;
 		}
 	} else {
 		response.json({ is_admin: false });
-=======
-		if (user_data[request.cookies.userid].admin == "on") {
-			response.json({ is_admin: "on" });
-			return;
-		}
-	} else {
-		response.json({ is_admin: "" });
->>>>>>> Stashed changes
 	}
 });
 
@@ -594,7 +581,9 @@ app.post("/register", function (request, response, next) {
 });
 
 // checkout, to invoice
-app.post("/checkout", function (request, response, next) {
+app.post("/checkout", function (request, response, next) { 
+	// IR5: Rate products for purchase 
+
 	// if user is not logged in, display alert and redirect to login page
 	if (
 		typeof request.cookies["userid"] === "undefined" ||
@@ -624,6 +613,7 @@ app.post("/checkout", function (request, response, next) {
             <th style="text-align: center;" width="11%">Quantity</th>
             <th style="text-align: center;" width="13%">Price</th>
             <th style="text-align: center;" width="39%">Extended Price</th>
+			<th style="text-align: center;" width="13%">Rating</th>
           </tr>`;
 
 		var cart = request.session.cart;
@@ -653,6 +643,13 @@ app.post("/checkout", function (request, response, next) {
 	 	<td align="center" width="11%">${quantities}</td>
 	 	<td width="13%">$${products[product_type][i].price}</td>
 	 	<td width="39%">$${extended_price.toFixed(2)}</td>
+		<td width="13%"><div class="ratings_${products[product_type][i]}_${i}">
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+			<i class="fas fa-star"></i>
+		</div></td>
    	</tr>
           `;
 				}
