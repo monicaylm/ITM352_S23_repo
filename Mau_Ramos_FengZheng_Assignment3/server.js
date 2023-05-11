@@ -275,11 +275,7 @@ function authAdmin(request, response, next) {
 		return;
 	}
 	// check if user logged in is an admin, if not, send message
-<<<<<<< Updated upstream
 	if (user_data[request.cookies.userid].admin == false) {
-=======
-	if (user_data[request.cookies.userid].admin == "") {
->>>>>>> Stashed changes
 		response.send("You are not an authorized administrator!");
 		return;
 	}
@@ -290,21 +286,12 @@ app.post("/isAdmin", authAdmin, function (request, response, next) {
 	// check if user is logged in, else, send to login
 	if (typeof request.cookies.userid != "undefined") {
 		// check if user logged in is an admin, if not, send message
-<<<<<<< Updated upstream
 		if (user_data[request.cookies.userid].admin == true) {
 			response.json({ is_admin: true });
 			return;
 		}
 	} else {
 		response.json({ is_admin: false });
-=======
-		if (user_data[request.cookies.userid].admin == "on") {
-			response.json({ is_admin: "on" });
-			return;
-		}
-	} else {
-		response.json({ is_admin: "" });
->>>>>>> Stashed changes
 	}
 });
 
@@ -605,7 +592,14 @@ app.post("/checkout", function (request, response, next) {
 
 		// go to invoice if user cookies match
 	} else {
-		var name = request.cookies["name"];
+		response.redirect('/invoice.html')
+	}
+});
+
+app.get("/purchase", function (request, response, next) {
+		
+
+	var name = request.cookies["name"];
 		var userid = request.cookies["userid"];
 
 		str = `<link href="invoice.css" rel="stylesheet">
@@ -619,10 +613,9 @@ app.post("/checkout", function (request, response, next) {
 	<div>
       <table border="2">
         <tbody>
-            <th style="text-align: center;" width="11%">Image</th>
-            <th style="text-align: center;" width="26%">Item</th>
-            <th style="text-align: center;" width="11%">Quantity</th>
-            <th style="text-align: center;" width="13%">Price</th>
+            <th style="text-align: center;" width="30%">Item</th>
+            <th style="text-align: center;" width="14%">Quantity</th>
+            <th style="text-align: center;" width="17%">Price</th>
             <th style="text-align: center;" width="39%">Extended Price</th>
           </tr>`;
 
@@ -643,15 +636,9 @@ app.post("/checkout", function (request, response, next) {
 
 					str += `
 	<tr>
-		<td height="70px" width="11%">
-	 	<div class="img-mouseover">
-	   		<img src="./images/${
-					products[product_type][i].image
-				}" height="50px" width="50px">
-	   	</div></td>
-	 	<td width="26%">${products[product_type][i].name}</td>
-	 	<td align="center" width="11%">${quantities}</td>
-	 	<td width="13%">$${products[product_type][i].price}</td>
+	 	<td width="30%">${products[product_type][i].name}</td>
+	 	<td align="center" width="14%">${quantities}</td>
+	 	<td width="17%">$${products[product_type][i].price}</td>
 	 	<td width="39%">$${extended_price.toFixed(2)}</td>
    	</tr>
           `;
@@ -701,7 +688,6 @@ app.post("/checkout", function (request, response, next) {
 `;
 
 		// parts referenced from assignment 3 code example
-		// set up mail server https://mailtrap.io/blog/nodemailer-gmail/
 		// create a transporter variable for nodemailer
 		var transporter = nodemailer.createTransport({
 			host: "mail.hawaii.edu",
@@ -726,14 +712,13 @@ app.post("/checkout", function (request, response, next) {
 		transporter.sendMail(mailOptions, function (error, info) {
 			if (error) {
 				email_msg = `<script>alert('Oops, ${userid}. There was an error and your invoice could not be sent');</script>`;
-				response.send(str + email_msg);
+				//response.send(str + email_msg);
 			} else {
 				console.log("Email sent to: " + info.response);
 				email_msg = `<script>alert('Your invoice was mailed to ${userid}');</script>`;
-				response.send(str + email_msg);
+				//response.send(str + email_msg);
 			}
 		});
-	}
 
 	for (let product_type in request.session.cart) {
 		for (i in request.session.cart[product_type]) {
@@ -746,7 +731,7 @@ app.post("/checkout", function (request, response, next) {
 					request.session.cart[product_type][i];
 			}
 		}
-	}
+	};
 
 	response.clearCookie("userid");
 	response.clearCookie("name");

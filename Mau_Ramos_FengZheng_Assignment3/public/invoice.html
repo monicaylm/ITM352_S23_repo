@@ -22,11 +22,11 @@
     <script>
 
       // Greet user (personalize) 
-      window.onload = function () {
+      /*window.onload = function () {
         if (getCookie("name") !== "") {
             alert(`Your order has been placed successfully!`);
         }
-      }
+      }*/
 
       var cart;
       loadJSON('get_cart', function (response) {
@@ -52,7 +52,7 @@
 
 <body>
   <!-------------- invoice personalization ----------------->
-  <h2>Thank you <script>document.write(`${getCookie("name")}`);</script> for your purchase! Your invoice has been emailed to <script>document.write(`${getCookie("userid")}`)</script>.</h2>
+  <h2>Thank you <script>document.write(`${getCookie("name")}`);</script> for your purchase!</h2>
 
   <div>
     <table border="2">
@@ -130,7 +130,8 @@
       </tbody>
     </table>
   </div>
-  <a class="home-button" href="/index.html">Home</a>
+  <h2>Please confirm your items to place your order and send your invoice to <script>document.write(`${getCookie("userid")}`)</script>.</h2>
+  <input type="button" class="home-button" window.location.href="/purchase" value="Confirm purchase">
 
   <!-- shipping policy -->
   <h3>&#8415; SHIPPING POLICY &#8415;<br>&#8415; Free shipping for orders over $80! &#8415;<br>&#8415; Orders under
