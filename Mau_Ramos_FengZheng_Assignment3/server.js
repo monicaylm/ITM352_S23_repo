@@ -136,7 +136,7 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 	  Email: <input type="text" name="new_user_email">
       Name: <input type="text" name="new_user_name">
       Password: <input type="text" name="new_user_password">
-      Admin: <input type="textbox" name="new_user_admin">
+      Admin: <input type="checkbox" name="new_user_admin">
       <br><br>`;
 
 	// append a submit button
@@ -148,8 +148,6 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 
 app.post("/updateusers", authAdmin, function (request, response, next) {
 	user_data = request.body.user_data;
-
-	//const new_user_admin = request.body.new_user_admin === true;
 
 	// look for updated email addresses
 	for (let user_email in request.body.update) {
@@ -176,11 +174,7 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 
 		const new_email = request.body.new_user_email;
 
-		var admincheckbox = false;
-
-		if (typeof request.body.user_data[new_email].admin != 'undefined') {
-			admincheckbox = true;
-		}
+		var admincheckbox = true || '';
 
 		const new_user_data = {
 			name: request.body.new_user_name,
@@ -192,7 +186,7 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 	}
 
 	// write updated data to user_data_filename (user_data.json)
-	fs.writeFileSync(user_data_filename, JSON.stringify(user_data, null, 2));
+	fs.writeFileSync(user_data_filename, JSON.stringify(user_data));
 	response.redirect("./manageusers");
 });
 
@@ -292,57 +286,6 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 	response.redirect("./manageproducts");
 });
 
-/* app.post("/updateproducts", authAdmin, function (request, response, next) {
-	console.log(JSON.stringify(request.body));
-
-	let products = JSON.parse(fs.readFileSync(products_filename));
-
-	const {
-		prod_info,
-		delete: toDelete,
-		new_prod_type,
-		new_prod_name,
-		new_prod_price,
-		new_prod_inventory,
-		new_prod_description,
-	} = request.body;
-
-	// remove products that were selected for deletion
-	for (const prod_type in toDelete) {
-		for (const i in toDelete[prod_type]) {
-			const index = Number(i);
-			if (toDelete[prod_type][index]) {
-				products[prod_type].splice(index, 1);
-			}
-		}
-	}
-
-	// add new product
-	if (
-		new_prod_type &&
-		new_prod_name &&
-		new_prod_price &&
-		new_prod_inventory &&
-		new_prod_description
-	) {
-		if (!products[new_prod_type]) {
-			products[new_prod_type] = [];
-		}
-		products[new_prod_type].push({
-			name: new_prod_name,
-			price: new_prod_price,
-			quantity_available: new_prod_inventory,
-			description: new_prod_description,
-		});
-	}
-
-	// write updated data to products.json
-	fs.writeFileSync(products_filename, JSON.stringify(products));
-
-	console.log('Products file updated successfully.');
-	response.redirect("./manageproducts");
-}); */
-
 function authAdmin(request, response, next) {
 	console.log(request.cookies);
 	// check if user is logged in, else, send to login
@@ -351,7 +294,7 @@ function authAdmin(request, response, next) {
 		return;
 	}
 	// check if user logged in is an admin, if not, send message
-	if (user_data[request.cookies.userid].admin == false) {
+	if (!user_data[request.cookies.userid].admin) {
 		response.send("You are not an authorized administrator!");
 		return;
 	}
@@ -367,7 +310,7 @@ app.post("/isAdmin", authAdmin, function (request, response, next) {
 			return;
 		}
 	} else {
-		response.json({ is_admin: false });
+		response.json({ is_admin: ''});
 	}
 });
 
