@@ -46,7 +46,7 @@ function decrypt(encrypted) {
 }
 
 // checks to see encrypted version of password in the terminal
-console.log(encrypt("brandon"));
+console.log(encrypt("abc123@123"));
 
 app.use(
 	session({ secret: "MySecretKey", resave: true, saveUninitialized: true })
@@ -124,15 +124,9 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
             Password: <input type="text" name="user_data[${user_email}][password]" value="${
 			user_data[user_email].password
 		}">
-<<<<<<< Updated upstream
             Admin: <input type="text" name="user_data[${user_email}][admin]" value="${
 				user_data[user_email].admin ? user_data[user_email].admin : false
 			}">
-=======
-            Admin: <input type="checkbox" name="user_data[${user_email}][admin]" ${
-			user_data[user_email].admin ? "checked" : ""
-		}>
->>>>>>> Stashed changes
             Delete account?: <input type="checkbox" name="delete[${user_email}]">
             <br><br>
             `;
@@ -157,6 +151,9 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 
 app.post("/updateusers", authAdmin, function (request, response, next) {
 	user_data = request.body.user_data;
+
+	const new_user_admin = request.body.new_user_admin === true;
+
 	// look for updated email addresses
 	for (let user_email in request.body.update) {
 		if (user_email != request.body.update[user_email]) {
@@ -175,7 +172,7 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 		const new_user_data = {
 			name: request.body.new_user_name,
 			password: request.body.new_user_password,
-			admin: request.body.new_user_admin || false,
+			admin: new_user_admin,
 		};
 		user_data[new_email] = new_user_data;
 	}
