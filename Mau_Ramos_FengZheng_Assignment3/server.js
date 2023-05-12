@@ -643,6 +643,7 @@ app.post("/checkout", function (request, response, next) {
 });
 
 //IR5: Rate products for purchase (serivce to add rating for product)
+//Helped from Prof. Port
 app.post("/rateProduct", function (request, response, next) {
 	console.log(request.body);
 
@@ -657,11 +658,11 @@ app.post("/rateProduct", function (request, response, next) {
         products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":n, "Avg":avg};
 	}
 	
-
 	console.log(products);
 	response.json({});
 });
 
+// Confirming purchase to send the invoice to email registered 
 app.post("/purchase", function (request, response, next) {
 	var name = request.cookies["name"];
 	var userid = request.cookies["userid"];
