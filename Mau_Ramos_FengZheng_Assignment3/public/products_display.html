@@ -132,6 +132,12 @@
                         <img src ="./images/${products[product_type][i].image}">
                         <div class="details">
                         <p>&dollar;${products[product_type][i].price}</p>
+                        <div class="likeBtn">
+                            <input type="checkbox" id="favoriteBtn${i}" name="favoriteBtn" class="favoriteBtn" onclick="addFavorite(${i}, this.checked)">
+                            <label for="favoriteBtn${i}">
+                                <i class="fas fa-heart"></i>
+                            </label>
+                        </div>
                         <h3>In stock: ${products[product_type][i].quantity_available}<br>&#9671;<br>Sold: ${products[product_type][i].quantity_sold}</h3>
                         <div class="qty">
                         <label id="quantity${i}_label">Quantity:</label><input type="number" id="quantity${i}_id" placeholder="0" name="quantity${i}">
@@ -150,12 +156,6 @@
                         </section>
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </form>
-                        <div class="likeBtn">
-                            <input type="checkbox" id="favoriteBtn${i}" name="favoriteBtn" class="favoriteBtn" onclick="addFavorite(${i}, this.checked)">
-                            <label for="favoriteBtn${i}">
-                                <i class="fas fa-heart"></i>
-                            </label>
-                        </div>
                         </section>
                      `)
                     }
