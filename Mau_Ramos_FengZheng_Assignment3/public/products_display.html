@@ -27,7 +27,7 @@
 
     <script>
         var favorites;
-        
+
 
         // get querystring data
         var params = (new URL(document.location)).searchParams;
@@ -45,8 +45,8 @@
             var sold = JSON.parse(params.get("amountSold"));
 
             await addFavorite("get", "", "");
-            if (favorites[product_type]){
-                for (let i in favorites[product_type]){
+            if (favorites[product_type]) {
+                for (let i in favorites[product_type]) {
                     document.getElementById(`favoriteBtn${i}`).checked = favorites[product_type][i];
                 }
             }
@@ -150,9 +150,12 @@
                         </section>
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </form>
-                            <div class="likeBtn">
-                                <input type="checkbox" id="favoriteBtn${i}" name="favoriteBtn" class="favoriteBtn" onclick="addFavorite(${i}, this.checked)"><i class="fas fa-heart"></i></input>
-                            </div>
+                        <div class="likeBtn">
+                            <input type="checkbox" id="favoriteBtn${i}" name="favoriteBtn" class="favoriteBtn" onclick="addFavorite(${i}, this.checked)">
+                            <label for="favoriteBtn${i}">
+                                <i class="fas fa-heart"></i>
+                            </label>
+                        </div>
                         </section>
                      `)
                     }
@@ -205,7 +208,7 @@
                     const errorsObject = await response.json();
                     console.log("Success:", errorsObject);
 
-                    /*if (Object.keys(errorsObject).length === 0) {
+                    if (Object.keys(errorsObject).length === 0) {
                         getcart();
                         document.getElementById(`quantity${prod_index}_errors_span`).innerHTML = "";
                         qtyForm[`quantity${prod_index}`].style.border = "1px solid black";
@@ -233,7 +236,7 @@
                             qtyForm[`quantity${prod_index}`].style.borderRadius = "3px";
 
                         }
-                    }*/
+                    }
 
                 } catch (error) {
                     console.error("Error:", error);

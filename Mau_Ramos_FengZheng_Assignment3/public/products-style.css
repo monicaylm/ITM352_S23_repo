@@ -191,6 +191,10 @@ main {
     align-items: center;
 }
 
+input[type=checkbox] {
+    display: none;
+}
+
 .favoriteBtn {
     background-color: transparent;
     border: none;
@@ -202,18 +206,16 @@ main {
     font-size: 28px;
 }
 
-.favoritebtn i:hover {
+.likeBtn label {
     cursor: pointer;
   }
   
-  .favoriteBtn i {
-    font-size: 1.5em;
-    text-align: center;
-    color: #ccc;
+  .likeBtn input[type="checkbox"] + label i {
+    color: #aaa;
   }
   
-  .favoriteBtn i.far {
-    color: #fff;
+  .likeBtn input[type="checkbox"]:checked + label i {
+    color: #cd1b1b;
   }
 
 .star-rating {
