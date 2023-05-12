@@ -188,23 +188,38 @@ h3 {
     bottom: 25px;
 }
 
+
 .star-rating {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    display:inline-block;
+    overflow: visible;
+    padding: 10px;
+    position: relative;
+    width: 180px;
+    height: 32px;
 }
 
-.star-rating i{
-    padding: 0;
-    margin: 0;
-    color: grey;
-    font-size: 25px;
-    
+.empty_star{
+    background: url('images/emptyStar.png') no-repeat;
+    float: right;
+    height: 28px;
+    padding: 0px;
+    width: 32px;
+    background-size: 25px;
 }
 
+.full_star {
+    background: url('images/fullStar.png');
+    float:      right;
+    height:     28px;
+    padding:    0px;
+    width:      32px;
+    background-size: 25px;
+}
+
+/*
 .star-rating {
     color: #d8b74b;
-}
+}*/
 
 /* copyright */
 footer {
