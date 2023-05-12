@@ -189,8 +189,6 @@ main {
     display: flex;
     justify-content: center; /* centers horizontally */
     align-items: center;
-    margin-top: -250px;
-    margin-left: 35px;
 }
 
 .favoriteBtn {

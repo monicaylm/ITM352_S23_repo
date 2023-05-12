@@ -26,15 +26,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script>
+        var favorites;
+        
+
         // get querystring data
         var params = (new URL(document.location)).searchParams;
 
         //search for product key to display on navigation
         if (params.has('product_type')) {
             var product_type = params.get('product_type');
-        } else {
-            alert(`No product key!`);
-            window.stop();
         }
 
         // execute async function when on window load // assisted by prof port
@@ -43,6 +43,13 @@
 
             // define variable to represent qty sold
             var sold = JSON.parse(params.get("amountSold"));
+
+            await addFavorite("get", "", "");
+            if (favorites[product_type]){
+                for (let i in favorites[product_type]){
+                    document.getElementById(`favoriteBtn${i}`).checked = favorites[product_type][i];
+                }
+            }
         }
 
         // IR3: Search feature that enables users to search album name on the page
@@ -61,28 +68,6 @@
                 }
             }
         }
-
-        // IR4: Add to Favorites button (not working)
-        /*function favorite(event) {
-             var favoriteBtn = document.getElementById('favoriteBtn');
-             if (favoriteBtn.style.color == 'grey') {
-                 favoriteBtn.style.color = 'red';
-             } else {
-                 favoriteBtn.style.color = 'grey';
-             }
-         };*/
-         function favorite(i) {
-                        console.log("Item favorited!");
-                        var favBtn = document.getElementById(`favoriteBtn${i}`);
-                        console.log(favBtn.style.color); // should print the current color of the button
-                        if (favBtn.style.color == "red") {
-                            favBtn.style.color = "gray";
-                        } else {
-                            favBtn.style.color = "red";
-                        }
-                        console.log(favBtn.style.color); // should print the new color of the button
-                    }
-
 
     </script>
 
@@ -165,17 +150,14 @@
                         </section>
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </form>
-                        <form id="favorite" action="./favorite" method="POST">
-                            <input type="hidden" name="product_id" value="${products[product_type][i]}">
                             <div class="likeBtn">
-                                <button type="submit" id="favoriteBtn${i}" name="favoriteBtn" class="favoriteBtn"><i class="fas fa-heart"></i></button>
+                                <input type="checkbox" id="favoriteBtn${i}" name="favoriteBtn" class="favoriteBtn" onclick="addFavorite(${i}, this.checked)"><i class="fas fa-heart"></i></input>
                             </div>
-                        </form>
                         </section>
                      `)
                     }
 
-                    
+
                 </script>
             </main>
         </div> <br>
@@ -205,7 +187,7 @@
                 } catch (error) {
                     console.error("Error:", error);
                 }
-            }
+            };
 
             async function addToCart(prod_index) {
                 var quantity = document.getElementById(`quantity${prod_index}_id`).value
@@ -223,7 +205,7 @@
                     const errorsObject = await response.json();
                     console.log("Success:", errorsObject);
 
-                    if (Object.keys(errorsObject).length === 0) {
+                    /*if (Object.keys(errorsObject).length === 0) {
                         getcart();
                         document.getElementById(`quantity${prod_index}_errors_span`).innerHTML = "";
                         qtyForm[`quantity${prod_index}`].style.border = "1px solid black";
@@ -251,14 +233,32 @@
                             qtyForm[`quantity${prod_index}`].style.borderRadius = "3px";
 
                         }
-                    }
+                    }*/
 
                 } catch (error) {
                     console.error("Error:", error);
                 }
             }
-        </script>
-        <script>
+
+            async function addFavorite(prod_index, favorited_status) {
+                var data = { 'product_type': product_type, 'product_index': prod_index, 'favored': favorited_status };
+                console.log('adding to favorites', data)
+                try {
+                    const response = await fetch("./favorite", {
+                        method: "POST", // or 'PUT'
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    favorites = await response.json();
+                    console.log("Success:", favorites);
+
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            }
 
         </script>
 </body>

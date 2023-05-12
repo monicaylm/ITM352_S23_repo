@@ -92,43 +92,23 @@ app.get("/products_data.js", function (request, response, next) {
 
 // IR 4: Add to favorites
 app.post("/favorite", function (request, response, next) {
-	var product_id = request.body.product_id;
+	console.log(JSON.stringify(request.body));
 
-	if (request.session.favorites) {
-		var favorites = request.session.favorites;
-	} else {
-		var favorites = {};
-	}
-
-	console.log("Favorite button clicked");
-
-	if (request.body.favoriteBtn) {
-		// add product to favorites
-		favorites[product_id] = true;
-	} else {
-		// remove product from favorites
-		delete favorites[product_id];
+	if (!request.session.favorites) {
+		request.session.favorites = {};
 	}
 
 	// store updated favorites in session
-	request.session.favorites = favorites;
+	if (typeof request.session.favorites[request.body.product_type] == "undefined") {
+		request.session.favorites[request.body.product_type] = [];
+	}
 
-	/*if (request.body.favoriteBtn) {
-		for (let product_type in products_data) {
-			for (let i = 0; i < products_data[product_type].length; i++) {
-				var favorite = false;
-				if (products_data[product_type][i].id == product_id) {
-					favorite.push([product_type][i]);
-					products_data[product_type][i][favorite] = true;
-				} else if (favorite == true) {
-					favorite.pop([product_type][i]);
-					products_data[product_type][i][favorite] = false;
-				}
-			}
-		}
-	}*/
+	if (request.body.product_type !== "get"){
+		request.session.favorites[request.body.product_type][request.body.product_index] = request.body.favored;
+	}
+
 	// stay on the same page
-	response.redirect(request.headers.referer);
+	response.json(request.session.favorites);
 });
 
 // Admin page
@@ -159,12 +139,15 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 	for (var user_email in user_data) {
 		// append a string of HTML to str
 		str += `Email: <input type="text" name="update[${user_email}]" value="${user_email}">
-            Name: <input type="text" name="user_data[${user_email}][name]" value="${user_data[user_email].name
-			}">
-            Password: <input type="text" name="user_data[${user_email}][password]" value="${user_data[user_email].password
-			}">
-            Admin: <input type="checkbox" name="admin[${user_email}]" ${user_data[user_email].admin ? "checked" : ""
-			}>
+            Name: <input type="text" name="user_data[${user_email}][name]" value="${
+			user_data[user_email].name
+		}">
+            Password: <input type="text" name="user_data[${user_email}][password]" value="${
+			user_data[user_email].password
+		}">
+            Admin: <input type="checkbox" name="admin[${user_email}]" ${
+			user_data[user_email].admin ? "checked" : ""
+		}>
             Delete account?: <input type="checkbox" name="delete[${user_email}]">
             <br><br>
             `;
@@ -212,15 +195,14 @@ app.post("/updateusers", authAdmin, function (request, response, next) {
 	// add new user if email exists in request body
 	// this code is adapted from ChatGPT
 	if (request.body.new_user_email) {
-
 		const new_email = request.body.new_user_email;
 
-		var admincheckbox = true || '';
+		var admincheckbox = true || "";
 
 		const new_user_data = {
 			name: request.body.new_user_name,
 			password: request.body.new_user_password,
-			admin: admincheckbox
+			admin: admincheckbox,
 		};
 		user_data[new_email] = new_user_data;
 		console.log(new_user_data);
@@ -286,7 +268,8 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 			if (products[prod_type] && products[prod_type][index]) {
 				products[prod_type][index].name = product.name;
 				products[prod_type][index].price = product.price;
-				products[prod_type][index].quantity_available = product.quantity_available;
+				products[prod_type][index].quantity_available =
+					product.quantity_available;
 				products[prod_type][index].description = product.description;
 			}
 		}
@@ -351,7 +334,7 @@ app.post("/isAdmin", authAdmin, function (request, response, next) {
 			return;
 		}
 	} else {
-		response.json({ is_admin: ''});
+		response.json({ is_admin: "" });
 	}
 });
 
@@ -514,7 +497,7 @@ app.get("/logout", function (request, response, next) {
 	response.clearCookie("userid");
 	response.clearCookie("name");
 	response.send(message);
-	request.session.destroy();
+	delete request.session.cart;
 });
 
 // referenced from assignment 2 code examples on class website
@@ -643,7 +626,7 @@ app.post("/register", function (request, response, next) {
 
 // checkout, to invoice
 app.post("/checkout", function (request, response, next) {
-	// IR5: Rate products for purchase 
+	// IR5: Rate products for purchase
 
 	// if user is not logged in, display alert and redirect to login page
 	if (
@@ -664,12 +647,26 @@ app.post("/rateProduct", function (request, response, next) {
 	console.log(request.body);
 
 	// Have product rating --> calculate avg
-	if(typeof products[request.body.prod_type][request.body.product_index]["Rating"] == "undefined"){
-		products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":1, "Avg":Number(request.body.prod_rating)};
+	if (
+		typeof products[request.body.prod_type][request.body.product_index][
+			"Rating"
+		] == "undefined"
+	) {
+		products[request.body.prod_type][request.body.product_index]["Rating"] = {
+			"Num Ratings": 1,
+			Avg: Number(request.body.prod_rating),
+		};
 	} else {
-		var n = products[request.body.prod_type][request.body.product_index]["Rating"]["Num Ratings"];
-		products[request.body.prod_type][request.body.product_index]["Rating"]["Num Ratings"] = ++n;
-		products[request.body.prod_type][request.body.product_index]["Rating"]["Avg"] += Number(request.body.prod_rating)/n;
+		var n =
+			products[request.body.prod_type][request.body.product_index]["Rating"][
+				"Num Ratings"
+			];
+		products[request.body.prod_type][request.body.product_index]["Rating"][
+			"Num Ratings"
+		] = ++n;
+		products[request.body.prod_type][request.body.product_index]["Rating"][
+			"Avg"
+		] += Number(request.body.prod_rating) / n;
 	}
 
 	console.log(products);
@@ -677,7 +674,6 @@ app.post("/rateProduct", function (request, response, next) {
 });
 
 app.post("/purchase", function (request, response, next) {
-		
 	var name = request.cookies["name"];
 	var userid = request.cookies["userid"];
 
@@ -818,7 +814,7 @@ app.post("/purchase", function (request, response, next) {
 
 	response.clearCookie("userid");
 	response.clearCookie("name");
-	request.session.destroy();
+	delete request.session.cart;
 });
 
 // route all other GET requests to files in public
