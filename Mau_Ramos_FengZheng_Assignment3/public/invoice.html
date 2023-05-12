@@ -31,7 +31,31 @@
             alert(`Your order has been placed successfully!`);
         }
       }*/
+      function star_rate(rate) {
+        //As per the value of rate parameter, mark respective radio button as â€œcheckedâ€
+        btn = document.getElementById("star_" + rate);
+        btn.checked = true;
+        //display correct rate stars images
+        var star = document.getElementById("star" + rate).className;
 
+        if (star == "empty_star")   //if an empty star is clicked, rating is done till that star
+        {
+            for (i = rate; i > 0; i--) {
+                document.getElementById("star" + i).className = "full_star";
+            }
+        }
+        else if (star == "full_star") //if a full star is clicked, rating is reduced to that star
+        {
+            for (i = rate; i < 5; i++) {
+                document.getElementById("star" + (i + 1)).className = "empty_star";
+            }
+        }
+    }
+
+      /*
+      function starRate() {
+        document.getElementsByClassName("empty_star").style.background = "url('images/fullStar.png')";
+      }*/
 
       async function rate(pType, pIndex, pRating) {
         console.log(pType, pIndex, pRating);
@@ -86,7 +110,7 @@
           <th style="text-align: center;" width="11%">Quantity</th>
           <th style="text-align: center;" width="13%">Price</th>
           <th style="text-align: center;" width="39%">Extended Price</th>
-          <th style="text-align: center;" width="76%">Rating</th>
+          <th style="text-align: center;" width="50%">Rating</th>
         </tr>
         <script>
           // generates rows with prices based on quantities
@@ -110,22 +134,22 @@
             <td align="center" width="11%">${cart[product_type][i]}</td>
             <td width="13%">$${products[product_type][i].price}</td>
             <td width="39%">$${(extended_price).toFixed(2)}</td>
-            <td width="76%">
+            <td width="50%">
             <span class="star-rating" id="rating${product_type + i}">
-              <input type="radio" name="rating${product_type + i}" value="5">
-              <label for="star5" class="full"></label>
+                <div class="empty_star" id="star5" onclick="star_rate(${product_type + i})"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_5" value="5" style="display:none">
 
-              <input type="radio" name="rating${product_type + i}" value="4">
-              <label for="star4" class="full"></label>
+                <div class="empty_star" id="star4" onclick="star_rate(${product_type + i})"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_4" value="4" style="display:none">
 
-              <input type="radio" name="rating${product_type + i}" value="3">
-              <label for="star3" class="full"></label>
+                <div class="empty_star" id="star3" onclick="star_rate(${product_type + i})"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_3" value="3" style="display:none">
 
-              <input type="radio" name="rating${product_type + i}" value="2">
-              <label for="star2" class="full"></label>
-
-              <input type="radio" name="rating${product_type + i}" value="1">
-              <label for="star1" class="full"></label>
+                <div class="empty_star" id="star2" onclick="star_rate(${product_type + i})"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_2" value="2" style="display:none">
+            
+                <div class="empty_star" id="star1" onclick="star_rate(${product_type + i})"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_1" value="1" style="display:none">
             </span>
             <button id="rateBtn${product_type + i}" onclick="rate('${product_type}',${i}, ${'rating'+ product_type + i}.querySelector('input[name=rating${product_type + i}]:checked').value)">Rate</button>
             </td>
