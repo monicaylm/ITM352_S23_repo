@@ -52,11 +52,6 @@
         }
     }
 
-      /*
-      function starRate() {
-        document.getElementsByClassName("empty_star").style.background = "url('images/fullStar.png')";
-      }*/
-
       async function rate(pType, pIndex, pRating) {
         console.log(pType, pIndex, pRating);
           var data = { 'prod_type': pType, 'product_index': pIndex, 'prod_rating': pRating };
@@ -121,6 +116,7 @@
               if (quantities > 0) { // Setup conditionals
                 extended_price = quantities * products[product_type][i].price // Compute extended price
                 subtotal += extended_price; // Add subtotal back to itself
+                console.log(product_type + i);
                 document.write(`
           <tr>
            <td height="70px" width="11%">
@@ -137,19 +133,19 @@
             <td width="50%">
             <span class="star-rating" id="rating${product_type + i}">
                 <div class="empty_star" id="star5" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_5" value="5" style="display:none">
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="5" >
 
                 <div class="empty_star" id="star4" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_4" value="4" style="display:none">
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="4" >
 
                 <div class="empty_star" id="star3" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_3" value="3" style="display:none">
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="3" >
 
                 <div class="empty_star" id="star2" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_2" value="2" style="display:none">
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="2" >
             
                 <div class="empty_star" id="star1" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_1" value="1" style="display:none">
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="1" >
             </span>
             <button id="rateBtn${product_type + i}" onclick="rate('${product_type}',${i}, ${'rating'+ product_type + i}.querySelector('input[name=rating${product_type + i}]:checked').value)">Rate</button>
             </td>

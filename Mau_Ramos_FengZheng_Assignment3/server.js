@@ -646,28 +646,17 @@ app.post("/checkout", function (request, response, next) {
 app.post("/rateProduct", function (request, response, next) {
 	console.log(request.body);
 
+	var prodRating = products[request.body.prod_type][request.body.product_index]["Rating"];
+
 	// Have product rating --> calculate avg
-	if (
-		typeof products[request.body.prod_type][request.body.product_index][
-			"Rating"
-		] == "undefined"
-	) {
-		products[request.body.prod_type][request.body.product_index]["Rating"] = {
-			"Num Ratings": 1,
-			Avg: Number(request.body.prod_rating),
-		};
+	if(typeof prodRating == "undefined"){
+		products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":1, "Avg":Number(request.body.prod_rating)};
 	} else {
-		var n =
-			products[request.body.prod_type][request.body.product_index]["Rating"][
-				"Num Ratings"
-			];
-		products[request.body.prod_type][request.body.product_index]["Rating"][
-			"Num Ratings"
-		] = ++n;
-		products[request.body.prod_type][request.body.product_index]["Rating"][
-			"Avg"
-		] += Number(request.body.prod_rating) / n;
+		var n = prodRating["Num Ratings"] + 1;
+		var avg = (prodRating["Avg"] * prodRating["Num Ratings"] + Number(request.body.prod_rating)) / n;
+        products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":n, "Avg":avg};
 	}
+	
 
 	console.log(products);
 	response.json({});
