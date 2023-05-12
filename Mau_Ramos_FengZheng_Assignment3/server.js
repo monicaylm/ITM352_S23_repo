@@ -491,13 +491,13 @@ app.post("/login", function (request, response, next) {
 	}
 });
 
-// logout referenced and modified from Tina Vo, destroys session and clears cookies, return to index page
+// logout referenced and modified from Tina Vo, deletes session cart and clears cookies, return to index page
 app.get("/logout", function (request, response, next) {
 	message = `<script>alert('You have successfully logged out!'); location.href="./index.html";</script>`;
+	delete request.session.cart;
 	response.clearCookie("userid");
 	response.clearCookie("name");
 	response.send(message);
-	delete request.session.cart;
 });
 
 // referenced from assignment 2 code examples on class website
@@ -765,7 +765,7 @@ app.post("/purchase", function (request, response, next) {
 	var user_email = userid;
 	// email format -> sends the invoice
 	var mailOptions = {
-		from: "mylm@hawaii.edu", //sender
+		from: "Monica's SHINee Albums", //sender
 		to: user_email, //receiver
 		subject: "Thank you for your order!", // subject heading
 		html: str, //html body (invoice)
