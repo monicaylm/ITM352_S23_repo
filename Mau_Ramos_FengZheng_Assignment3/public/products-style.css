@@ -220,6 +220,7 @@ input[type=checkbox] {
     color: #cd1b1b;
   }
 
+/* Star-Rating styling */
 .star-rating {
     margin-top: 5px;
     padding: 0;
