@@ -208,7 +208,7 @@ h3 {
 }
 
 .full_star {
-    background: url('images/fullStar.png');
+    background: url('images/fullStar.png') no-repeat;
     float:      right;
     height:     28px;
     padding:    0px;

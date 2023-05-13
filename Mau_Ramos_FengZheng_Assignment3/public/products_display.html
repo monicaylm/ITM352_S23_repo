@@ -146,14 +146,9 @@
                         <br>
                         <span class="errors-span" id="quantity${i}_errors_span"></span>
                         </div> 
-                        <div class="star-rating" id="rating${i}">
-                            <span class="review">Reviews:</span><br>
-                            <i class="fa fa-star" style="font-size:30px"></i>
-                            <i class="fa fa-star" style="font-size:30px"></i>
-                            <i class="fa fa-star" style="font-size:30px"></i>
-                            <i class="fa fa-star" style="font-size:30px"></i>
-                            <i class="fa fa-star" style="font-size:30px"></i>
-                        </div>
+                        <span id="stars${i}" class="review">
+                            Reviews:
+                        </span>
                         </section>
                         <input type="button" onclick='addToCart(${i});' class="purchase_button" id="purchase_button" value="Add to cart">
                         </form>
@@ -264,6 +259,18 @@
                 }
             }
 
+            // IR5: Displaying the avg ratings for reviews 
+            for (let i = 0; i < products[product_type].length; i++) {
+                var rating = Math.round(products[product_type][i].Rating.Avg);
+                if (products[product_type][i].Rating.Avg == 0) {
+                    iconHtml = "<br>" + `<i class="fa fa-star" style="font-size:30px"></i>`.repeat(5 - rating);
+                    document.getElementById(`stars${i}`).innerHTML = "Reviews: " + iconHtml;
+                } else {
+                    iconHtml = "<br>" + `<i class="fa fa-star checked" style="font-size:30px"></i>`.repeat(rating) + `<i class="fa fa-star" style="font-size:30px"></i>`.repeat(5 - rating);
+                    document.getElementById(`stars${i}`).innerHTML += iconHtml;
+                    //document.getElementById('stars').innerHTML = "Reviews: " + "★".repeat(rating) + "☆".repeat(5 - rating);
+                }
+            };
         </script>
 </body>
 

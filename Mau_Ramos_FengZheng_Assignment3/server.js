@@ -655,7 +655,7 @@ app.post("/rateProduct", function (request, response, next) {
 		products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":1, "Avg":Number(request.body.prod_rating)};
 	} else {
 		var n = prodRating["Num Ratings"] + 1;
-		var avg = (prodRating["Avg"] * prodRating["Num Ratings"] + Number(request.body.prod_rating)) / n;
+		var avg = ((prodRating["Avg"] * prodRating["Num Ratings"] + Number(request.body.prod_rating)) / n).toFixed(2);
         products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":n, "Avg":avg};
 	}
 	response.json({});

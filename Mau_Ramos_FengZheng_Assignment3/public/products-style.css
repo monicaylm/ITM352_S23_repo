@@ -211,23 +211,17 @@ input[type=checkbox] {
 
 .likeBtn label {
     cursor: pointer;
-  }
+}
   
-  .likeBtn input[type="checkbox"] + label i {
+.likeBtn input[type="checkbox"] + label i {
     color: #aaa;
-  }
+}
   
-  .likeBtn input[type="checkbox"]:checked + label i {
+.likeBtn input[type="checkbox"]:checked + label i {
     color: #cd1b1b;
-  }
-
-/* Star-Rating styling */
-.star-rating {
-    margin-top: 5px;
-    padding: 0;
-    box-sizing: border-box;
 }
 
+/* Star-Rating styling */
 .review {
     font-family: 'Comfortaa', sans-serif;    
     font-size: 20px;
@@ -235,15 +229,12 @@ input[type=checkbox] {
     color: black;
 }
 
-.star-rating p {
-    padding: 0;
-    margin: 0;
-    color: grey;
-    font-size: 25px;
+.checked {
+    color: #d8b74b;
 }
 
-.star-rating p.active {
-    color: #d8b74b;
+i {
+    pointer-events: none;
 }
 
 /* Purchase button styling */
