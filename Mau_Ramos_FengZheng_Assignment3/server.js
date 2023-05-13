@@ -677,8 +677,8 @@ app.post("/purchase", function (request, response, next) {
 	<div>
       <table border="2" width="90%">
         <tbody>
-            <th style="text-align: center;" width="30%">Item</th>
-            <th style="text-align: center;" width="14%">Quantity</th>
+            <th style="text-align: center;" width="33%">Item</th>
+            <th style="text-align: center;" width="33%">Quantity</th>
             <th style="text-align: center;" width="17%">Price</th>
           </tr>`;
 
