@@ -73,6 +73,14 @@
           } 
       }
 
+      // Disable clicking the stars  
+      function disableStars() {
+          var elements = document.querySelectorAll('[onclick]');
+          for (var i = 0; i < elements.length; i++) {
+              elements[i].onclick = null;
+          }
+      }
+
       var cart;
       loadJSON('get_cart', function (response) {
         // Parsing JSON string into object
@@ -147,7 +155,6 @@
                 <div class="empty_star" id="${product_type + '_' + i}_1" onclick="star_rate(this.id)"></div>
                 <input type="radio" name="rating${product_type + i}" id="star_${product_type + '_' + i}_1" value="1" style="display:none">
             </span>
-            <button id="rateBtn${product_type + i}" onclick="rate('${product_type}',${i}, ${'rating'+ product_type + i}.querySelector('input[name=rating${product_type + i}]:checked').value)">Rate</button>
             </td>
           </tr>
           `)
@@ -168,7 +175,9 @@
 
           document.write(`
           <tr>
-            <td colspan="5" width="100%">&nbsp;</td>
+            <td colspan="5" width="100%">&nbsp;
+              <td><button onclick="disableStars()">Rate</button></td>
+            </td>
           </tr>
           <tr>
             <td style="text-align: right;" colspan="3" width="67%">Subtotal</td>
