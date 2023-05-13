@@ -224,9 +224,11 @@ input[type=checkbox] {
 /* Star-Rating styling */
 .review {
     font-family: 'Comfortaa', sans-serif;    
-    font-size: 20px;
+    font-size: 15px;
     font-weight: lighter;
     color: black;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .checked {
