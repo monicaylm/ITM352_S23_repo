@@ -165,12 +165,14 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
       <br><br>`;
 
 	// append a submit button
+	// append a return to admin button
 	str += '<input type="submit"></form>';
 	str +=
 		'<input type="button" size="40" value="Return to Admin" onclick="location.href=\'/admin\'">';
 	response.send(str);
 });
 
+// the following was adapted from Professor Port and ChatGPT
 app.post("/updateusers", authAdmin, function (request, response, next) {
 	user_data = request.body.user_data;
 
@@ -313,6 +315,7 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 	response.redirect("./manageproducts");
 });
 
+// microservice
 // Checks if user's account is an admin account
 function authAdmin(request, response, next) {
 	console.log(request.cookies);
@@ -329,6 +332,7 @@ function authAdmin(request, response, next) {
 	next();
 }
 
+// received help from Professor Port
 app.post("/isAdmin", authAdmin, function (request, response, next) {
 	// check if user is logged in, else, send to login
 	if (typeof request.cookies.userid != "undefined") {
