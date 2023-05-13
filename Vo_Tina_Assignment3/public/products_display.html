@@ -122,15 +122,14 @@ Products and logo from: https://www.inthemoodfor.net/shop (I do not own the logo
 
                 //nav bar of products (stickers, prints, etc.)
                 document.write(`
-   <div id="nav">
-    <ul style="list-style-type: none;">`);
+                    <div id="nav">
+                    <ul style="list-style-type: none;">`);
 
                 for (let p_key in products_array) {
                     document.write(`
-    <li style="list-style-type: none;"><a href="./products_display.html?prod_key=${p_key}">${p_key}</a></li>
-  
-    `);
-                }
+                        <li style="list-style-type: none;"><a href="./products_display.html?prod_key=${p_key}">${p_key}</a></li>
+                    `);
+                };
 
             </script>
         </div>

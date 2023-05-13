@@ -18,17 +18,17 @@
   <link href="navbar.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap" 
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap" <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap"
     rel="stylesheet">
   <link
     href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap"
     rel="stylesheet">
-  
-    <!-- Icon Source -->
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Icon Source -->
+  <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <script>
 
@@ -36,6 +36,12 @@
     loadJSON('get_cart', function (response) {
       // Parsing JSON string into object
       cart = JSON.parse(response);
+    });
+
+    var favorites;
+    loadJSON('favorite', function (response) {
+      // Parsing JSON string into object
+      favorites = JSON.parse(response);
     });
 
     // if cart is empty, display alert and redirect to products display - assisted by ChatGPT
@@ -54,6 +60,32 @@
         window.location.href = "./products_display.html?product_type=Group";
       }
     }
+
+    /*function favIcon (){
+      for (let product_type in favorites) {
+              for (let i = 0; i < favorites[product_type].length; i++) {
+                if(typeof favorites[product_type][i] !== "undefined"){
+                  if (favorites[product_type][i] == true){
+                    '<i class="fas fa-heart"></i>';
+                  }
+                };
+              }
+      }
+    };*/
+
+    function favIcon() {
+      let iconHtml = '';
+      for (let product_type in favorites) {
+        for (let i = 0; i < favorites[product_type].length; i++) {
+          if (typeof favorites[product_type][i] !== "undefined") {
+            if (favorites[product_type][i] == true) {
+              iconHtml += '<i class="fas fa-heart"></i>';
+            }
+          };
+        }
+      }
+      return iconHtml;
+    };
 
     //Quantities Array
     var quantities = [];
@@ -86,11 +118,12 @@
 
           <!-- column titles row -->
           <tr>
-            <th style="text-align: center;" width="12%">Image</th>
-            <th style="text-align: center;" width="28%">Item</th>
-            <th style="text-align: center;" width="13%">Quantity</th>
-            <th style="text-align: center;" width="17%">Price</th>
-            <th style="text-align: center;" width="30%">Extended Price</th>
+            <th style="text-align: center;" width="13%">Image</th>
+            <th style="text-align: center;" width="27%">Item</th>
+            <th style="text-align: center;" width="12%">Quantity</th>
+            <th style="text-align: center;" width="16%">Price</th>
+            <th style="text-align: center;" width="29%">Extended Price</th>
+            <th style="text-align: center;" width="5%"></th>
           </tr>
           <script>
             // generates rows with prices based on quantities
@@ -110,10 +143,11 @@
                   ${products[product_type][i].description}
                   </div>
                 </div></td>
-              <td width="28%">${products[product_type][i].name}</td>
-              <td align="center" width="13%"><input type="number" name="cart_${product_type}_${i}" value="${quantities}" min="0" max="${products[product_type][i].quantity_available}"></td>
-              <td width="17%">$${products[product_type][i].price}</td>
-              <td align="center" width="30%">$${(extended_price).toFixed(2)}</td>
+              <td width="27%">${products[product_type][i].name}</td>
+              <td align="center" width="12%"><input type="number" name="cart_${product_type}_${i}" value="${quantities}" min="0" max="${products[product_type][i].quantity_available}"></td>
+              <td width="16%">$${products[product_type][i].price}</td>
+              <td align="center" width="29%">$${(extended_price).toFixed(2)}</td>
+              <td align="center" width="5%" id="favorite_icon">${favIcon()}</td>
             </tr>
             `)
                 }

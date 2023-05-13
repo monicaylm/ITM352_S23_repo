@@ -193,6 +193,7 @@ main {
     margin-top: 20px;
 }
 
+/* make the checkbox not display */
 input[type=checkbox] {
     display: none;
 }
