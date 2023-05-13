@@ -107,7 +107,7 @@ table td {
     border: none;
 }
 
-/* IR 5: display a popup with a description of the product on mouseover of the image*/
+/* Display a popup with a description of the product on mouseover of the image*/
 .img-mouseover {
     position: relative;
 }
@@ -215,11 +215,6 @@ h3 {
     width:      32px;
     background-size: 25px;
 }
-
-/*
-.star-rating {
-    color: #d8b74b;
-}*/
 
 /* copyright */
 footer {

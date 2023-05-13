@@ -76,6 +76,7 @@
       return heart;
     }*/
 
+    // IR4: Display the heart icon if it was added to favorites from display page
     function heartIcon(product_type, index) {
       if (favorites[product_type] && favorites[product_type][index]) {
         return '<i id="heart" class="fas fa-heart checked"></i>';

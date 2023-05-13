@@ -566,7 +566,7 @@ app.post("/register", function (request, response, next) {
 	} else if (!/^\S+$/.test(password)) {
 		errors["password"].push(`Password must not contain spaces!`);
 
-		// IR2 Require that passwords have at least one number and one special character. (regex referenced from ChatGPT)
+		// Require that passwords have at least one number and one special character. (regex referenced from ChatGPT)
 	} else if (!/^(?=.*\d)(?=.*\W).+$/.test(password)) {
 		errors["password"].push(
 			`Password must contain at least one letter, one number, and one special character!`

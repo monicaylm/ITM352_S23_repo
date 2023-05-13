@@ -198,17 +198,6 @@ input[type=checkbox] {
     display: none;
 }
 
-.favoriteBtn {
-    background-color: transparent;
-    border: none;
-    outline: none;
-}
-
-.favoritebtn i {
-    color: grey;
-    font-size: 28px;
-}
-
 .likeBtn label {
     cursor: pointer;
 }
