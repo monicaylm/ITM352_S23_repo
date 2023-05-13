@@ -31,32 +31,35 @@
             alert(`Your order has been placed successfully!`);
         }
       }*/
-      function star_rate(rate) {
+      function star_rate(rate_id) {
         //As per the value of rate parameter, mark respective radio button as â€œcheckedâ€
-        btn = document.getElementById("star_" + rate);
+        btn = document.getElementById("star_" + rate_id);
         btn.checked = true;
+        var parts = rate_id.split('_');
+        var pkey = parts[0];
+        var pindex = parts[1];
+        var rate = parts[2];
+        console.log(parts);
+
         //display correct rate stars images
-        var star = document.getElementById("star" + rate).className;
+        var star = document.getElementById(rate_id).className;
 
         if (star == "empty_star")   //if an empty star is clicked, rating is done till that star
         {
             for (i = rate; i > 0; i--) {
-                document.getElementById("star" + i).className = "full_star";
+                document.getElementById(`${pkey}_${pindex}_${i}`).className = "full_star";
             }
         }
         else if (star == "full_star") //if a full star is clicked, rating is reduced to that star
         {
             for (i = rate; i < 5; i++) {
-                document.getElementById("star" + (i + 1)).className = "empty_star";
+                document.getElementById(`${pkey}_${pindex}_${i}`).className = "empty_star";
             }
         }
-    }
 
-      async function rate(pType, pIndex, pRating) {
-        console.log(pType, pIndex, pRating);
-          var data = { 'prod_type': pType, 'product_index': pIndex, 'prod_rating': pRating };
+        var data = { 'prod_type': pkey, 'product_index': pindex, 'prod_rating': rate };
           try {
-              const response = await fetch("./rateProduct", {
+              const response =  fetch("./rateProduct", {
                   method: "POST", // or 'PUT'
                   headers: {
                       "Content-Type": "application/json",
@@ -64,14 +67,11 @@
                   body: JSON.stringify(data),
               });
 
-              const errorsObject = await response.json();
-              console.log("Success:", errorsObject);
-
               }
             catch (error) {
               console.error("Error:", error);
-          }
-      };
+          } 
+      }
 
       var cart;
       loadJSON('get_cart', function (response) {
@@ -132,20 +132,20 @@
             <td width="39%">$${(extended_price).toFixed(2)}</td>
             <td width="50%">
             <span class="star-rating" id="rating${product_type + i}">
-                <div class="empty_star" id="star5" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="5" >
+                <div class="empty_star" id="${product_type + '_' + i}_5" onclick="star_rate(this.id)"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + '_' + i}_5" value="5" style="display:none">
 
-                <div class="empty_star" id="star4" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="4" >
+                <div class="empty_star" id="${product_type + '_' + i}_4" onclick="star_rate(this.id)"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + '_' + i}_4" value="4" style="display:none">
 
-                <div class="empty_star" id="star3" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="3" >
+                <div class="empty_star" id="${product_type + '_' + i}_3" onclick="star_rate(this.id)"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + '_' + i}_3" value="3" style="display:none">
 
-                <div class="empty_star" id="star2" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="2" >
+                <div class="empty_star" id="${product_type + '_' + i}_2" onclick="star_rate(this.id)"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + '_' + i}_2" value="2" style="display:none">
             
-                <div class="empty_star" id="star1" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="1" >
+                <div class="empty_star" id="${product_type + '_' + i}_1" onclick="star_rate(this.id)"></div>
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + '_' + i}_1" value="1" style="display:none">
             </span>
             <button id="rateBtn${product_type + i}" onclick="rate('${product_type}',${i}, ${'rating'+ product_type + i}.querySelector('input[name=rating${product_type + i}]:checked').value)">Rate</button>
             </td>

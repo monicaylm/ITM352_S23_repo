@@ -656,8 +656,6 @@ app.post("/rateProduct", function (request, response, next) {
 		var avg = (prodRating["Avg"] * prodRating["Num Ratings"] + Number(request.body.prod_rating)) / n;
         products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":n, "Avg":avg};
 	}
-	
-	console.log(products);
 	response.json({});
 });
 
