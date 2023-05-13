@@ -78,7 +78,7 @@
 
     function heartIcon(product_type, index) {
       if (favorites[product_type] && favorites[product_type][index]) {
-        return '<i class="fas fa-heart"></i>';
+        return '<i id="heart" class="fas fa-heart checked"></i>';
       } else {
         return '';
       }
@@ -119,8 +119,8 @@
             <th style="text-align: center;" width="27%">Item</th>
             <th style="text-align: center;" width="12%">Quantity</th>
             <th style="text-align: center;" width="16%">Price</th>
-            <th style="text-align: center;" width="29%">Extended Price</th>
-            <th style="text-align: center;" width="5%"></th>
+            <th style="text-align: center;" width="23%">Extended Price</th>
+            <th style="text-align: center;" width="10%"></th>
           </tr>
           <script>
             // generates rows with prices based on quantities
@@ -143,8 +143,8 @@
               <td width="27%">${products[product_type][i].name}</td>
               <td align="center" width="12%"><input type="number" name="cart_${product_type}_${i}" value="${quantities}" min="0" max="${products[product_type][i].quantity_available}"></td>
               <td width="16%">$${products[product_type][i].price}</td>
-              <td align="center" width="29%">$${(extended_price).toFixed(2)}</td>
-              <td align="left" width="5%" >${heartIcon(product_type, i)}</span></td>
+              <td align="center" width="23%">$${(extended_price).toFixed(2)}</td>
+              <td align="left" width="10%" >${heartIcon(product_type, i)}</span></td>
             </tr>
             `)
                 }

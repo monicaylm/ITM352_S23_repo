@@ -90,7 +90,7 @@ app.get("/products_data.js", function (request, response, next) {
 	response.send(products_str); // sends response
 });
 
-// IR 4: Add to favorites
+// IR 4: Add to favorites & save it to the session to retrieve back to cart later 
 app.post("/favorite", function (request, response, next) {
 	console.log(JSON.stringify(request.body));
 
@@ -111,7 +111,8 @@ app.post("/favorite", function (request, response, next) {
 	response.json(request.session.favorites);
 });
 
-// Admin page
+// Admin page 
+// Received help from Prof. Port
 app.get("/admin", authAdmin, function (request, response, next) {
 	// present the admin page
 	str = `
@@ -315,6 +316,7 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 });
 
 // microservice
+// Checks if user's account is an admin account
 function authAdmin(request, response, next) {
 	console.log(request.cookies);
 	// check if user is logged in, else, send to login
