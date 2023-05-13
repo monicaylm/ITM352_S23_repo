@@ -77,6 +77,10 @@ table td {
     border: none;
 }
 
+td.favorite {
+    vertical-align: middle;
+}
+
 /* display a popup with a description of the product on mouseover of the image*/
 .img-mouseover {
     position: relative;

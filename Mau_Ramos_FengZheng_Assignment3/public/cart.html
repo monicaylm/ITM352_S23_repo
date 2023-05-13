@@ -61,16 +61,28 @@
       }
     }
 
+    /*function heartIcon() {
+      var heart;
+      for (let product_type in cart) {
+        for (let i = 0; i < cart[product_type].length; i++) {
+          var index = Number(cart[product_type][i]);
+          if (favorites[product_type][i] == true && index > 0) {
+            heart = '<i class="fas fa-heart"></i>';
+          } else if (typeof favorites[product_type][i] == 'undefined' || favorites[product_type][i] == false) {
+            heart = '';
+          }
+        }
+      }
+      return heart;
+    }*/
 
-    /*for (let product_type in favorites) {
-            for (let i = 0; i < favorites[product_type].length; i++) {
-              if(typeof favorites[product_type][i] !== "undefined"){
-                if (favorites[product_type][i] == true){
-                  document.getElementById('favorite_icon') = '<i class="fas fa-heart"></i>';
-                }
-              };
-            }
-    };*/
+    function heartIcon(product_type, index) {
+      if (favorites[product_type] && favorites[product_type][index]) {
+        return '<i class="fas fa-heart"></i>';
+      } else {
+        return '';
+      }
+    }
 
     //Quantities Array
     var quantities = [];
@@ -132,7 +144,7 @@
               <td align="center" width="12%"><input type="number" name="cart_${product_type}_${i}" value="${quantities}" min="0" max="${products[product_type][i].quantity_available}"></td>
               <td width="16%">$${products[product_type][i].price}</td>
               <td align="center" width="29%">$${(extended_price).toFixed(2)}</td>
-              <td align="center" width="5%"><span id="favorite_icon"></span></td>
+              <td align="left" width="5%" >${heartIcon(product_type, i)}</span></td>
             </tr>
             `)
                 }
@@ -203,17 +215,22 @@
     return returnErrors ? errors : (errors.length == 0);
   }
 
-  let iconHtml = '';
-    for (let product_type in favorites) {
-      for (let i = 0; i < favorites[product_type].length; i++) {
-        if (typeof favorites[product_type][i] !== "undefined") {
-          if (favorites[product_type][i] == true) {
-            iconHtml = '<i class="fas fa-heart"></i>';
-            document.getElementById('favorite_icon').innerHTML += iconHtml;
-          }
-        };
+
+// this code is adapted from ChatGPT
+  /*var heartIcons = [];
+  for (let product_type in cart) {
+    for (let i = 0; i < cart[product_type].length; i++) {
+      var index = cart[product_type][i];
+      if (favorites[product_type][i] == true && index > 0) {
+        heartIcons.push('<i class="fas fa-heart"></i>');
       }
     }
+  }
+  document.getElementById('favorite_icon').innerHTML = heartIcons.join('');*/
+
+
+
+
 </script>
 
 </html>
