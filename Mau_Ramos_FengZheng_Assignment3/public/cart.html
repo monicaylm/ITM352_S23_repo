@@ -78,7 +78,7 @@
 
     function heartIcon(product_type, index) {
       if (favorites[product_type] && favorites[product_type][index]) {
-        return '<i class="fas fa-heart"></i>';
+        return '<i id="heart" class="fas fa-heart checked"></i>';
       } else {
         return '';
       }

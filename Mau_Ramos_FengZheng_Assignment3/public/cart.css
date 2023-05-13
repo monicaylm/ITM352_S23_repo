@@ -103,6 +103,15 @@ td.favorite {
     display: block;
 }
 
+/* Style for displaying the heart in cart */
+#heart {
+    pointer-events: none;
+}
+
+.checked {
+    color: #cd1b1b;
+}
+
 /* Purchase button styling */
 .purchase_button {
     display: block;
