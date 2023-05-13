@@ -32,7 +32,7 @@
         }
       }*/
       function star_rate(rate) {
-        //As per the value of rate parameter, mark respective radio button as â€œcheckedâ€
+        //As per the value of rate parameter, mark respective radio button as checked
         btn = document.getElementById("star_" + rate);
         btn.checked = true;
         //display correct rate stars images
@@ -50,7 +50,7 @@
                 document.getElementById("star" + (i + 1)).className = "empty_star";
             }
         }
-    }
+      }
 
       async function rate(pType, pIndex, pRating) {
         console.log(pType, pIndex, pRating);
@@ -136,10 +136,10 @@
                 <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="5" >
 
                 <div class="empty_star" id="star4" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="4" >
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="4" style="display:none">
 
                 <div class="empty_star" id="star3" onclick="star_rate(${product_type + i})"></div>
-                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="3" >
+                <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="3" style="display:none">
 
                 <div class="empty_star" id="star2" onclick="star_rate(${product_type + i})"></div>
                 <input type="radio" name="rating${product_type + i}" id="star_${product_type + i}" value="2" >
