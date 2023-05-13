@@ -243,6 +243,8 @@ app.get("/manageproducts", authAdmin, function (request, response, next) {
 
 	// append a submit button
 	str += '<input type="submit"></form>';
+	str +=
+		'<input type="button" size="40" value="Return to Admin" onclick="location.href=\'/admin\'">';
 	response.send(str);
 });
 
