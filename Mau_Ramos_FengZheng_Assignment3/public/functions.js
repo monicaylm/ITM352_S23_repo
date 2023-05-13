@@ -75,7 +75,7 @@ function loginButton() { // assisted by Prof Port & ChatGPT
                 }
             </script>
             <a href="./cart.html">
-                  <i class='fas fa-shopping-cart'></i>
+                  <i class='fa fa-shopping-cart' style="font-size:36px"></i>
                 (${cart_qty})
             </a>
         </div>
