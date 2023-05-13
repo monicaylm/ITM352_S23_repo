@@ -606,7 +606,6 @@ app.post("/register", function (request, response, next) {
 		user_data[username] = {};
 		user_data[username].name = request.body.name;
 		user_data[username].password = encrypt(request.body.password);
-		user_data[username].admin = false;
 		fs.writeFileSync(user_data_filename, JSON.stringify(user_data));
 
 		response.cookie("userid", username, { expire: Date.now() - 60 * 1000 });
