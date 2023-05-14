@@ -333,17 +333,22 @@ function authAdmin(request, response, next) {
 }
 
 // received help from Professor Port
-app.post("/isAdmin", authAdmin, function (request, response, next) {
+app.post("/isAdmin", function (request, response, next) {
 	// check if user is logged in, else, send to login
 	if (typeof request.cookies.userid != "undefined") {
 		// check if user logged in is an admin, if not, send message
 		if (user_data[request.cookies.userid].admin == true) {
 			response.json({ is_admin: true });
 			return;
+		} else {
+			// user is not an admin
+			response.json({ is_admin: false});
+			return;
 		}
 	} else {
-		response.json({ is_admin: "" });
-	}
+		// user is not logged in
+		response.json({ is_admin: undefined });
+	} 
 });
 
 // add selected quantities to cart, assisted by Prof Port
