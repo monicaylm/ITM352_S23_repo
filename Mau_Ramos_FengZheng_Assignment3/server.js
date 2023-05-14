@@ -252,7 +252,8 @@ app.get("/manageproducts", authAdmin, function (request, response, next) {
 		}
 	}
 	// add an empty row for new product
-	str += `New product:
+	str += `<link href="admin.css" rel="stylesheet">
+	New product:
            <br>
            Product type: <input type="text" name="new_prod_type">
            Product name: <input type="text" name="new_prod_name">
