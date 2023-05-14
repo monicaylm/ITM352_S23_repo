@@ -185,7 +185,7 @@
                     console.error("Error:", error);
                 }
             };
-
+ 
             async function addToCart(prod_index) {
                 var quantity = document.getElementById(`quantity${prod_index}_id`).value
                 var data = { 'prod_type': product_type, 'product_index': prod_index, 'prod_quantity': quantity };
@@ -258,8 +258,9 @@
                 }
             }
 
-            // IR5: Displaying the avg ratings for reviews 
+            // IR5: Displaying the avg ratings saved for reviews 
             for (let i = 0; i < products[product_type].length; i++) {
+                // Round the avg rating to the nearst integer
                 var rating = Math.round(products[product_type][i].Rating.Avg);
                 if (products[product_type][i].Rating.Avg == 0) {
                     iconHtml = "<br>" + `<i id="star" class="fa fa-star" style="font-size:30px"></i>`.repeat(5 - rating);

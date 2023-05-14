@@ -93,7 +93,7 @@ app.get("/products_data.js", function (request, response, next) {
 	response.send(products_str); // sends response
 });
 
-// IR 4: Add to favorites route
+// IR 4: Add to favorites & save it to the session to retrieve back to cart later 
 app.post("/favorite", function (request, response, next) {
 	console.log(JSON.stringify(request.body));
 
@@ -120,7 +120,8 @@ app.post("/favorite", function (request, response, next) {
 	response.json(request.session.favorites);
 });
 
-// Admin page
+// Admin page 
+// Received help from Prof. Port
 app.get("/admin", authAdmin, function (request, response, next) {
 	// present the admin page
 	str = `
@@ -181,12 +182,14 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
       <br><br>`;
 
 	// append a submit button
+	// append a return to admin button
 	str += '<input type="submit"></form>';
 	str +=
 		'<input type="button" size="40" value="Return to Admin" onclick="location.href=\'/admin\'">';
 	response.send(str);
 });
 
+// the following was adapted from Professor Port and ChatGPT
 app.post("/updateusers", authAdmin, function (request, response, next) {
 	user_data = request.body.user_data;
 
@@ -329,6 +332,8 @@ app.post("/updateproducts", authAdmin, function (request, response, next) {
 	response.redirect("./manageproducts");
 });
 
+// microservice
+// Checks if user's account is an admin account
 function authAdmin(request, response, next) {
 	console.log(request.cookies);
 	// check if user is logged in, else, send to login
@@ -344,18 +349,23 @@ function authAdmin(request, response, next) {
 	next();
 }
 
-// check if user is an admin
-app.post("/isAdmin", authAdmin, function (request, response, next) {
+// received help from Professor Port
+app.post("/isAdmin", function (request, response, next) {
 	// check if user is logged in, else, send to login
 	if (typeof request.cookies.userid != "undefined") {
 		// check if user logged in is an admin, if not, send message
 		if (user_data[request.cookies.userid].admin == true) {
 			response.json({ is_admin: true });
 			return;
+		} else {
+			// user is not an admin
+			response.json({ is_admin: false});
+			return;
 		}
 	} else {
-		response.json({ is_admin: "" });
-	}
+		// user is not logged in
+		response.json({ is_admin: undefined });
+	} 
 });
 
 // add selected quantities to cart, assisted by Prof Port
@@ -581,7 +591,7 @@ app.post("/register", function (request, response, next) {
 	} else if (!/^\S+$/.test(password)) {
 		errors["password"].push(`Password must not contain spaces!`);
 
-		// IR2 Require that passwords have at least one number and one special character. (regex referenced from ChatGPT)
+		// Require that passwords have at least one number and one special character. (regex referenced from ChatGPT)
 	} else if (!/^(?=.*\d)(?=.*\W).+$/.test(password)) {
 		errors["password"].push(
 			`Password must contain at least one letter, one number, and one special character!`
