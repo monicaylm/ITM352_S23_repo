@@ -19,6 +19,7 @@ function loadJSON(service, callback) {
 	xobj.send(null);
 }
 
+// creates a navBar with the product key - referenced from Assignment 3 code examples
 function navBar() {
 	document.write(`
     <img src="./images/logo.png" class="logo">
@@ -48,21 +49,22 @@ function getCookie(cname) {
 	return "";
 }
 
-function loginButton() { // assisted by Prof Port & ChatGPT
+function loginButton() {
+	// assisted by Prof Port & ChatGPT
 	var cart;
-    loadJSON('get_cart', function (response) {
-      // Parsing JSON string into object
-      cart = JSON.parse(response);
-    });
+	loadJSON("get_cart", function (response) {
+		// Parsing JSON string into object
+		cart = JSON.parse(response);
+	});
 
-    var cart_qty = 0;
-    for (let product_type in cart) {
-        for (let i = 0; i < cart[product_type].length; i++) {
-            cart_qty += Number(cart[product_type][i]);
-        }
-    };
+	var cart_qty = 0;
+	for (let product_type in cart) {
+		for (let i = 0; i < cart[product_type].length; i++) {
+			cart_qty += Number(cart[product_type][i]);
+		}
+	}
 
-    document.write(`
+	document.write(`
         <div class="login">
             <script>
                 if (getCookie("name") == "") {

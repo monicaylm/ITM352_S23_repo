@@ -65,7 +65,7 @@ li, .login {
     text-decoration: none;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    cursor: pointer
 }
 
 li a:link,

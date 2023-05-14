@@ -21,13 +21,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap"
         rel="stylesheet">
 
-    <!-- Icon Source -->
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <!-- Icon Sources -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script>
+        // initalize variable to store favorited products
         var favorites;
-
 
         // get querystring data
         var params = (new URL(document.location)).searchParams;
@@ -37,12 +36,11 @@
             var product_type = params.get('product_type');
         }
 
-        // execute async function when on window load // assisted by prof port
+        // execute async functions when on window load // assisted by prof port
         window.onload = async function () {
-            await getcart();
 
-            // define variable to represent qty sold
-            var sold = JSON.parse(params.get("amountSold"));
+            // get cart
+            await getcart();
 
             // IR4: Add to favorites 
             await addFavorite("get", "", "");
@@ -123,7 +121,7 @@
                 </script>
 
                 <script>
-                    // loops through products array to display product information
+                    // loops through products array to display product information, also contains IR4: Add to favorites 
 
                     for (i = 0; i < products[product_type].length; i++) {
                         document.write(`
@@ -239,6 +237,7 @@
                 }
             }
 
+            // IR4: Add to favorites - async function that favorites products (assisted by Professor Port)
             async function addFavorite(prod_index, favorited_status) {
                 var data = { 'product_type': product_type, 'product_index': prod_index, 'favored': favorited_status };
                 console.log('adding to favorites', data)
@@ -268,7 +267,6 @@
                 } else {
                     iconHtml = "<br>" + `<i id="star" class="fa fa-star checked" style="font-size:30px"></i>`.repeat(rating) + `<i id="star" class="fa fa-star" style="font-size:30px"></i>`.repeat(5 - rating);
                     document.getElementById(`stars${i}`).innerHTML += iconHtml;
-                    //document.getElementById('stars').innerHTML = "Reviews: " + "★".repeat(rating) + "☆".repeat(5 - rating);
                 }
             };
         </script>

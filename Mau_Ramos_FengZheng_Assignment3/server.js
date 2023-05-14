@@ -14,8 +14,11 @@ var url = require("url");
 
 // load file system interface
 var fs = require("fs");
+
+// load nodemailer
 var nodemailer = require("nodemailer");
 
+// load session package
 var session = require("express-session");
 
 // cookie parser
@@ -90,24 +93,30 @@ app.get("/products_data.js", function (request, response, next) {
 	response.send(products_str); // sends response
 });
 
-// IR 4: Add to favorites
+// IR 4: Add to favorites route
 app.post("/favorite", function (request, response, next) {
 	console.log(JSON.stringify(request.body));
 
+	// initalize empty session object for favorites
 	if (!request.session.favorites) {
 		request.session.favorites = {};
 	}
 
 	// store updated favorites in session
-	if (typeof request.session.favorites[request.body.product_type] == "undefined") {
+	if (
+		typeof request.session.favorites[request.body.product_type] == "undefined"
+	) {
 		request.session.favorites[request.body.product_type] = [];
 	}
 
-	if (request.body.product_type !== "get"){
-		request.session.favorites[request.body.product_type][request.body.product_index] = request.body.favored;
+	// indicate in the favorites object if the product is favorited
+	if (request.body.product_type !== "get") {
+		request.session.favorites[request.body.product_type][
+			request.body.product_index
+		] = request.body.favored;
 	}
 
-	// stay on the same page
+	// update the favorites and send em
 	response.json(request.session.favorites);
 });
 
@@ -115,14 +124,16 @@ app.post("/favorite", function (request, response, next) {
 app.get("/admin", authAdmin, function (request, response, next) {
 	// present the admin page
 	str = `
+	<link href="admin.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet"> 
     <body>
-    What do you want to do:
+	<h1>SHINee Album Shop</h1>
+    <h2>Admin settings<h2>
     <br>
-    <input type="button" size="40" value="Manage Users" onclick="location.href='./manageusers'">
-    <br>
-    <input type="button" size="40" value="Manage Products" onclick="location.href='./manageproducts'">
-    <br>
-    <input type="button" size="40" value="Return to Main Page" onclick="location.href='./products_display.html?product_type=Group'">
+    <input type="button" class="button" value="Manage Users" onclick="location.href='./manageusers'">
+    <input type="button" class="button" value="Manage Products" onclick="location.href='./manageproducts'">
+    <input type="button" class="button" value="Return to Main Page" onclick="location.href='./products_display.html?product_type=Group'">
     </body>
         `;
 
@@ -138,7 +149,12 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 	// loop through product type in products
 	for (var user_email in user_data) {
 		// append a string of HTML to str
-		str += `Email: <input type="text" name="update[${user_email}]" value="${user_email}">
+		str += `
+		<link href="admin.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet"> 
+	<body>
+		Email: <input type="text" name="update[${user_email}]" value="${user_email}">
             Name: <input type="text" name="user_data[${user_email}][name]" value="${
 			user_data[user_email].name
 		}">
@@ -150,6 +166,7 @@ app.get("/manageusers", authAdmin, function (request, response, next) {
 		}>
             Delete account?: <input type="checkbox" name="delete[${user_email}]">
             <br><br>
+			</body>
             `;
 	}
 
@@ -327,6 +344,7 @@ function authAdmin(request, response, next) {
 	next();
 }
 
+// check if user is an admin
 app.post("/isAdmin", authAdmin, function (request, response, next) {
 	// check if user is logged in, else, send to login
 	if (typeof request.cookies.userid != "undefined") {
@@ -392,6 +410,7 @@ app.post("/get_cart", function (request, response, next) {
 	response.json(request.session.cart);
 });
 
+// update the session quantities with updated amounts from cart
 app.post("/update_cart", function (request, response, next) {
 	// set updated_cart variable to the contents of the request body
 	var updated_cart = request.body;
@@ -408,10 +427,11 @@ app.post("/update_cart", function (request, response, next) {
 					continue;
 				}
 
-				// if quantity is 0, set to null
+				// if quantity is 0, set to null,
 				if (updated_cart[`cart_${product_type}_${i}`] === 0) {
 					request.session.cart[product_type][i] = null;
 				}
+				// update the quantities of products in the cart
 				request.session.cart[product_type][i] = Number(
 					updated_cart[`cart_${product_type}_${i}`]
 				);
@@ -482,19 +502,16 @@ app.post("/login", function (request, response, next) {
 	// login is not valid, go back to login page and display error message
 	else {
 		// add errors object to request.body to put into the querystring
-		//request.body["errorsJSONstring"] = JSON.stringify(errors);
 		let params = new URLSearchParams();
 		params.append("username", username);
 		params.append("errorsJSONstring", JSON.stringify(errors));
 		response.redirect("./login.html?" + params.toString());
-
-		// back to the order page and putting errors in the querystring
-		//response.redirect("./login.html?" + querystring.stringify(errors));
 	}
 });
 
 // logout referenced and modified from Tina Vo, deletes session cart and clears cookies, return to index page
 app.get("/logout", function (request, response, next) {
+	// send logout alert and redirect to index
 	message = `<script>alert('You have successfully logged out!'); location.href="./index.html";</script>`;
 	delete request.session.cart;
 	response.clearCookie("userid");
@@ -587,7 +604,7 @@ app.post("/register", function (request, response, next) {
 	}
 
 	// -------------------- NO ERRORS -------------------- //
-	// if there are no errors with registration info, go to invoice and send all info to querystring
+	// if there are no errors with registration info, write to json file and return to products display page
 
 	var totalLength = 0;
 
@@ -596,14 +613,6 @@ app.post("/register", function (request, response, next) {
 	}
 
 	if (totalLength === 0) {
-		for (let product_type in products) {
-			for (let i in products[product_type]) {
-				// tracking the quantity available by subtracting purchased quantities, only once you get to the invoice
-				//products[product_type][i].quantity_available -=
-				//selected_qty[`quantity${i}`];
-			}
-		}
-
 		// write updated data to user_data_filename (user_data.json)
 		user_data[username] = {};
 		user_data[username].name = request.body.name;
@@ -625,7 +634,7 @@ app.post("/register", function (request, response, next) {
 	}
 });
 
-// checkout, to invoice
+// checkout and go to confirmation page
 app.post("/checkout", function (request, response, next) {
 	// IR5: Rate products for purchase
 
@@ -648,20 +657,31 @@ app.post("/checkout", function (request, response, next) {
 app.post("/rateProduct", function (request, response, next) {
 	console.log(request.body);
 
-	var prodRating = products[request.body.prod_type][request.body.product_index]["Rating"];
+	var prodRating =
+		products[request.body.prod_type][request.body.product_index]["Rating"];
 
 	// Have product rating --> calculate avg
-	if(typeof prodRating == "undefined"){
-		products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":1, "Avg":Number(request.body.prod_rating)};
+	if (typeof prodRating == "undefined") {
+		products[request.body.prod_type][request.body.product_index]["Rating"] = {
+			"Num Ratings": 1,
+			Avg: Number(request.body.prod_rating),
+		};
 	} else {
 		var n = prodRating["Num Ratings"] + 1;
-		var avg = ((prodRating["Avg"] * prodRating["Num Ratings"] + Number(request.body.prod_rating)) / n).toFixed(2);
-        products[request.body.prod_type][request.body.product_index]["Rating"] = {"Num Ratings":n, "Avg":avg};
+		var avg = (
+			(prodRating["Avg"] * prodRating["Num Ratings"] +
+				Number(request.body.prod_rating)) /
+			n
+		).toFixed(2);
+		products[request.body.prod_type][request.body.product_index]["Rating"] = {
+			"Num Ratings": n,
+			Avg: avg,
+		};
 	}
 	response.json({});
 });
 
-// Confirming purchase to send the invoice to email registered 
+// Confirming purchase to send the invoice to email registered
 app.post("/purchase", function (request, response, next) {
 	var name = request.cookies["name"];
 	var userid = request.cookies["userid"];
@@ -680,7 +700,7 @@ app.post("/purchase", function (request, response, next) {
         <tbody>
             <th style="text-align: center;" width="33%">Item</th>
             <th style="text-align: center;" width="33%">Quantity</th>
-            <th style="text-align: center;" width="17%">Price</th>
+            <th style="text-align: center;" width="33%">Price</th>
           </tr>`;
 
 	var cart = request.session.cart;
@@ -700,9 +720,9 @@ app.post("/purchase", function (request, response, next) {
 
 				str += `
 	<tr>
-	 	<td align="center" width="30%">${products[product_type][i].name}</td>
-	 	<td align="center" width="14%">${quantities}</td>
-	 	<td align="center" width="17%">$${products[product_type][i].price}</td>
+	 	<td align="center" width="33%">${products[product_type][i].name}</td>
+	 	<td align="center" width="33%">${quantities}</td>
+	 	<td align="center" width="33%">$${products[product_type][i].price}</td>
    	</tr>
           `;
 			}
@@ -725,22 +745,22 @@ app.post("/purchase", function (request, response, next) {
 
 	str += `
           <tr>
-            <td colspan="5" width="100%">&nbsp;</td>
+            <td colspan="2" width="100%">&nbsp;</td>
           </tr>
           <tr>
-            <td style="text-align: right;" colspan="3" width="67%">Subtotal</td>
+            <td style="text-align: right;" colspan="2" width="67%">Subtotal</td>
             <td colspan="2" width="54%">$${subtotal.toFixed(2)}</td>
           </tr>
           <tr>
-            <td style="text-align: right;" colspan="3" width="67%">Tax @ 4.71%</span></td>
+            <td style="text-align: right;" colspan="2" width="67%">Tax @ 4.71%</span></td>
             <td colspan="2" width="54%">$${tax.toFixed(2)}</td>
           </tr>
           <tr>
-            <td style="text-align: right;" colspan="3" width="67%">Shipping</span></td>
+            <td style="text-align: right;" colspan="2" width="67%">Shipping</span></td>
             <td colspan="2" width="54%">$${shipping}</td>
           </tr>
           <tr>
-            <td style="text-align: right;" colspan="3" width="67%"><b>Total</b></td>
+            <td style="text-align: right;" colspan="2" width="67%"><b>Total</b></td>
             <td colspan="2" width="54%"><b>$${total.toFixed(2)}</b></td>
           </tr>
       </tbody>
@@ -765,7 +785,7 @@ app.post("/purchase", function (request, response, next) {
 	var user_email = userid;
 	// email format -> sends the invoice
 	var mailOptions = {
-		from: "Monica's SHINee Albums", //sender
+		from: "mylm@hawaii.edu", //sender
 		to: user_email, //receiver
 		subject: "Thank you for your order!", // subject heading
 		html: str, //html body (invoice)

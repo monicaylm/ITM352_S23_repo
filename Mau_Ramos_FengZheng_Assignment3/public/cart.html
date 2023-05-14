@@ -10,16 +10,19 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping Cart</title>
+  <title>Cart</title>
+
 
   <script src="./products_data.js"></script>
   <script src="./functions.js"></script>
   <link href="cart.css" rel="stylesheet">
   <link href="navbar.css" rel="stylesheet">
+
+  <!-- Font Sources -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap" <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Varela+Round&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Palanquin+Dark:wght@500&display=swap"
     rel="stylesheet">
   <link
@@ -27,7 +30,6 @@
     rel="stylesheet">
 
   <!-- Icon Source -->
-  <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <script>
@@ -61,24 +63,10 @@
       }
     }
 
-    /*function heartIcon() {
-      var heart;
-      for (let product_type in cart) {
-        for (let i = 0; i < cart[product_type].length; i++) {
-          var index = Number(cart[product_type][i]);
-          if (favorites[product_type][i] == true && index > 0) {
-            heart = '<i class="fas fa-heart"></i>';
-          } else if (typeof favorites[product_type][i] == 'undefined' || favorites[product_type][i] == false) {
-            heart = '';
-          }
-        }
-      }
-      return heart;
-    }*/
-
+    // 
     function heartIcon(product_type, index) {
       if (favorites[product_type] && favorites[product_type][index]) {
-        return '<i id="heart" class="fas fa-heart checked"></i>';
+        return '<i id="heart" class="fa fa-heart checked"></i>';
       } else {
         return '';
       }

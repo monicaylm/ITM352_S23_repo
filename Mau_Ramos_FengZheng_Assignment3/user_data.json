@@ -12,33 +12,5 @@
 		"name": "Brandon Ramos",
 		"password": "44893d2eb4ef69f0578c86aa49546523",
 		"admin": true
-	},
-	"one@gmail.com": {
-		"name": "testing one",
-		"password": "a3f85aba6b9618aa2edaa4ec1a4017c1"
-	},
-	"somar@gmail.com": {
-		"name": "nodnarb somar",
-		"password": "a02126a22a9013af1347021f07007932"
-	},
-	"brandon@gmail.com": {
-		"name": "brandon ramo",
-		"password": "a3f85aba6b9618aa2edaa4ec1a4017c1"
-	},
-	"kailin@gmail.com": {
-		"name": "Kai Lin",
-		"password": "5fc3acd622421a86cbbe2ec59614cfbe"
-	},
-	"jmrio@hawaii.edu": {
-		"name": "Joshua Rio",
-		"password": "a3f85aba6b9618aa2edaa4ec1a4017c1"
-	},
-	"adarnbro@hawaii.edu": {
-		"name": "Andrea Darnbrough",
-		"password": "a67a4f43906e6d031ee3b4bd601faed0"
-	},
-	"marcusmau@hawaii.edu": {
-		"name": "Marcus Mau",
-		"password": "eebed4552218795c8501cd7db76402af"
 	}
 }
