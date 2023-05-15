@@ -34,12 +34,14 @@
 
   <script>
 
+    // define cart variable as contents of the session cart
     var cart;
     loadJSON('get_cart', function (response) {
       // Parsing JSON string into object
       cart = JSON.parse(response);
     });
 
+    // define favorites variable as contents of the session favorites
     var favorites;
     loadJSON('favorite', function (response) {
       // Parsing JSON string into object
@@ -63,7 +65,7 @@
       }
     }
 
-    // 
+    // function to display the heart icon in the cart for favorited items - assisted by ChatGPT
     function heartIcon(product_type, index) {
       if (favorites[product_type] && favorites[product_type][index]) {
         return '<i id="heart" class="fa fa-heart checked"></i>';
@@ -72,7 +74,7 @@
       }
     }
 
-    //Quantities Array
+    // Quantities Array
     var quantities = [];
 
   </script>
@@ -132,7 +134,7 @@
               <td align="center" width="12%"><input type="number" name="cart_${product_type}_${i}" value="${quantities}" min="0" max="${products[product_type][i].quantity_available}"></td>
               <td width="16%">$${products[product_type][i].price}</td>
               <td align="center" width="23%">$${(extended_price).toFixed(2)}</td>
-              <td align="left" width="10%" >${heartIcon(product_type, i)}</span></td>
+              <td align="left" width="10%">${heartIcon(product_type, i)}</span></td>
             </tr>
             `)
                 }
@@ -143,7 +145,7 @@
             var tax_rate = 0.04712;
             var tax = tax_rate * subtotal;
 
-            // Compute shipping (if less than $50, shipping is $5, if between $50 and $100 then $7, if over 100 then shipping is 10%)
+            // Compute shipping
             if (subtotal <= 80) { shipping = 10 }
             else { shipping = 0 };
 
@@ -194,7 +196,7 @@
 </body>
 
 <script>
-  function findNonNegInt(q, returnErrors = false) { //the function returns non-negative integers in the object.
+  function findNonNegInt(q, returnErrors = false) { // the function returns non-negative integers in the object.
     errors = []; // assume no errors at first
     if (Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
     if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
@@ -202,23 +204,7 @@
 
     return returnErrors ? errors : (errors.length == 0);
   }
-
-
-// this code is adapted from ChatGPT
-  /*var heartIcons = [];
-  for (let product_type in cart) {
-    for (let i = 0; i < cart[product_type].length; i++) {
-      var index = cart[product_type][i];
-      if (favorites[product_type][i] == true && index > 0) {
-        heartIcons.push('<i class="fas fa-heart"></i>');
-      }
-    }
-  }
-  document.getElementById('favorite_icon').innerHTML = heartIcons.join('');*/
-
-
-
-
+  
 </script>
 
 </html>

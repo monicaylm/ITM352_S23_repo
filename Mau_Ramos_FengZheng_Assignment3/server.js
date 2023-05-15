@@ -109,7 +109,7 @@ app.post("/favorite", function (request, response, next) {
 		request.session.favorites[request.body.product_type] = [];
 	}
 
-	// indicate in the favorites object if the product is favorited
+	// indicate in the favorites object if the product is favorited - ngl these four lines of code were the most traumatizing moments of my life in this class where Port basically called me a dumbass
 	if (request.body.product_type !== "get") {
 		request.session.favorites[request.body.product_type][
 			request.body.product_index
@@ -430,7 +430,6 @@ app.post("/update_cart", function (request, response, next) {
 	var errors = {};
 
 	if (Object.keys(errors).length == 0) {
-		//modify inventory from the difference of cart and update
 		for (let product_type in products) {
 			for (let i in products[product_type]) {
 				// if there is no value then move to the next product
@@ -647,7 +646,6 @@ app.post("/register", function (request, response, next) {
 
 // checkout and go to confirmation page
 app.post("/checkout", function (request, response, next) {
-	// IR5: Rate products for purchase
 
 	// if user is not logged in, display alert and redirect to login page
 	if (
